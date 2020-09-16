@@ -35,16 +35,23 @@ const JWTRegister = ({ className, ...rest }) => {
         submit: null
       }}
       validationSchema={Yup.object().shape({
-        email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-        name: Yup.string().max(255).required('Name is required'),
-        password: Yup.string().min(7).max(255).required('Password is required'),
-        policy: Yup.boolean().oneOf([true], 'This field must be checked')
+        email: Yup.string()
+          .email('Debe ser un email valido')
+          .max(255)
+          .required('El email es requerido'),
+        name: Yup.string()
+          .max(255)
+          .required('El nombre es requerido'),
+        password: Yup.string()
+          .min(7)
+          .max(255)
+          .required('Contrasena requerida'),
+        policy: Yup.boolean().oneOf(
+          [true],
+          'Debe de aceptar los termino y condiciones de Ribo'
+        )
       })}
-      onSubmit={async (values, {
-        setErrors,
-        setStatus,
-        setSubmitting
-      }) => {
+      onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         try {
           await register(values.email, values.name, values.password);
 
@@ -79,7 +86,7 @@ const JWTRegister = ({ className, ...rest }) => {
             error={Boolean(touched.name && errors.name)}
             fullWidth
             helperText={touched.name && errors.name}
-            label="Name"
+            label="Nombre"
             margin="normal"
             name="name"
             onBlur={handleBlur}
@@ -91,7 +98,7 @@ const JWTRegister = ({ className, ...rest }) => {
             error={Boolean(touched.email && errors.email)}
             fullWidth
             helperText={touched.email && errors.email}
-            label="Email Address"
+            label="Email"
             margin="normal"
             name="email"
             onBlur={handleBlur}
@@ -104,7 +111,7 @@ const JWTRegister = ({ className, ...rest }) => {
             error={Boolean(touched.password && errors.password)}
             fullWidth
             helperText={touched.password && errors.password}
-            label="Password"
+            label="Contraseña"
             margin="normal"
             name="password"
             onBlur={handleBlur}
@@ -113,42 +120,25 @@ const JWTRegister = ({ className, ...rest }) => {
             value={values.password}
             variant="outlined"
           />
-          <Box
-            alignItems="center"
-            display="flex"
-            mt={2}
-            ml={-1}
-          >
+          <Box alignItems="center" display="flex" mt={2} ml={-1}>
             <Checkbox
               checked={values.policy}
               name="policy"
               onChange={handleChange}
             />
-            <Typography
-              variant="body2"
-              color="textSecondary"
-            >
-              I have read the
-              {' '}
-              <Link
-                component="a"
-                href="#"
-                color="secondary"
-              >
-                Terms and Conditions
+            <Typography variant="body2" color="textSecondary">
+              He leido y acepto los{' '}
+              <Link component="a" href="#" color="secondary">
+                terminos y condiciones
               </Link>
             </Typography>
           </Box>
           {Boolean(touched.policy && errors.policy) && (
-            <FormHelperText error>
-              {errors.policy}
-            </FormHelperText>
+            <FormHelperText error>{errors.policy}</FormHelperText>
           )}
           {errors.submit && (
             <Box mt={3}>
-              <FormHelperText error>
-                {errors.submit}
-              </FormHelperText>
+              <FormHelperText error>{errors.submit}</FormHelperText>
             </Box>
           )}
           <Box mt={2}>
@@ -160,7 +150,7 @@ const JWTRegister = ({ className, ...rest }) => {
               type="submit"
               variant="contained"
             >
-              Register
+              Registrarse
             </Button>
           </Box>
         </form>

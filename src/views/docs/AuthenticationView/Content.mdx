@@ -52,7 +52,7 @@ Access your Auth0 application dashboard and get your own `client_id` and `domain
 
 You can use the `.env` method to be able to have different keys depending on your environment (development, staging or production). If you will be using `.env`, in the `.env.example` file you have the variables that we use in our project.
 
-This config object is being used in the `src/contexts/Auth0Context.js` (`src/contexts/Auth0Context.tsx` for Ts version) to initialise a new Auth0 Client.
+####This config object is being used in the `src/contexts/Auth0Context.js` (`src/contexts/Auth0Context.tsx` for Ts version) to initialise a new Auth0 Client.
 
 ### Firebase
 
@@ -69,9 +69,10 @@ export const firebaseConfig = {
   storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET
 };
 ```
+
 Go to your Firebase Console to find your project keys.
 
-This config object is being used in `src/lib/firebase.js` (`src/lib/firebase.ts` for TS version). This is the file that initilises the Firebase application that we use for authentication.
+####This config object is being used in `src/lib/firebase.js` (`src/lib/firebase.ts` for TS version). This is the file that initilises the Firebase application that we use for authentication.
 
 ## Switching between auth methods
 
@@ -83,11 +84,11 @@ Open `src/App.js` (`src/App.tsx` for TS version) and update the following line:
 import { AuthProvider } from 'src/contexts/JWTAuthContext';
 ```
 
-to use `Auth0Context` or `FirebaseAuthContext`.
+#### to use `Auth0Context` or `FirebaseAuthContext`.
 
 Example:
 
-import { AuthProvider } from 'src/contexts/Auth0Context';
+#### import { AuthProvider } from 'src/contexts/Auth0Context';
 
 Now open `src/hooks/useAuth.js` (`src/hooks/useAuth.ts` for TS version) and do the same by updating this line:
 

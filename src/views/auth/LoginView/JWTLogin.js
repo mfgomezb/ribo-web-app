@@ -31,14 +31,15 @@ const JWTLogin = ({ className, ...rest }) => {
         submit: null
       }}
       validationSchema={Yup.object().shape({
-        email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-        password: Yup.string().max(255).required('Password is required')
+        email: Yup.string()
+          .email('Must be a valid email')
+          .max(255)
+          .required('Email is required'),
+        password: Yup.string()
+          .max(255)
+          .required('Password is required')
       })}
-      onSubmit={async (values, {
-        setErrors,
-        setStatus,
-        setSubmitting
-      }) => {
+      onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         try {
           await login(values.email, values.password);
 
@@ -100,9 +101,7 @@ const JWTLogin = ({ className, ...rest }) => {
           />
           {errors.submit && (
             <Box mt={3}>
-              <FormHelperText error>
-                {errors.submit}
-              </FormHelperText>
+              <FormHelperText error>{errors.submit}</FormHelperText>
             </Box>
           )}
           <Box mt={2}>
@@ -114,10 +113,10 @@ const JWTLogin = ({ className, ...rest }) => {
               type="submit"
               variant="contained"
             >
-              Log In
+              Ingresar
             </Button>
           </Box>
-          <Box mt={2}>
+          {/* <Box mt={2}>
             <Alert
               severity="info"
             >
@@ -131,7 +130,7 @@ const JWTLogin = ({ className, ...rest }) => {
                 <b>Password123</b>
               </div>
             </Alert>
-          </Box>
+          </Box> */}
         </form>
       )}
     </Formik>
@@ -139,7 +138,7 @@ const JWTLogin = ({ className, ...rest }) => {
 };
 
 JWTLogin.propTypes = {
-  className: PropTypes.string,
+  className: PropTypes.string
 };
 
 export default JWTLogin;
