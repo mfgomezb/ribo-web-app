@@ -4,11 +4,9 @@ import {
   Box,
   Card,
   CardContent,
-  Chip,
   Container,
   Divider,
   Link,
-  Tooltip,
   Typography,
   makeStyles
 } from '@material-ui/core';

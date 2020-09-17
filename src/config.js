@@ -3,6 +3,14 @@ export const auth0Config = {
   domain: process.env.REACT_APP_AUTH0_DOMAIN
 };
 
+export const axiosConfig = {
+  baseURL: process.env.REACT_APP_BASE_URL
+};
+
+export const authConfig = {
+  tokenSecretKey: process.env.REACT_APP_TOKEN_SECRET_KEY
+};
+
 export const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   appId: process.env.REACT_APP_FIREBASE_APP_ID,

@@ -14,7 +14,7 @@ import {
   makeStyles
 } from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {},
   name: {
     marginTop: theme.spacing(1)
@@ -29,10 +29,7 @@ const ProfileDetails = ({ className, user, ...rest }) => {
   const classes = useStyles();
 
   return (
-    <Card
-      className={clsx(classes.root, className)}
-      {...rest}
-    >
+    <Card className={clsx(classes.root, className)} {...rest}>
       <CardContent>
         <Box
           display="flex"
@@ -40,10 +37,7 @@ const ProfileDetails = ({ className, user, ...rest }) => {
           flexDirection="column"
           textAlign="center"
         >
-          <Avatar
-            className={classes.avatar}
-            src={user.avatar}
-          />
+          <Avatar className={classes.avatar} src={user.avatar} />
           <Typography
             className={classes.name}
             color="textPrimary"
@@ -52,26 +46,16 @@ const ProfileDetails = ({ className, user, ...rest }) => {
           >
             {user.name}
           </Typography>
-          <Typography
-            color="textPrimary"
-            variant="body1"
-          >
-            Your tier:
-            {' '}
-            <Link
-              component={RouterLink}
-              to="/pricing"
-            >
-              {user.tier}
+          <Typography color="textPrimary" variant="body1">
+            Your tier:{' '}
+            <Link component={RouterLink} to="/pricing">
+              {user.role}
             </Link>
           </Typography>
         </Box>
       </CardContent>
       <CardActions>
-        <Button
-          fullWidth
-          variant="text"
-        >
+        <Button fullWidth variant="text">
           Remove picture
         </Button>
       </CardActions>

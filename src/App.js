@@ -1,15 +1,13 @@
 import React from 'react';
+import { QueryCache, ReactQueryCacheProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query-devtools';
 import { Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import { create } from 'jss';
 import rtl from 'jss-rtl';
 import MomentUtils from '@date-io/moment';
 import { SnackbarProvider } from 'notistack';
-import {
-  jssPreset,
-  StylesProvider,
-  ThemeProvider
-} from '@material-ui/core';
+import { jssPreset, StylesProvider, ThemeProvider } from '@material-ui/core';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import GlobalStyles from 'src/components/GlobalStyles';
 import ScrollReset from 'src/components/ScrollReset';
@@ -23,6 +21,7 @@ import routes, { renderRoutes } from 'src/routes';
 
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 const history = createBrowserHistory();
+const queryCache = new QueryCache();
 
 const App = () => {
   const { settings } = useSettings();
@@ -34,27 +33,27 @@ const App = () => {
   });
 
   return (
-    <ThemeProvider theme={theme}>
-      <StylesProvider jss={jss}>
-        <MuiPickersUtilsProvider utils={MomentUtils}>
-          <SnackbarProvider
-            dense
-            maxSnack={3}
-          >
-            <Router history={history}>
-              <AuthProvider>
-                <GlobalStyles />
-                <ScrollReset />
-                <GoogleAnalytics />
-                <CookiesNotification />
-                <SettingsNotification />
-                {renderRoutes(routes)}
-              </AuthProvider>
-            </Router>
-          </SnackbarProvider>
-        </MuiPickersUtilsProvider>
-      </StylesProvider>
-    </ThemeProvider>
+    <ReactQueryCacheProvider queryCache={queryCache}>
+      <ReactQueryDevtools initialIsOpen />
+      <ThemeProvider theme={theme}>
+        <StylesProvider jss={jss}>
+          <MuiPickersUtilsProvider utils={MomentUtils}>
+            <SnackbarProvider dense maxSnack={3}>
+              <Router history={history}>
+                <AuthProvider>
+                  <GlobalStyles />
+                  <ScrollReset />
+                  <GoogleAnalytics />
+                  <CookiesNotification />
+                  <SettingsNotification />
+                  {renderRoutes(routes)}
+                </AuthProvider>
+              </Router>
+            </SnackbarProvider>
+          </MuiPickersUtilsProvider>
+        </StylesProvider>
+      </ThemeProvider>
+    </ReactQueryCacheProvider>
   );
 };
 

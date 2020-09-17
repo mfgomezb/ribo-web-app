@@ -182,25 +182,13 @@ const sections = [
         title: 'Chat',
         href: '/app/chat',
         icon: MessageCircleIcon,
-        info: () => (
-          <Chip
-            color="secondary"
-            size="small"
-            label="Updated"
-          />
-        )
+        info: () => <Chip color="secondary" size="small" label="Updated" />
       },
       {
         title: 'Calendar',
         href: '/app/calendar',
         icon: CalendarIcon,
-        info: () => (
-          <Chip
-            color="secondary"
-            size="small"
-            label="Updated"
-          />
-        )
+        info: () => <Chip color="secondary" size="small" label="Updated" />
       }
     ]
   },
@@ -265,7 +253,7 @@ const sections = [
           {
             title: 'Redux Forms',
             href: '/app/extra/forms/redux'
-          },
+          }
         ]
       },
       {
@@ -287,11 +275,7 @@ const sections = [
   }
 ];
 
-function renderNavItems({
-  items,
-  pathname,
-  depth = 0
-}) {
+function renderNavItems({ items, pathname, depth = 0 }) {
   return (
     <List disablePadding>
       {items.reduce(
@@ -302,12 +286,7 @@ function renderNavItems({
   );
 }
 
-function reduceChildRoutes({
-  acc,
-  pathname,
-  item,
-  depth
-}) {
+function reduceChildRoutes({ acc, pathname, item, depth }) {
   const key = item.title + depth;
 
   if (item.items) {
@@ -377,40 +356,22 @@ const NavBar = ({ onMobileClose, openMobile }) => {
   }, [location.pathname]);
 
   const content = (
-    <Box
-      height="100%"
-      display="flex"
-      flexDirection="column"
-    >
+    <Box height="100%" display="flex" flexDirection="column">
       <PerfectScrollbar options={{ suppressScrollX: true }}>
         <Hidden lgUp>
-          <Box
-            p={2}
-            display="flex"
-            justifyContent="center"
-          >
+          <Box p={2} display="flex" justifyContent="center">
             <RouterLink to="/">
               <Logo />
             </RouterLink>
           </Box>
         </Hidden>
         <Box p={2}>
-          <Box
-            display="flex"
-            justifyContent="center"
-          >
+          <Box display="flex" justifyContent="center">
             <RouterLink to="/app/account">
-              <Avatar
-                alt="User"
-                className={classes.avatar}
-                src={user.avatar}
-              />
+              <Avatar alt="User" className={classes.avatar} src={user.avatar} />
             </RouterLink>
           </Box>
-          <Box
-            mt={2}
-            textAlign="center"
-          >
+          <Box mt={2} textAlign="center">
             <Link
               component={RouterLink}
               to="/app/account"
@@ -420,34 +381,24 @@ const NavBar = ({ onMobileClose, openMobile }) => {
             >
               {user.name}
             </Link>
-            <Typography
-              variant="body2"
-              color="textSecondary"
-            >
-              Your tier:
-              {' '}
-              <Link
-                component={RouterLink}
-                to="/pricing"
-              >
-                {user.tier}
+            <Typography variant="body2" color="textSecondary">
+              Your tier:{' '}
+              <Link component={RouterLink} to="/pricing">
+                {user.role}
               </Link>
             </Typography>
           </Box>
         </Box>
         <Divider />
         <Box p={2}>
-          {sections.map((section) => (
+          {sections.map(section => (
             <List
               key={section.subheader}
-              subheader={(
-                <ListSubheader
-                  disableGutters
-                  disableSticky
-                >
+              subheader={
+                <ListSubheader disableGutters disableSticky>
                   {section.subheader}
                 </ListSubheader>
-              )}
+              }
             >
               {renderNavItems({
                 items: section.items,
@@ -458,15 +409,8 @@ const NavBar = ({ onMobileClose, openMobile }) => {
         </Box>
         <Divider />
         <Box p={2}>
-          <Box
-            p={2}
-            borderRadius="borderRadius"
-            bgcolor="background.dark"
-          >
-            <Typography
-              variant="h6"
-              color="textPrimary"
-            >
+          <Box p={2} borderRadius="borderRadius" bgcolor="background.dark">
+            <Typography variant="h6" color="textPrimary">
               Need Help?
             </Typography>
             <Link

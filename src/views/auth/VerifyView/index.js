@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link as RouterLink, useParams } from 'react-router-dom';
 import {
   Box,
   Card,
@@ -7,17 +7,13 @@ import {
   Container,
   Divider,
   Link,
+  Button,
   Typography,
   makeStyles
 } from '@material-ui/core';
 import Page from 'src/components/Page';
 import Logo from 'src/components/Logo';
 import useAuth from 'src/hooks/useAuth';
-import JWTLogin from './JWTLogin';
-
-const methodIcons = {
-  JWT: '/static/images/jwt.svg'
-};
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -61,7 +57,16 @@ const useStyles = makeStyles(theme => ({
 
 const LoginView = () => {
   const classes = useStyles();
-  const { method } = useAuth();
+  const { verify, verified } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const { verifyId } = useParams();
+
+  useEffect(() => {
+    setLoading(true);
+    verify(verifyId).then(() => {
+      setLoading(false);
+    });
+  }, [verify, verifyId]);
 
   return (
     <Page className={classes.root} title="Login">
@@ -81,19 +86,31 @@ const LoginView = () => {
             >
               <div>
                 <Typography color="textPrimary" gutterBottom variant="h2">
-                  Iniciar sesión
+                  Verificación de correo electronico
                 </Typography>
                 <Typography variant="body2" color="textSecondary">
-                  Ingresa en la plataforma administrativa
+                  {loading
+                    ? 'Su correo esta siendo verificado'
+                    : verified
+                    ? 'Su correo ha sido verificado'
+                    : 'Su correo no pudo ser verificado o ha sido verificado en otra ocasión'}
                 </Typography>
               </div>
-              <div className={classes.currentMethodIcon}>
-                <img alt="Auth method" src={methodIcons[method]} />
-              </div>
             </Box>
-            <Box flexGrow={1} mt={3}>
-              {method === 'JWT' && <JWTLogin />}
+            <Box flexGrow={1} mt={3}></Box>
+            <Box mt={2}>
+              <Button
+                color="secondary"
+                component={RouterLink}
+                fullWidth
+                size="large"
+                to="/login"
+                variant="contained"
+              >
+                Ingresar
+              </Button>
             </Box>
+
             <Box my={3}>
               <Divider />
             </Box>

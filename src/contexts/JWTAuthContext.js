@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useReducer } from 'react';
-import jwtDecode from 'jwt-decode';
+import jwt from 'jsonwebtoken';
 import SplashScreen from 'src/components/SplashScreen';
 import axios from 'src/utils/axios';
 
@@ -14,7 +14,7 @@ const isValidToken = accessToken => {
     return false;
   }
 
-  const decoded = jwtDecode(accessToken);
+  const decoded = jwt.decode(accessToken);
   const currentTime = Date.now() / 1000;
 
   return decoded.exp > currentTime;
@@ -67,6 +67,23 @@ const reducer = (state, action) => {
         user
       };
     }
+    case 'VERIFY': {
+      const { verified } = action.payload;
+
+      return {
+        ...state,
+        verified
+      };
+    }
+    case 'SET_ERROR': {
+      const { error, message } = action.payload;
+
+      return {
+        ...state,
+        error,
+        message
+      };
+    }
     default: {
       return { ...state };
     }
@@ -77,21 +94,20 @@ const AuthContext = createContext({
   ...initialAuthState,
   method: 'JWT',
   login: () => Promise.resolve(),
+  verify: () => Promise.resolve(),
   logout: () => {},
   register: () => Promise.resolve()
 });
 
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialAuthState);
-
   const login = async (email, password) => {
-    const response = await axios.post('/api/account/login', {
+    const response = await axios.post(`api/account/login`, {
       email,
       password
     });
-    const { accessToken, user } = response.data;
-    console.log(email, password);
-    setSession(accessToken);
+    const { token, user } = response.data;
+    setSession(token);
     dispatch({
       type: 'LOGIN',
       payload: {
@@ -106,14 +122,14 @@ export const AuthProvider = ({ children }) => {
   };
 
   const register = async (email, name, password) => {
-    const response = await axios.post('/api/account/register', {
+    const response = await axios.post(`api/account/register`, {
       email,
       name,
       password
     });
-    const { accessToken, user } = response.data;
+    const { token, user } = response.data;
 
-    window.localStorage.setItem('accessToken', accessToken);
+    window.localStorage.setItem('accessToken', token);
 
     dispatch({
       type: 'REGISTER',
@@ -123,16 +139,41 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
+  const verify = async id => {
+    try {
+      const response = await axios.post(`api/account/verify`, {
+        id
+      });
+      let { email, verified } = response.data;
+      dispatch({
+        type: 'VERIFY',
+        payload: {
+          verified,
+          email
+        }
+      });
+    } catch (e) {
+      dispatch({
+        type: 'SET_ERROR',
+        payload: {
+          verified: false,
+          error: true,
+          message: e.msg
+        }
+      });
+    }
+  };
+
   useEffect(() => {
     const initialise = async () => {
       try {
         const accessToken = window.localStorage.getItem('accessToken');
-
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
 
           const response = await axios.get('/api/account/me');
-          const { user } = response.data;
+          const { data } = response;
+          const user = data;
 
           dispatch({
             type: 'INITIALISE',
@@ -151,7 +192,6 @@ export const AuthProvider = ({ children }) => {
           });
         }
       } catch (err) {
-        console.error(err);
         dispatch({
           type: 'INITIALISE',
           payload: {
@@ -176,7 +216,8 @@ export const AuthProvider = ({ children }) => {
         method: 'JWT',
         login,
         logout,
-        register
+        register,
+        verify
       }}
     >
       {children}

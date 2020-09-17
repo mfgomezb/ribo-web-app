@@ -51,10 +51,7 @@ const PerformanceOverTime = ({ className, ...rest }) => {
   };
 
   return (
-    <Card
-      className={clsx(classes.root, className)}
-      {...rest}
-    >
+    <Card className={clsx(classes.root, className)} {...rest}>
       <CardHeader
         action={<GenericMoreButton />}
         title="Performance Over Time"
@@ -62,10 +59,7 @@ const PerformanceOverTime = ({ className, ...rest }) => {
       <Divider />
       <CardContent>
         <PerfectScrollbar>
-          <Box
-            height={375}
-            minWidth={500}
-          >
+          <Box height={375} minWidth={500}>
             <Chart
               className={classes.chart}
               data={performance.thisYear.data}
