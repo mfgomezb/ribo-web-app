@@ -23,6 +23,7 @@
     }
   },
   "rules": {
+    "multiline-comment-style": ["error", "separate-lines"],
     "comma-dangle": "off",
     "import/no-unresolved": "off",
     "jsx-a11y/anchor-is-valid": "off",

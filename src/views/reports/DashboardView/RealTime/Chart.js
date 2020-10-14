@@ -12,6 +12,7 @@ const useStyles = makeStyles(() => ({
 
 const Chart = ({
   data: dataProp,
+  label: labelProp,
   labels,
   className,
   ...rest
@@ -87,11 +88,7 @@ const Chart = ({
       callbacks: {
         legend: () => {},
         title: () => {},
-        label: (tooltipItem) => {
-          const label = `Views: ${tooltipItem.yLabel}`;
-
-          return label;
-        }
+        label: (tooltipItem) => `Total: ${tooltipItem.yLabel}`
       }
     }
   };

@@ -20,7 +20,6 @@ const useStyles = makeStyles(() => ({
 
 const Header = ({ className, customer, ...rest }) => {
   const classes = useStyles();
-
   return (
     <Grid
       container

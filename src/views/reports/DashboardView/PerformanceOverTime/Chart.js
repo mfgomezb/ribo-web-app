@@ -87,7 +87,7 @@ const Chart = ({
             beginAtZero: true,
             min: 0,
             maxTicksLimit: 7,
-            callback: (value) => (value > 0 ? `${value}K` : value)
+            callback: (value) => (value >= 1000 ? `${value/1000}K` : value)
           }
         }
       ]
@@ -108,9 +108,9 @@ const Chart = ({
       callbacks: {
         title: () => {},
         label: (tooltipItem) => {
-          let label = `Income: ${tooltipItem.yLabel}`;
+          let label = `Pagos: ${tooltipItem.yLabel > 1000 ? tooltipItem.yLabel /1000 : tooltipItem.yLabel}`;
 
-          if (tooltipItem.yLabel > 0) {
+          if (tooltipItem.yLabel > 1000) {
             label += 'K';
           }
 

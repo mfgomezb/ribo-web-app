@@ -37,20 +37,16 @@ import getInitials from 'src/utils/getInitials';
 const tabs = [
   {
     value: 'all',
-    label: 'All'
+    label: 'Todos'
   },
   {
-    value: 'hasAcceptedMarketing',
-    label: 'Accepts Marketing'
+    value: 'isInvestor',
+    label: 'Inversor'
   },
   {
-    value: 'isProspect',
-    label: 'Prospect'
+    value: 'isBorrower',
+    label: 'Prestatario'
   },
-  {
-    value: 'isReturning',
-    label: 'Returning'
-  }
 ];
 
 const sortOptions = [
@@ -181,17 +177,15 @@ const Results = ({
   const [query, setQuery] = useState('');
   const [sort, setSort] = useState(sortOptions[0].value);
   const [filters, setFilters] = useState({
-    hasAcceptedMarketing: null,
-    isProspect: null,
-    isReturning: null
+    isInvestor: null,
+    isBorrower: null,
   });
 
   const handleTabsChange = (event, value) => {
     const updatedFilters = {
       ...filters,
-      hasAcceptedMarketing: null,
-      isProspect: null,
-      isReturning: null
+      isInvestor: null,
+      isBorrower: null,
     };
 
     if (value !== 'all') {
@@ -344,19 +338,19 @@ const Results = ({
                   />
                 </TableCell>
                 <TableCell>
-                  Name
+                  Nombre
                 </TableCell>
                 <TableCell>
-                  Location
+                  Dirección
                 </TableCell>
                 <TableCell>
-                  Orders
+                  Teléfono
                 </TableCell>
                 <TableCell>
-                  Spent
+                  Empresa
                 </TableCell>
                 <TableCell align="right">
-                  Actions
+                  Acciones
                 </TableCell>
               </TableRow>
             </TableHead>

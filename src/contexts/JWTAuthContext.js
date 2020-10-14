@@ -9,7 +9,7 @@ const initialAuthState = {
   user: null
 };
 
-const isValidToken = accessToken => {
+const isValidToken = (accessToken) => {
   if (!accessToken) {
     return false;
   }
@@ -20,7 +20,7 @@ const isValidToken = accessToken => {
   return decoded.exp > currentTime;
 };
 
-const setSession = accessToken => {
+const setSession = (accessToken) => {
   if (accessToken) {
     localStorage.setItem('accessToken', accessToken);
     axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
@@ -64,6 +64,14 @@ const reducer = (state, action) => {
       return {
         ...state,
         isAuthenticated: true,
+        user
+      };
+    }
+    case 'UPDATE_USER': {
+      const { user } = action.payload;
+
+      return {
+        ...state,
         user
       };
     }
@@ -121,10 +129,11 @@ export const AuthProvider = ({ children }) => {
     dispatch({ type: 'LOGOUT' });
   };
 
-  const register = async (email, name, password) => {
+  const register = async (email, firstName, lastName, password) => {
     const response = await axios.post(`api/account/register`, {
       email,
-      name,
+      firstName,
+      lastName,
       password
     });
     const { token, user } = response.data;
@@ -139,7 +148,12 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
-  const verify = async id => {
+  const updateUser = async (userDetails) => {
+    const response = await axios.patch(`api/users/{id}`, userDetails);
+    console.log(response);
+  };
+
+  const verify = async (id) => {
     try {
       const response = await axios.post(`api/account/verify`, {
         id
@@ -217,7 +231,8 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         register,
-        verify
+        verify,
+        updateUser
       }}
     >
       {children}

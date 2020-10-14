@@ -20,19 +20,19 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const TaskItem = ({ className, task, ...rest }) => {
+const TaskItem = ({ className, payment, ...rest }) => {
   const classes = useStyles();
 
   let deadline = 'N/A';
 
-  if (task.deadline) {
-    const now = moment();
-    const deadlineMoment = moment(task.deadline);
-
-    if (deadlineMoment.isAfter(now) && deadlineMoment.diff(now, 'day') < 3) {
-      deadline = `${deadlineMoment.diff(now, 'day')} days remaining`;
-    }
-  }
+  // if (payment.deadline) {
+  //   const now = moment();
+  //   const deadlineMoment = moment(payment.deadline);
+  //
+  //   if (deadlineMoment.isAfter(now) && deadlineMoment.diff(now, 'day') < 3) {
+  //     deadline = `${deadlineMoment.diff(now, 'day')} days remaining`;
+  //   }
+  // }
 
   return (
     <ListItem
@@ -40,21 +40,21 @@ const TaskItem = ({ className, task, ...rest }) => {
       {...rest}
     >
       <ListItemText
-        primary={task.title}
+        primary={payment.fullname}
         primaryTypographyProps={{ variant: 'h6', noWrap: true }}
         secondary={deadline}
       />
       <AvatarGroup max={3}>
-        {task.members.map((member) => (
-          <Tooltip
-            key={member.name}
-            title="View"
-          >
-            <Avatar src={member.avatar} />
-          </Tooltip>
-        ))}
+        {/*{payment.members.map((member) => (*/}
+        {/*  <Tooltip*/}
+        {/*    key={member.fullname}*/}
+        {/*    title="View"*/}
+        {/*  >*/}
+        {/*    /!*<Avatar src={member.avatar} />*!/*/}
+        {/*  </Tooltip>*/}
+        {/*))}*/}
       </AvatarGroup>
-      <Tooltip title="View task">
+      <Tooltip title="Ver prestamos">
         <IconButton
           className={classes.viewButton}
           edge="end"

@@ -29,7 +29,8 @@ const JWTRegister = ({ className, ...rest }) => {
     <Formik
       initialValues={{
         email: '',
-        name: '',
+        firstName: '',
+        lastName: '',
         password: '',
         policy: false,
         submit: null
@@ -39,9 +40,12 @@ const JWTRegister = ({ className, ...rest }) => {
           .email('Debe ser un email valido')
           .max(255)
           .required('El email es requerido'),
-        name: Yup.string()
+        firstName: Yup.string()
           .max(255)
           .required('El nombre es requerido'),
+        lastName: Yup.string()
+          .max(255)
+          .required('El apellido es requerido'),
         password: Yup.string()
           .min(7)
           .max(255)
@@ -53,7 +57,7 @@ const JWTRegister = ({ className, ...rest }) => {
       })}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         try {
-          await register(values.email, values.name, values.password);
+          await register(values.email, values.firstName, values.lastName, values.password);
 
           if (isMountedRef.current) {
             setStatus({ success: true });
@@ -83,15 +87,27 @@ const JWTRegister = ({ className, ...rest }) => {
           {...rest}
         >
           <TextField
-            error={Boolean(touched.name && errors.name)}
+            error={Boolean(touched.firstName && errors.firstName)}
             fullWidth
-            helperText={touched.name && errors.name}
+            helperText={touched.firstName && errors.firstName}
             label="Nombre"
             margin="normal"
-            name="name"
+            name="firstName"
             onBlur={handleBlur}
             onChange={handleChange}
-            value={values.name}
+            value={values.firstName}
+            variant="outlined"
+          />
+          <TextField
+            error={Boolean(touched.lastName && errors.lastName)}
+            fullWidth
+            helperText={touched.lastName && errors.lastName}
+            label="Apellido"
+            margin="normal"
+            name="lastName"
+            onBlur={handleBlur}
+            onChange={handleChange}
+            value={values.lastName}
             variant="outlined"
           />
           <TextField

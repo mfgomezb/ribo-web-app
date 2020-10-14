@@ -1,8 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useCallback
-} from 'react';
+import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
@@ -18,8 +14,9 @@ import {
   makeStyles
 } from '@material-ui/core';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import useIsMountedRef from 'src/hooks/useIsMountedRef';
+// import useIsMountedRef from 'src/hooks/useIsMountedRef';
 import Chart from './Chart';
+import { useGetTodayStatus } from '../../../../hooks/useDashboard';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -29,84 +26,16 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const getRandomInt = (min, max) => {
-  // eslint-disable-next-line no-param-reassign
-  min = Math.ceil(min);
-  // eslint-disable-next-line no-param-reassign
-  max = Math.floor(max);
-
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-};
 
 const RealTime = ({ className, ...rest }) => {
   const classes = useStyles();
-  const isMountedRef = useIsMountedRef();
-  const [data, setData] = useState([
-    163,
-    166,
-    161,
-    159,
-    99,
-    163,
-    173,
-    166,
-    167,
-    183,
-    176,
-    172
-  ]);
+  const queryPayments = useGetTodayStatus('PERU');
+  // const isMountedRef = useIsMountedRef();
 
-  const getData = useCallback(() => {
-    if (isMountedRef.current) {
-      setData((prevData) => {
-        const newData = [...prevData];
+  const labels = queryPayments.data !== undefined ? queryPayments.data.disbursed.sort((a, b) =>  new Date(a.date) - new Date(b.date)).map((value, i) => value.date) : [];
+  const data = queryPayments.data !== undefined ? queryPayments.data.disbursed.sort((a, b) =>  new Date(a.date) - new Date(b.date)).map((value, i) => value.monto) : [];
+  const totalAmount = queryPayments.data !== undefined ? queryPayments.data.disbursed.reduce((acc, e) =>  {return acc + e.monto}, 0) : 0;
 
-        newData.shift();
-        newData.push(0);
-
-        return newData;
-      });
-    }
-
-    setTimeout(() => {
-      if (isMountedRef.current) {
-        setData((prevData) => {
-          const newData = [...prevData];
-          const random = getRandomInt(100, 200);
-
-          newData.pop();
-          newData.push(random);
-
-          return newData;
-        });
-      }
-    }, 500);
-  }, [isMountedRef]);
-
-  useEffect(() => {
-    setInterval(() => getData(), 2000);
-  }, [getData]);
-
-  const labels = data.map((value, i) => i);
-
-  const pages = [
-    {
-      pathname: '/app/projects',
-      views: '24'
-    },
-    {
-      pathname: '/app/chat',
-      views: '21'
-    },
-    {
-      pathname: '/cart',
-      views: '15'
-    },
-    {
-      pathname: '/cart/checkout',
-      views: '8'
-    }
-  ];
 
   return (
     <Card
@@ -119,35 +48,32 @@ const RealTime = ({ className, ...rest }) => {
             color="inherit"
             variant="h3"
           >
-            {
-              data[data.length - 1] === 0
-                ? data[data.length - 2]
-                : data[data.length - 1]
-            }
+            {totalAmount}
           </Typography>
         )}
         classes={{ action: classes.current }}
-        subheader="Page views per second"
+        subheader="Préstamos desembolsados"
         subheaderTypographyProps={{ color: 'textSecondary', variant: 'body2' }}
-        title="Active users"
+        title="Préstamos"
         titleTypographyProps={{ color: 'textPrimary' }}
       />
       <Chart
         data={data}
         labels={labels}
+        label={'monto'}
       />
       <List>
-        {pages.map((page) => (
+        {queryPayments.data !== undefined && queryPayments.data.disbursedDetails.map((loan) => (
           <ListItem
             divider
-            key={page.pathname}
+            key={loan._id}
           >
             <ListItemText
-              primary={page.pathname}
+              primary={loan.fullname}
               primaryTypographyProps={{ color: 'textSecondary', variant: 'body2' }}
             />
             <Typography color="inherit">
-              {page.views}
+              {loan.capital}
             </Typography>
           </ListItem>
         ))}
@@ -163,7 +89,7 @@ const RealTime = ({ className, ...rest }) => {
           to="#"
           endIcon={<NavigateNextIcon />}
         >
-          See all
+          Ver todos
         </Button>
       </Box>
     </Card>

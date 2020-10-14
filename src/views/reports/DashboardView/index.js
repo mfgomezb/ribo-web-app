@@ -13,7 +13,10 @@ import RealTime from './RealTime';
 import RoiPerCustomer from './RoiPerCustomer';
 import SystemHealth from './SystemHealth';
 import TeamTasks from './TeamTasks';
-import TodaysMoney from './TodaysMoney';
+import EarningsSegmentation from './EarningsSegmentation';
+import LateCollection from './LateCollection';
+import TodayCollection from './TodayCollection';
+import UpcomingCollection from './UpcomingCollection';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,7 +47,7 @@ const DashboardView = () => {
             sm={6}
             xs={12}
           >
-            <TodaysMoney />
+            <LateCollection />
           </Grid>
           <Grid
             item
@@ -52,7 +55,7 @@ const DashboardView = () => {
             sm={6}
             xs={12}
           >
-            <NewProjects />
+            <TodayCollection />
           </Grid>
           <Grid
             item
@@ -60,7 +63,7 @@ const DashboardView = () => {
             sm={6}
             xs={12}
           >
-            <SystemHealth />
+            <UpcomingCollection />
           </Grid>
           <Grid
             item
@@ -83,14 +86,6 @@ const DashboardView = () => {
             xs={12}
           >
             <PerformanceOverTime />
-          </Grid>
-          <Grid
-            item
-            lg={5}
-            xl={4}
-            xs={12}
-          >
-            <TeamTasks />
           </Grid>
           <Grid
             item

@@ -1,7 +1,4 @@
-import React, {
-  useRef,
-  useState
-} from 'react';
+import React, { useRef, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -22,19 +19,31 @@ import { Calendar as CalendarIcon } from 'react-feather';
 const timeRanges = [
   {
     value: 'today',
-    text: 'Today'
+    text: 'Hoy'
   },
   {
-    value: 'yesterday',
-    text: 'Yesterday'
+    value: 'week',
+    text: 'Semana'
+  },
+  {
+    value: 'month',
+    text: 'Mes'
+  },
+  {
+    value: 'year',
+    text: 'Año'
+  },
+  {
+    value: 'last_7_days',
+    text: '7 días'
   },
   {
     value: 'last_30_days',
-    text: 'Last 30 days'
+    text: '30 días'
   },
   {
     value: 'last_year',
-    text: 'Last year'
+    text: '360 días'
   }
 ];
 
@@ -69,18 +78,12 @@ const Header = ({ className, ...rest }) => {
           >
             Dashboard
           </Link>
-          <Typography
-            variant="body1"
-            color="textPrimary"
-          >
+          <Typography variant="body1" color="textPrimary">
             Reports
           </Typography>
         </Breadcrumbs>
-        <Typography
-          variant="h3"
-          color="textPrimary"
-        >
-          Here&apos;s what&apos;s happening
+        <Typography variant="h3" color="textPrimary">
+          Reporte general
         </Typography>
       </Grid>
       <Grid item>
@@ -109,7 +112,7 @@ const Header = ({ className, ...rest }) => {
             horizontal: 'center'
           }}
         >
-          {timeRanges.map((_timeRange) => (
+          {timeRanges.map(_timeRange => (
             <MenuItem
               key={_timeRange.value}
               onClick={() => setTimeRange(_timeRange.text)}

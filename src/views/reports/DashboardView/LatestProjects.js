@@ -30,6 +30,7 @@ import axios from 'src/utils/axios';
 import getInitials from 'src/utils/getInitials';
 import useIsMountedRef from 'src/hooks/useIsMountedRef';
 import GenericMoreButton from 'src/components/GenericMoreButton';
+import { useGetPayments } from '../../../hooks/useDashboard';
 
 const technologyMap = {
   'html-css': '/static/images/technologies/html.svg',
@@ -47,29 +48,20 @@ const useStyles = makeStyles((theme) => ({
     '& + &': {
       marginLeft: theme.spacing(1)
     }
+  },
+  cellWidthMd: {
+    width: 150
+  },
+  cellWidthSm: {
+    width: 50
   }
 }));
 
 const LatestProjects = ({ className, ...rest }) => {
   const classes = useStyles();
   const isMountedRef = useIsMountedRef();
-  const [projects, setProjects] = useState([]);
-
-  const getProjects = useCallback(async () => {
-    try {
-      const response = await axios.get('/api/reports/latest-projects');
-
-      if (isMountedRef.current) {
-        setProjects(response.data.projects);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }, [isMountedRef]);
-
-  useEffect(() => {
-    getProjects();
-  }, [getProjects]);
+  const payments = useGetPayments('PERU', 'month')
+  console.log(payments)
 
   return (
     <Card
@@ -78,25 +70,25 @@ const LatestProjects = ({ className, ...rest }) => {
     >
       <CardHeader
         action={<GenericMoreButton />}
-        title="Latest Projects"
+        title="Últimos pagos recibidos"
       />
       <Divider />
       <PerfectScrollbar>
-        <Box minWidth={900}>
+        <Box maxHeight={400}>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>
-                  Title
+                <TableCell >
+                  Nombre
                 </TableCell>
-                <TableCell>
-                  Author
+                <TableCell >
+                  Cuenta
                 </TableCell>
-                <TableCell>
-                  Budget
+                <TableCell >
+                  Categoría
                 </TableCell>
-                <TableCell>
-                  Technology
+                <TableCell >
+                  Monto
                 </TableCell>
                 <TableCell
                   align="right"
@@ -110,52 +102,32 @@ const LatestProjects = ({ className, ...rest }) => {
                       active
                       direction="desc"
                     >
-                      Created
+                      Fecha
                     </TableSortLabel>
                   </Tooltip>
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {projects.map((project) => (
+              {!payments.isLoading && payments.data.collectionsDetail.map((payment) => (
                 <TableRow
                   hover
-                  key={project.id}
+                  key={payment._id}
                 >
-                  <TableCell>
-                    {project.title}
+                  <TableCell >
+                    {payment.fullname}
                   </TableCell>
-                  <TableCell>
-                    <Box
-                      display="flex"
-                      alignItems="center"
-                    >
-                      <Avatar
-                        alt="Author"
-                        src={project.author.avatar}
-                      >
-                        {getInitials(project.author.name)}
-                      </Avatar>
-                      <Box ml={1}>
-                        {project.author.name}
-                      </Box>
-                    </Box>
+                  <TableCell >
+                    {payment.cashAccount}
                   </TableCell>
-                  <TableCell>
-                    {numeral(project.budget).format(`${project.currency}0,0.00`)}
+                  <TableCell >
+                    {payment.useOfFunds}
                   </TableCell>
-                  <TableCell>
-                    {project.technologies.map((technology) => (
-                      <img
-                        alt="Tech"
-                        key={technology}
-                        className={classes.technology}
-                        src={technologyMap[technology]}
-                      />
-                    ))}
+                  <TableCell >
+                    {numeral(payment.amount).format(`$0,0.00`)}
                   </TableCell>
                   <TableCell align="right">
-                    {moment(project.createdAt).format('DD MMM, YYYY')}
+                    {moment(payment.date_pmt).format('DD MMM, YYYY')}
                   </TableCell>
                 </TableRow>
               ))}
@@ -171,7 +143,7 @@ const LatestProjects = ({ className, ...rest }) => {
         <Button
           component={RouterLink}
           size="small"
-          to="/app/projects"
+          to="/app/payments"
           endIcon={<NavigateNextIcon />}
         >
           See all

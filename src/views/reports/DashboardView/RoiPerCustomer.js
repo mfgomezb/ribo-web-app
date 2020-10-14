@@ -1,16 +1,10 @@
 import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import {
-  Avatar,
-  Box,
-  Card,
-  Typography,
-  makeStyles
-} from '@material-ui/core';
+import { Avatar, Box, Card, Typography, makeStyles } from '@material-ui/core';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     color: theme.palette.secondary.contrastText,
     backgroundColor: theme.palette.secondary.main,
@@ -35,10 +29,7 @@ const RoiPerCustomer = ({ className, ...rest }) => {
   };
 
   return (
-    <Card
-      className={clsx(classes.root, className)}
-      {...rest}
-    >
+    <Card className={clsx(classes.root, className)} {...rest}>
       <Box flexGrow={1}>
         <Typography
           color="inherit"
@@ -46,26 +37,16 @@ const RoiPerCustomer = ({ className, ...rest }) => {
           gutterBottom
           variant="overline"
         >
-          Roi per customer
+          Ingreso por Intereses
         </Typography>
-        <Box
-          display="flex"
-          alignItems="center"
-          flexWrap="wrap"
-        >
-          <Typography
-            color="inherit"
-            variant="h3"
-          >
+        <Box display="flex" alignItems="center" flexWrap="wrap">
+          <Typography color="inherit" variant="h3">
             {data.currency}
             {data.value}
           </Typography>
         </Box>
       </Box>
-      <Avatar
-        className={classes.avatar}
-        color="inherit"
-      >
+      <Avatar className={classes.avatar} color="inherit">
         <AttachMoneyIcon />
       </Avatar>
     </Card>

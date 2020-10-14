@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useUpdatePassword } from '../../../hooks/useUser';
 import {
   Box,
   Container,
@@ -13,8 +14,9 @@ import General from './General';
 import Subscription from './Subscription';
 import Notifications from './Notifications';
 import Security from './Security';
+import useAuth from 'src/hooks/useAuth';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.dark,
     minHeight: '100%',
@@ -24,9 +26,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AccountView = () => {
+  const { user } = useAuth();
   const classes = useStyles();
   const [currentTab, setCurrentTab] = useState('general');
-
+  const [updatePassword, updatePasswordInfo] = useUpdatePassword(user._id);
   const tabs = [
     { value: 'general', label: 'General' },
     { value: 'subscription', label: 'Subscription' },
@@ -39,10 +42,7 @@ const AccountView = () => {
   };
 
   return (
-    <Page
-      className={classes.root}
-      title="Settings"
-    >
+    <Page className={classes.root} title="Settings">
       <Container maxWidth="lg">
         <Header />
         <Box mt={3}>
@@ -53,12 +53,8 @@ const AccountView = () => {
             variant="scrollable"
             textColor="secondary"
           >
-            {tabs.map((tab) => (
-              <Tab
-                key={tab.value}
-                label={tab.label}
-                value={tab.value}
-              />
+            {tabs.map(tab => (
+              <Tab key={tab.value} label={tab.label} value={tab.value} />
             ))}
           </Tabs>
         </Box>
@@ -67,7 +63,22 @@ const AccountView = () => {
           {currentTab === 'general' && <General />}
           {currentTab === 'subscription' && <Subscription />}
           {currentTab === 'notifications' && <Notifications />}
-          {currentTab === 'security' && <Security />}
+          {currentTab === 'security' && (
+            <Security
+              onSubmit={updatePassword}
+              clearOnSubmit
+              isLoading={updatePasswordInfo.isLoading}
+              submitText={
+                updatePasswordInfo.isLoading
+                  ? 'Saving...'
+                  : updatePasswordInfo.isError
+                  ? 'Error!'
+                  : updatePasswordInfo.isSuccess
+                  ? 'Saved!'
+                  : 'Change password'
+              }
+            />
+          )}
         </Box>
       </Container>
     </Page>

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Avatar, Box, Card, Typography, makeStyles } from '@material-ui/core';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import Label from 'src/components/Label';
-import { useReceivedPayments } from '../../../hooks/useDashboard';
+import { useGetTodayStatus, useReceivedPayments } from '../../../hooks/useDashboard';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -24,16 +24,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const TodaysMoney = ({ className, ...rest }) => {
+const LateCollection = ({ className, ...rest }) => {
   const classes = useStyles();
-  const queryPayments = useReceivedPayments('today');
-  const queryPayments2 = useReceivedPayments('week');
-  console.log(queryPayments);
-  const data = {
-    value: '24,000',
-    currency: '$',
-    difference: 4
-  };
+  const queryPayments = useGetTodayStatus('PERU');
 
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
@@ -44,21 +37,24 @@ const TodaysMoney = ({ className, ...rest }) => {
           variant="overline"
           color="textSecondary"
         >
-          Todays money
+          Por Vencer
         </Typography>
-        <Box display="flex" alignItems="center" flexWrap="wrap">
+        <Box display="flex" alignItems="left" flexDirection="column" flexWrap="wrap">
           <Typography variant="h3" color="textPrimary">
-            {data.currency}
-            {data.value}
+            $
+            {queryPayments.isLoading
+              ? '...' : queryPayments.data === undefined ? 0
+              : (queryPayments.data.upcoming.interest + queryPayments.data.upcoming.principal).toFixed(2)}
           </Typography>
-          <Label
-            className={classes.label}
-            color={data.difference > 0 ? 'success' : 'error'}
-          >
-            {data.difference > 0 ? '+' : ''}
-            {data.difference}%
-          </Label>
+          {/*<Label*/}
+          {/*  className={classes.label}*/}
+          {/*  color={data.difference > 0 ? 'success' : 'error'}*/}
+          {/*>*/}
+          {/*  {data.difference > 0 ? '+' : ''}*/}
+          {/*  {data.difference}%*/}
+          {/*</Label>*/}
         </Box>
+
       </Box>
       <Avatar className={classes.avatar}>
         <AttachMoneyIcon />
@@ -67,8 +63,8 @@ const TodaysMoney = ({ className, ...rest }) => {
   );
 };
 
-TodaysMoney.propTypes = {
+LateCollection.propTypes = {
   className: PropTypes.string
 };
 
-export default TodaysMoney;
+export default LateCollection;

@@ -12,6 +12,7 @@ import {
 } from '@material-ui/core';
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import Chart from './Chart';
+import { useGetPayments } from '../../../../hooks/useDashboard';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -20,41 +21,31 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const PerformanceOverTime = ({ className, ...rest }) => {
+const PaymentsReceived = ({ className, ...rest }) => {
   const classes = useStyles();
-  const performance = {
-    thisWeek: {
-      data: [],
-      labels: []
-    },
-    thisMonth: {
-      data: [],
-      labels: []
-    },
-    thisYear: {
-      data: [10, 5, 11, 20, 13, 28, 18, 4, 13, 12, 13, 5],
-      labels: [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec'
-      ]
+  const periodPayments = useGetPayments('PERU', 'month')
+
+
+  const dataTotals = !periodPayments.isLoading ? periodPayments.data.periodCollections.reduce((acc, e) => {
+    const found = acc.find(j => e.date === j.date)
+    if (!found) {
+      acc.push(e)
+    } else {
+      found.numero += e.numero
+      found.monto += e.monto
     }
-  };
+    return acc
+  }, []) : 0
+
+  const dataLabels = !periodPayments.isLoading ? dataTotals.map(e => e.date) : []
+  const data = !periodPayments.isLoading ? dataTotals.map(e => e.monto) : []
+
 
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
       <CardHeader
         action={<GenericMoreButton />}
-        title="Performance Over Time"
+        title="Pagos Recibidos"
       />
       <Divider />
       <CardContent>
@@ -62,8 +53,8 @@ const PerformanceOverTime = ({ className, ...rest }) => {
           <Box height={375} minWidth={500}>
             <Chart
               className={classes.chart}
-              data={performance.thisYear.data}
-              labels={performance.thisYear.labels}
+              data={data}
+              labels={dataLabels}
             />
           </Box>
         </PerfectScrollbar>
@@ -72,8 +63,8 @@ const PerformanceOverTime = ({ className, ...rest }) => {
   );
 };
 
-PerformanceOverTime.propTypes = {
+PaymentsReceived.propTypes = {
   className: PropTypes.string
 };
 
-export default PerformanceOverTime;
+export default PaymentsReceived;
