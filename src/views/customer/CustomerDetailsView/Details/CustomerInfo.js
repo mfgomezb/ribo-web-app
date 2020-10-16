@@ -37,106 +37,155 @@ const CustomerInfo = ({
       className={clsx(classes.root, className)}
       {...rest}
     >
-      <CardHeader title="Customer info" />
+      <CardHeader title="Información General" />
       <Divider />
       <Table>
         <TableBody>
           <TableRow>
             <TableCell className={classes.fontWeightMedium}>
-              Email
+              Nombres
             </TableCell>
             <TableCell>
               <Typography
                 variant="body2"
                 color="textSecondary"
               >
-                {customer.email}
-              </Typography>
-              <Label color={customer.isVerified ? 'success' : 'error'}>
-                {customer.isVerified ? 'Email verified' : 'Email not verified'}
-              </Label>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell className={classes.fontWeightMedium}>
-              Phone
-            </TableCell>
-            <TableCell>
-              <Typography
-                variant="body2"
-                color="textSecondary"
-              >
-                {customer.phone}
+                {customer.firstName}
               </Typography>
             </TableCell>
           </TableRow>
           <TableRow>
             <TableCell className={classes.fontWeightMedium}>
-              Country
+              Apellidos
             </TableCell>
             <TableCell>
               <Typography
                 variant="body2"
                 color="textSecondary"
               >
-                {customer.country}
+                {customer.lastName}
               </Typography>
             </TableCell>
           </TableRow>
           <TableRow>
             <TableCell className={classes.fontWeightMedium}>
-              State/Region
+              Fecha de nacimiento
             </TableCell>
             <TableCell>
               <Typography
                 variant="body2"
                 color="textSecondary"
               >
-                {customer.state}
+                {customer.DOB}
               </Typography>
             </TableCell>
           </TableRow>
           <TableRow>
             <TableCell className={classes.fontWeightMedium}>
-              Address 1
+              Estatus Civil
             </TableCell>
             <TableCell>
               <Typography
                 variant="body2"
                 color="textSecondary"
               >
-                {customer.address1}
+                {customer.civilStatus}
               </Typography>
             </TableCell>
           </TableRow>
           <TableRow>
             <TableCell className={classes.fontWeightMedium}>
-              Address 2
+              Nacionalidad
             </TableCell>
             <TableCell>
               <Typography
                 variant="body2"
                 color="textSecondary"
               >
-                {customer.address2}
+                {customer.nationality}
+              </Typography>
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell className={classes.fontWeightMedium}>
+              Tipo identificación
+            </TableCell>
+            <TableCell>
+              <Typography
+                variant="body2"
+                color="textSecondary"
+              >
+                {customer.nationalIdType}
+              </Typography>
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell className={classes.fontWeightMedium}>
+              Número de Identificación
+            </TableCell>
+            <TableCell>
+              <Typography
+                variant="body2"
+                color="textSecondary"
+              >
+                {customer.nationalId}
+              </Typography>
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell className={classes.fontWeightMedium}>
+              Nombre pareja
+            </TableCell>
+            <TableCell>
+              <Typography
+                variant="body2"
+                color="textSecondary"
+              >
+                {customer.spouseFullName}
+              </Typography>
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell className={classes.fontWeightMedium}>
+              Número de Identificación
+            </TableCell>
+            <TableCell>
+              <Typography
+                variant="body2"
+                color="textSecondary"
+              >
+                {customer.spouseNationalId}
+              </Typography>
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell className={classes.fontWeightMedium}>
+              Fecha de nacimiento
+            </TableCell>
+            <TableCell>
+              <Typography
+                variant="body2"
+                color="textSecondary"
+              >
+                {customer.spouseDOB}
               </Typography>
             </TableCell>
           </TableRow>
         </TableBody>
       </Table>
-      <Box
-        p={1}
-        display="flex"
-        flexDirection="column"
-        alignItems="flex-start"
-      >
-        <Button startIcon={<LockOpenIcon />}>
-          Reset &amp; Send Password
-        </Button>
-        <Button startIcon={<PersonIcon />}>
-          Login as Customer
-        </Button>
-      </Box>
+      {/*<Box*/}
+      {/*  p={1}*/}
+      {/*  display="flex"*/}
+      {/*  flexDirection="column"*/}
+      {/*  alignItems="flex-start"*/}
+      {/*>*/}
+      {/*  <Button startIcon={<LockOpenIcon />}>*/}
+      {/*    Reset &amp; Send Password*/}
+      {/*  </Button>*/}
+      {/*  <Button startIcon={<PersonIcon />}>*/}
+      {/*    Login as Customer*/}
+      {/*  </Button>*/}
+      {/*</Box>*/}
     </Card>
   );
 };

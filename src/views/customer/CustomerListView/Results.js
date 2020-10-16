@@ -33,6 +33,7 @@ import {
   Search as SearchIcon
 } from 'react-feather';
 import getInitials from 'src/utils/getInitials';
+import { useGetUsers } from '../../../hooks/useUser';
 
 const tabs = [
   {
@@ -40,11 +41,11 @@ const tabs = [
     label: 'Todos'
   },
   {
-    value: 'isInvestor',
+    value: 'investor',
     label: 'Inversor'
   },
   {
-    value: 'isBorrower',
+    value: 'borrower',
     label: 'Prestatario'
   },
 ];
@@ -68,36 +69,36 @@ const sortOptions = [
   }
 ];
 
-const applyFilters = (customers, query, filters) => {
-  return customers.filter((customer) => {
-    let matches = true;
-
-    if (query) {
-      const properties = ['email', 'name'];
-      let containsQuery = false;
-
-      properties.forEach((property) => {
-        if (customer[property].toLowerCase().includes(query.toLowerCase())) {
-          containsQuery = true;
-        }
-      });
-
-      if (!containsQuery) {
-        matches = false;
-      }
-    }
-
-    Object.keys(filters).forEach((key) => {
-      const value = filters[key];
-
-      if (value && customer[key] !== value) {
-        matches = false;
-      }
-    });
-
-    return matches;
-  });
-};
+// const applyFilters = (customers, query, filters) => {
+//   return customers.filter((customer) => {
+//     let matches = true;
+//
+//     if (query) {
+//       const properties = ['email', 'firstName', 'lastName'];
+//       let containsQuery = false;
+//
+//       properties.forEach((property) => {
+//         if (customer[property].toLowerCase().includes(query.toLowerCase())) {
+//           containsQuery = true;
+//         }
+//       });
+//
+//       if (!containsQuery) {
+//         matches = false;
+//       }
+//     }
+//
+//     Object.keys(filters).forEach((key) => {
+//       const value = filters[key];
+//
+//       if (value && customer[key] !== value) {
+//         matches = false;
+//       }
+//     });
+//
+//     return matches;
+//   });
+// };
 
 const applyPagination = (customers, page, limit) => {
   return customers.slice(page * limit, page * limit + limit);
@@ -172,20 +173,26 @@ const Results = ({
   const classes = useStyles();
   const [currentTab, setCurrentTab] = useState('all');
   const [selectedCustomers, setSelectedCustomers] = useState([]);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [query, setQuery] = useState('');
   const [sort, setSort] = useState(sortOptions[0].value);
   const [filters, setFilters] = useState({
-    isInvestor: null,
-    isBorrower: null,
+    investor: true,
+    borrower: true,
   });
+  const [params, setParams] = useState({ page, limit, query, filters })
+  const {isLoading, data, error} = useGetUsers(params)
+
+
+
+
 
   const handleTabsChange = (event, value) => {
     const updatedFilters = {
       ...filters,
-      isInvestor: null,
-      isBorrower: null,
+      investor: true,
+      borrower: true,
     };
 
     if (value !== 'all') {
@@ -202,6 +209,10 @@ const Results = ({
     setQuery(event.target.value);
   };
 
+  React.useEffect(() => {
+    setParams({page, limit, query, filters})
+  }, [page, limit, query, filters])
+
   const handleSortChange = (event) => {
     event.persist();
     setSort(event.target.value);
@@ -209,7 +220,7 @@ const Results = ({
 
   const handleSelectAllCustomers = (event) => {
     setSelectedCustomers(event.target.checked
-      ? customers.map((customer) => customer.id)
+      ? customers.map((customer) => customer._id)
       : []);
   };
 
@@ -221,20 +232,29 @@ const Results = ({
     }
   };
 
-  const handlePageChange = (event, newPage) => {
-    setPage(newPage);
+  const handlePageChange = (event) => {
+    setPage(page + 1);
   };
 
   const handleLimitChange = (event) => {
     setLimit(parseInt(event.target.value));
   };
 
-  const filteredCustomers = applyFilters(customers, query, filters);
-  const sortedCustomers = applySort(filteredCustomers, sort);
-  const paginatedCustomers = applyPagination(sortedCustomers, page, limit);
-  const enableBulkOperations = selectedCustomers.length > 0;
-  const selectedSomeCustomers = selectedCustomers.length > 0 && selectedCustomers.length < customers.length;
-  const selectedAllCustomers = selectedCustomers.length === customers.length;
+  // let filteredCustomers = []
+  let sortedCustomers = []
+  let paginatedCustomers = []
+  let enableBulkOperations = []
+  let selectedSomeCustomers = []
+  let selectedAllCustomers = []
+
+  if (!isLoading && data.docs) {
+    // filteredCustomers = applyFilters(data.docs, query, filters);
+    sortedCustomers = applySort(data.docs, sort);
+    paginatedCustomers = applyPagination(sortedCustomers, page, limit);
+    enableBulkOperations = selectedCustomers.length > 0;
+    selectedSomeCustomers = selectedCustomers.length > 0 && selectedCustomers.length < customers.length;
+    selectedAllCustomers = selectedCustomers.length === data.docs;
+  }
 
   return (
     <Card
@@ -330,15 +350,11 @@ const Results = ({
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell padding="checkbox">
-                  <Checkbox
-                    checked={selectedAllCustomers}
-                    indeterminate={selectedSomeCustomers}
-                    onChange={handleSelectAllCustomers}
-                  />
-                </TableCell>
                 <TableCell>
                   Nombre
+                </TableCell>
+                <TableCell>
+                  e-mail
                 </TableCell>
                 <TableCell>
                   Dirección
@@ -355,22 +371,14 @@ const Results = ({
               </TableRow>
             </TableHead>
             <TableBody>
-              {paginatedCustomers.map((customer) => {
-                const isCustomerSelected = selectedCustomers.includes(customer.id);
-
+              {!isLoading && data.docs.map((customer) => {
+                const isCustomerSelected = selectedCustomers.includes(customer._id);
                 return (
                   <TableRow
                     hover
-                    key={customer.id}
+                    key={customer._id}
                     selected={isCustomerSelected}
                   >
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        checked={isCustomerSelected}
-                        onChange={(event) => handleSelectOneCustomer(event, customer.id)}
-                        value={isCustomerSelected}
-                      />
-                    </TableCell>
                     <TableCell>
                       <Box
                         display="flex"
@@ -378,54 +386,42 @@ const Results = ({
                       >
                         <Avatar
                           className={classes.avatar}
-                          src={customer.avatar}
+                          // src={customer.avatar}
                         >
-                          {getInitials(customer.name)}
+                          {getInitials(customer.fullName)}
                         </Avatar>
                         <div>
                           <Link
                             color="inherit"
                             component={RouterLink}
-                            to="/app/management/customers/1"
+                            to={`/app/management/customers/${customer._id}`}
                             variant="h6"
                           >
-                            {customer.name}
+                            {customer.firstName + " " + customer.lastName}
                           </Link>
                           <Typography
                             variant="body2"
                             color="textSecondary"
                           >
-                            {customer.email}
+                            {customer.investor || customer.borrower ? `${customer.borrower ? 'prestario': ''} ${customer.investor ? 'inversor':''}` : ""}
                           </Typography>
                         </div>
                       </Box>
                     </TableCell>
                     <TableCell>
-                      {`${customer.city}, ${customer.state}, ${customer.country}`}
+                      {customer.email}
                     </TableCell>
                     <TableCell>
-                      {customer.totalOrders}
+                      {customer.country || customer.location}
                     </TableCell>
                     <TableCell>
-                      {numeral(customer.totalAmountSpent).format(`${customer.currency}0,0.00`)}
+                      {customer.cellphoneNumber}
                     </TableCell>
-                    <TableCell align="right">
-                      <IconButton
-                        component={RouterLink}
-                        to="/app/management/customers/1/edit"
-                      >
-                        <SvgIcon fontSize="small">
-                          <EditIcon />
-                        </SvgIcon>
-                      </IconButton>
-                      <IconButton
-                        component={RouterLink}
-                        to="/app/management/customers/1"
-                      >
-                        <SvgIcon fontSize="small">
-                          <ArrowRightIcon />
-                        </SvgIcon>
-                      </IconButton>
+                    <TableCell>
+                      {customer.businessName}
+                    </TableCell>
+                    <TableCell>
+
                     </TableCell>
                   </TableRow>
                 );
@@ -436,10 +432,10 @@ const Results = ({
       </PerfectScrollbar>
       <TablePagination
         component="div"
-        count={filteredCustomers.length}
+        count={!isLoading && data.totalDocs}
         onChangePage={handlePageChange}
         onChangeRowsPerPage={handleLimitChange}
-        page={page}
+        page={page - 1}
         rowsPerPage={limit}
         rowsPerPageOptions={[5, 10, 25]}
       />

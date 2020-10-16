@@ -5,21 +5,23 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { useSnackbar } from 'notistack';
 import {
-  Box,
   Button,
-  Card,
-  CardContent,
-  Grid,
-  Switch,
-  TextField,
-  Typography,
-  makeStyles
+  makeStyles,
 } from '@material-ui/core';
 import wait from 'src/utils/wait';
+import CustomerInformationForm from './CustomerInformationForm'
+import CustomerContactForm from './CustomerContactForm'
+import CustomerRelationshipForm from './CustomerRelationshipForm'
+import CustomerWorkForm from './CustomerWorkForm'
+import CustomerFinancialInfo from './CustomerFinancialInfo';
 
 const useStyles = makeStyles(() => ({
-  root: {}
+  root: {},
+  card: {
+    marginTop: 20,
+  }
 }));
+
 
 const CustomerEditForm = ({
   className,
@@ -32,27 +34,79 @@ const CustomerEditForm = ({
   return (
     <Formik
       initialValues={{
-        address1: customer.address1 || '',
-        address2: customer.address2 || '',
-        country: customer.country || '',
-        email: customer.email || '',
-        hasDiscountedPrices: customer.hasDiscountedPrices || false,
-        isVerified: customer.isVerified || false,
-        name: customer.name || '',
-        phone: customer.phone || '',
-        state: customer.state || '',
-        submit: null
+        firstName: customer.firstName || '', //done
+        lastName: customer.lastName || '', //done
+        placeOfBirth: customer.placeOfBirth || '', //done
+        DOB: customer.DOB || '', //done
+        nationalId: customer.nationalId || '', //done
+        nationalIdType: customer.nationalIdType || '', //done
+        nationality: customer.nationality || '', //done
+        civilStatus: customer.civilStatus || '', //done
+        spouseFullName: customer.spouseFullName || '', //done
+        spouseNationalId: customer.spouseNationalId || '', //done
+        spouseDOB: customer.spouseDOB || '', //done
+        spousePlaceOfBirth: customer.spousePlaceOfBirth || '', //done
+        gender: customer.gender || 'MALE',  //done
+        email: customer.email || '',  //done
+        cellphoneNumber: customer.cellphoneNumber || '',  //done
+        country: customer.country || '',  //done
+        city: customer.city || '',  //done
+        address: customer.address || '',  //done
+        residenceName: customer.residenceName || '',  //done
+        residenceNumber: customer.residenceNumber || '',  //done
+        contactCellphoneNumber: customer.contactCellphoneNumber || '',  //done
+        contactName: customer.contactName || '',  //done
+        contactRelationship: customer.contactRelationship || '',  //done
+        employmentStatus: customer.employmentStatus || '', //done
+        monthlyIncome: customer.monthlyIncome || '', //done
+        businessName: customer.businessName || '', //done
+        businessAddress: customer.businessAddress || '', //done
+        businessPosition: customer.businessPosition || '', //done
+        startDate: customer.startDate || '', //done
+        bank: customer.bank || '',
+        accountNumber: customer.accountNumber || '',
+        borrower: customer.borrower || false,
+        investor: customer.investor || false,
+        location: customer.location || '',
+        submit: null,
       }}
       validationSchema={Yup.object().shape({
-        address1: Yup.string().max(255),
-        address2: Yup.string().max(255),
-        country: Yup.string().max(255),
+        firstName: Yup.string().max(255).required('Nombre es requerido'),
+        lastName: Yup.string().max(255).required('Apellido es requerido'),
+        gender: Yup.string().max(255).required('Genero es requerido'),
         email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-        hasDiscountedPrices: Yup.bool(),
+        placeOfBirth: Yup.string().max(255).required('Lugar de nacimiento es requerido'),
+        DOB: Yup.date().required('Fecha de nacimiento es requerido'),
+        country: Yup.string().max(255).required('Pais es requerido'),
+        cellphoneNumber: Yup.string().max(255).required('Telefono es requerido'),
+        city: Yup.string().max(255).required('Ciudad es requerido'),
+        address: Yup.string().max(255).required('Dirección es requerida'),
+        nationalId: Yup.string().required('Número de identidad es requerido'),
+        nationalIdType: Yup.string().max(255).required('Tipo de documento es requerido'),
+        nationality: Yup.string().max(255),
+        residenceName: Yup.string().max(255),
+        residenceNumber: Yup.string().max(255),
+        civilStatus: Yup.string().max(255),
+        spouseFullName: Yup.string().max(255),
+        spouseNationalId: Yup.string().max(255),
+        spouseDOB: Yup.string().max(255),
+        spousePlaceOfBirth: Yup.string().max(255),
+        contactCellphoneNumber: Yup.string().max(255).required('Teléfono de referencia es requerido'),
+        contactName: Yup.string().max(255).required('Nombre de referencia es requerido'),
+        contactRelationship: Yup.string().max(255).required('Relación con la referencia'),
+        employmentStatus: Yup.string().max(255).required('Estatus laboral es requerido'),
+        monthlyIncome: Yup.number().required('Ingreso mensual es requerido').positive(),
+        businessName: Yup.string().max(255),
+        businessAddress: Yup.string().max(255),
+        businessPosition: Yup.string().max(255),
+        startDate: Yup.date(),
+        bank: Yup.string().max(255),
+        accountNumber: Yup.string().max(255),
+        borrower: Yup.bool(),
+        investor: Yup.bool(),
+        location: Yup.string().max(255).required('Pais es requerido'),
         isVerified: Yup.bool(),
-        name: Yup.string().max(255).required('Name is required'),
-        phone: Yup.string().max(15),
-        state: Yup.string().max(255)
+        submit: null,
       })}
       onSubmit={async (values, {
         resetForm,
@@ -92,200 +146,45 @@ const CustomerEditForm = ({
           onSubmit={handleSubmit}
           {...rest}
         >
-          <Card>
-            <CardContent>
-              <Grid
-                container
-                spacing={3}
-              >
-                <Grid
-                  item
-                  md={6}
-                  xs={12}
-                >
-                  <TextField
-                    error={Boolean(touched.name && errors.name)}
-                    fullWidth
-                    helperText={touched.name && errors.name}
-                    label="Full name"
-                    name="name"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    required
-                    value={values.name}
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid
-                  item
-                  md={6}
-                  xs={12}
-                >
-                  <TextField
-                    error={Boolean(touched.email && errors.email)}
-                    fullWidth
-                    helperText={touched.email && errors.email}
-                    label="Email address"
-                    name="email"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    required
-                    value={values.email}
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid
-                  item
-                  md={6}
-                  xs={12}
-                >
-                  <TextField
-                    error={Boolean(touched.country && errors.country)}
-                    fullWidth
-                    helperText={touched.country && errors.country}
-                    label="Country"
-                    name="country"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.country}
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid
-                  item
-                  md={6}
-                  xs={12}
-                >
-                  <TextField
-                    error={Boolean(touched.state && errors.state)}
-                    fullWidth
-                    helperText={touched.state && errors.state}
-                    label="State/Region"
-                    name="state"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.state}
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid
-                  item
-                  md={6}
-                  xs={12}
-                >
-                  <TextField
-                    error={Boolean(touched.address1 && errors.address1)}
-                    fullWidth
-                    helperText={touched.address1 && errors.address1}
-                    label="Address 1"
-                    name="address1"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.address1}
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid
-                  item
-                  md={6}
-                  xs={12}
-                >
-                  <TextField
-                    error={Boolean(touched.address2 && errors.address2)}
-                    fullWidth
-                    helperText={touched.address2 && errors.address2}
-                    label="Address 2"
-                    name="address2"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.address2}
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid
-                  item
-                  md={6}
-                  xs={12}
-                >
-                  <TextField
-                    error={Boolean(touched.phone && errors.phone)}
-                    fullWidth
-                    helperText={touched.phone && errors.phone}
-                    label="Phone number"
-                    name="phone"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.phone}
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item />
-                <Grid
-                  item
-                  md={6}
-                  xs={12}
-                >
-                  <Typography
-                    variant="h5"
-                    color="textPrimary"
-                  >
-                    Email Verified
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                  >
-                    Disabling this will automatically send the user a verification
-                    email
-                  </Typography>
-                  <Switch
-                    checked={values.isVerified}
-                    color="secondary"
-                    edge="start"
-                    name="isVerified"
-                    onChange={handleChange}
-                    value={values.isVerified}
-                  />
-                </Grid>
-                <Grid
-                  item
-                  md={6}
-                  xs={12}
-                >
-                  <Typography
-                    variant="h5"
-                    color="textPrimary"
-                  >
-                    Discounted Prices
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                  >
-                    This will give the user discounted prices for all products
-                  </Typography>
-                  <Switch
-                    checked={values.hasDiscountedPrices}
-                    color="secondary"
-                    edge="start"
-                    name="hasDiscountedPrices"
-                    onChange={handleChange}
-                    value={values.hasDiscountedPrices}
-                  />
-                </Grid>
-              </Grid>
-              <Box mt={2}>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  type="submit"
-                  disabled={isSubmitting}
-                >
-                  Update Customer
-                </Button>
-              </Box>
-            </CardContent>
-          </Card>
+          <CustomerInformationForm
+            touched={touched}
+            errors={errors}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            values={values}
+          />
+          <CustomerContactForm
+            classes={classes}
+            touched={touched}
+            errors={errors}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            values={values}
+          />
+          <CustomerRelationshipForm
+            classes={classes}
+            touched={touched}
+            errors={errors}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            values={values}
+          />
+          <CustomerWorkForm
+            classes={classes}
+            touched={touched}
+            errors={errors}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            values={values}
+          />
+          <CustomerFinancialInfo
+            classes={classes}
+            touched={touched}
+            errors={errors}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            values={values}
+            disabled={isSubmitting} />
         </form>
       )}
     </Formik>

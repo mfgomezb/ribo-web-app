@@ -53,14 +53,14 @@ const Header = ({ className, customer, ...rest }) => {
             variant="body1"
             color="textPrimary"
           >
-            Customers
+            Clientes
           </Typography>
         </Breadcrumbs>
         <Typography
           variant="h3"
           color="textPrimary"
         >
-          {customer.name}
+          {customer.fullName}
         </Typography>
       </Grid>
       <Grid item>
@@ -68,7 +68,7 @@ const Header = ({ className, customer, ...rest }) => {
           color="secondary"
           variant="contained"
           component={RouterLink}
-          to="/app/management/customers/1/edit"
+          to={`/app/management/customers/${customer._id}/edit`}
           startIcon={
             <SvgIcon fontSize="small">
               <EditIcon />

@@ -1,7 +1,8 @@
 import axios from '../utils/axios';
-import { useMutation } from 'react-query';
+import { useMutation, usePaginatedQuery } from 'react-query';
 import { useSnackbar } from 'notistack';
 import useAuth from './useAuth';
+import Qs from 'qs'
 
 export const useUpdatePassword = (id) => {
   const { enqueueSnackbar } = useSnackbar();
@@ -50,3 +51,22 @@ export const useUpdateUser = (id) => {
     }
   );
 };
+
+export const useGetUsers = (params) => {
+  let queryParams = Qs.stringify({ ...params, filter: params.query, fields: 'fullName,email,businessName' }, {encode: false})
+  return usePaginatedQuery(['users',params], () =>
+    axios.get(`api/customers?${queryParams}`)
+      .then(res => {
+        return res.data
+      }), {})
+
+}
+
+export const useGetUser = (userId) => {
+  return usePaginatedQuery(['user',userId], () =>
+    axios.get(`api/customers/${userId}`)
+      .then(res => {
+        return res.data
+      }), {})
+
+}

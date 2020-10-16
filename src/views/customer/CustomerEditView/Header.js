@@ -46,14 +46,14 @@ const Header = ({ className, ...rest }) => {
           variant="body1"
           color="textPrimary"
         >
-          Customers
+          Cliente
         </Typography>
       </Breadcrumbs>
       <Typography
         variant="h3"
         color="textPrimary"
       >
-        Edit Customer
+        Editar cliente
       </Typography>
     </div>
   );

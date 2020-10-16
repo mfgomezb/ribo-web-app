@@ -1,18 +1,15 @@
 import React, {
-  useState,
-  useCallback,
-  useEffect
 } from 'react';
 import {
   Box,
   Container,
   makeStyles
 } from '@material-ui/core';
-import axios from 'src/utils/axios';
 import Page from 'src/components/Page';
-import useIsMountedRef from 'src/hooks/useIsMountedRef';
+import { useParams } from 'react-router-dom'
 import CustomerEditForm from './CustomerEditForm';
 import Header from './Header';
+import { useGetUser } from '../../../hooks/useUser';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,26 +22,10 @@ const useStyles = makeStyles((theme) => ({
 
 const CustomerEditView = () => {
   const classes = useStyles();
-  const isMountedRef = useIsMountedRef();
-  const [customer, setCustomer] = useState(null);
+  const {customerId} = useParams()
+  const {isLoading, data, error } = useGetUser(customerId)
 
-  const getCustomer = useCallback(async () => {
-    try {
-      const response = await axios.get('/api/customers/1');
-    
-      if (isMountedRef.current) {
-        setCustomer(response.data.customer);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }, [isMountedRef]);
-
-  useEffect(() => {
-    getCustomer();
-  }, [getCustomer]);
-
-  if (!customer) {
+  if (isLoading) {
     return null;
   }
 
@@ -58,7 +39,7 @@ const CustomerEditView = () => {
       </Container>
       <Box mt={3}>
         <Container maxWidth="lg">
-          <CustomerEditForm customer={customer} />
+          <CustomerEditForm customer={data} />
         </Container>
       </Box>
     </Page>

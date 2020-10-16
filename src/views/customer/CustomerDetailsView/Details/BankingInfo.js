@@ -14,8 +14,9 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
-import ReceiptIcon from '@material-ui/icons/ReceiptOutlined';
+import LockOpenIcon from '@material-ui/icons/LockOpenOutlined';
+import PersonIcon from '@material-ui/icons/PersonOutline';
+import Label from 'src/components/Label';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -24,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const JobInfo = ({
+const CustomerInfo = ({
   customer,
   className,
   ...rest
@@ -36,85 +37,46 @@ const JobInfo = ({
       className={clsx(classes.root, className)}
       {...rest}
     >
-      <CardHeader title="Información Laboral" />
+      <CardHeader title="Información Bancaria" />
       <Divider />
       <Table>
         <TableBody>
           <TableRow>
             <TableCell className={classes.fontWeightMedium}>
-              Estatus Laboral
+              Banco
             </TableCell>
             <TableCell>
               <Typography
                 variant="body2"
                 color="textSecondary"
               >
-                {customer.employmentStatus}
+                {customer.bank}
               </Typography>
             </TableCell>
           </TableRow>
           <TableRow>
             <TableCell className={classes.fontWeightMedium}>
-              Ingreso Mensual
+              Número de cuenta
             </TableCell>
             <TableCell>
               <Typography
                 variant="body2"
                 color="textSecondary"
               >
-                {customer.monthlyIncome}
+                {customer.accountNumber}
               </Typography>
             </TableCell>
           </TableRow>
           <TableRow>
             <TableCell className={classes.fontWeightMedium}>
-              Frecuencia de pago
+              Zelle o Yape
             </TableCell>
             <TableCell>
               <Typography
                 variant="body2"
                 color="textSecondary"
               >
-                {customer.paymentFrequency}
-              </Typography>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell className={classes.fontWeightMedium}>
-              Empleador
-            </TableCell>
-            <TableCell>
-              <Typography
-                variant="body2"
-                color="textSecondary"
-              >
-                {customer.businessName}
-              </Typography>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell className={classes.fontWeightMedium}>
-              Cargo
-            </TableCell>
-            <TableCell>
-              <Typography
-                variant="body2"
-                color="textSecondary"
-              >
-                {customer.businessPosition}
-              </Typography>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell className={classes.fontWeightMedium}>
-              Dirección
-            </TableCell>
-            <TableCell>
-              <Typography
-                variant="body2"
-                color="textSecondary"
-              >
-                {customer.businessAddress}
+                {customer.electronicAccount}
               </Typography>
             </TableCell>
           </TableRow>
@@ -126,20 +88,20 @@ const JobInfo = ({
       {/*  flexDirection="column"*/}
       {/*  alignItems="flex-start"*/}
       {/*>*/}
-      {/*  <Button startIcon={<AttachMoneyIcon />}>*/}
-      {/*    Create Invoice*/}
+      {/*  <Button startIcon={<LockOpenIcon />}>*/}
+      {/*    Reset &amp; Send Password*/}
       {/*  </Button>*/}
-      {/*  <Button startIcon={<ReceiptIcon />}>*/}
-      {/*    Resend Due Invoices*/}
+      {/*  <Button startIcon={<PersonIcon />}>*/}
+      {/*    Login as Customer*/}
       {/*  </Button>*/}
       {/*</Box>*/}
     </Card>
   );
 };
 
-JobInfo.propTypes = {
+CustomerInfo.propTypes = {
   className: PropTypes.string,
   customer: PropTypes.object.isRequired
 };
 
-export default JobInfo;
+export default CustomerInfo;

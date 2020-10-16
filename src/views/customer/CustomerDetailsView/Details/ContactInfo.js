@@ -14,8 +14,9 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
-import ReceiptIcon from '@material-ui/icons/ReceiptOutlined';
+import LockOpenIcon from '@material-ui/icons/LockOpenOutlined';
+import PersonIcon from '@material-ui/icons/PersonOutline';
+import Label from 'src/components/Label';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -24,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const JobInfo = ({
+const CustomerInfo = ({
   customer,
   className,
   ...rest
@@ -36,110 +37,126 @@ const JobInfo = ({
       className={clsx(classes.root, className)}
       {...rest}
     >
-      <CardHeader title="Información Laboral" />
+      <CardHeader title="Contacto" />
       <Divider />
       <Table>
         <TableBody>
           <TableRow>
             <TableCell className={classes.fontWeightMedium}>
-              Estatus Laboral
+              Email
             </TableCell>
             <TableCell>
               <Typography
                 variant="body2"
                 color="textSecondary"
               >
-                {customer.employmentStatus}
+                {customer.email}
+              </Typography>
+              <Label color={customer.isVerified ? 'success' : 'error'}>
+                {customer.isVerified ? 'Email verificado' : 'Email no verificado'}
+              </Label>
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell className={classes.fontWeightMedium}>
+              Teléfono
+            </TableCell>
+            <TableCell>
+              <Typography
+                variant="body2"
+                color="textSecondary"
+              >
+                {customer.cellphoneNumber}
               </Typography>
             </TableCell>
           </TableRow>
           <TableRow>
             <TableCell className={classes.fontWeightMedium}>
-              Ingreso Mensual
+              País
             </TableCell>
             <TableCell>
               <Typography
                 variant="body2"
                 color="textSecondary"
               >
-                {customer.monthlyIncome}
+                {customer.country}
               </Typography>
             </TableCell>
           </TableRow>
           <TableRow>
             <TableCell className={classes.fontWeightMedium}>
-              Frecuencia de pago
+              Ciudad
             </TableCell>
             <TableCell>
               <Typography
                 variant="body2"
                 color="textSecondary"
               >
-                {customer.paymentFrequency}
+                {customer.city}
               </Typography>
             </TableCell>
           </TableRow>
           <TableRow>
             <TableCell className={classes.fontWeightMedium}>
-              Empleador
+              Dirección 1
             </TableCell>
             <TableCell>
               <Typography
                 variant="body2"
                 color="textSecondary"
               >
-                {customer.businessName}
+                {customer.street + " " + customer.residenceNumber}
               </Typography>
             </TableCell>
           </TableRow>
           <TableRow>
             <TableCell className={classes.fontWeightMedium}>
-              Cargo
+              Dirección 2
             </TableCell>
             <TableCell>
               <Typography
                 variant="body2"
                 color="textSecondary"
               >
-                {customer.businessPosition}
+                {customer.residenceNumber}
               </Typography>
             </TableCell>
           </TableRow>
           <TableRow>
             <TableCell className={classes.fontWeightMedium}>
-              Dirección
+              Referencia
             </TableCell>
             <TableCell>
               <Typography
                 variant="body2"
                 color="textSecondary"
               >
-                {customer.businessAddress}
+                {customer.residenceNumber}
+              </Typography>
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell className={classes.fontWeightMedium}>
+              Relación de referencia
+            </TableCell>
+            <TableCell>
+              <Typography
+                variant="body2"
+                color="textSecondary"
+              >
+                {customer.residenceNumber}
               </Typography>
             </TableCell>
           </TableRow>
         </TableBody>
       </Table>
-      {/*<Box*/}
-      {/*  p={1}*/}
-      {/*  display="flex"*/}
-      {/*  flexDirection="column"*/}
-      {/*  alignItems="flex-start"*/}
-      {/*>*/}
-      {/*  <Button startIcon={<AttachMoneyIcon />}>*/}
-      {/*    Create Invoice*/}
-      {/*  </Button>*/}
-      {/*  <Button startIcon={<ReceiptIcon />}>*/}
-      {/*    Resend Due Invoices*/}
-      {/*  </Button>*/}
-      {/*</Box>*/}
     </Card>
   );
 };
 
-JobInfo.propTypes = {
+CustomerInfo.propTypes = {
   className: PropTypes.string,
   customer: PropTypes.object.isRequired
 };
 
-export default JobInfo;
+export default CustomerInfo;
