@@ -172,7 +172,7 @@ const ProjectCreateView  = () => {
                   activeStep={activeStep}
                   className={classes.stepper}
                   connector={<CustomStepConnector />}
-                  orientation="vertical"
+                  orientation="horizontal"
                 >
                   {steps.map((step) => (
                     <Step key={step.label}>

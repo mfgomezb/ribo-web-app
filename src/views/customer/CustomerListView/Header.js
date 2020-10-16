@@ -65,14 +65,14 @@ const Header = ({ className, ...rest }) => {
             variant="body1"
             color="textPrimary"
           >
-            Customers
+            Clientes
           </Typography>
         </Breadcrumbs>
         <Typography
           variant="h3"
           color="textPrimary"
         >
-          All Customers
+          Listado de clientes
         </Typography>
         <Box mt={2}>
           <Button startIcon={

@@ -148,6 +148,11 @@ const routes = [
       },
       {
         exact: true,
+        path: '/app/management/customers/create',
+        component: lazy(() => import('src/views/customer/CustomerCreateView'))
+      },
+      {
+        exact: true,
         path: '/app/management/customers/:customerId',
         component: lazy(() => import('src/views/customer/CustomerDetailsView'))
       },

@@ -25,34 +25,34 @@ const useStyles = makeStyles((theme) => ({
 
 const CustomerListView = () => {
   const classes = useStyles();
-  const isMountedRef = useIsMountedRef();
-  const [customers, setCustomers] = useState([]);
-
-  const getCustomers = useCallback(async () => {
-    try {
-      const response = await axios.get('/api/customers');
-
-      if (isMountedRef.current) {
-        setCustomers(response.data.customers);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }, [isMountedRef]);
-
-  useEffect(() => {
-    getCustomers();
-  }, [getCustomers]);
+  // const isMountedRef = useIsMountedRef();
+  // const [customers, setCustomers] = useState([]);
+  //
+  // const getCustomers = useCallback(async () => {
+  //   try {
+  //     const response = await axios.get('/api/customers');
+  //
+  //     if (isMountedRef.current) {
+  //       setCustomers(response.data.customers);
+  //     }
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // }, [isMountedRef]);
+  //
+  // useEffect(() => {
+  //   getCustomers();
+  // }, [getCustomers]);
 
   return (
     <Page
       className={classes.root}
-      title="Customer List"
+      title="Listado de clientes"
     >
       <Container maxWidth={false}>
         <Header />
         <Box mt={3}>
-          <Results customers={customers} />
+          <Results  />
         </Box>
       </Container>
     </Page>

@@ -62,22 +62,18 @@ const sections = [
     subheader: 'Management',
     items: [
       {
-        title: 'Customers',
+        title: 'Clientes',
         icon: UsersIcon,
         href: '/app/management/customers',
         items: [
           {
-            title: 'List Customers',
+            title: 'Listado',
             href: '/app/management/customers'
           },
           {
-            title: 'View Customer',
-            href: '/app/management/customers/1'
+            title: 'Nuevo cliente',
+            href: '/app/management/customers/create'
           },
-          {
-            title: 'Edit Customer',
-            href: '/app/management/customers/1/edit'
-          }
         ]
       },
       {

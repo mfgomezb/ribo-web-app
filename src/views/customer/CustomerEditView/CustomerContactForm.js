@@ -36,16 +36,16 @@ function CustomerContactForm(props) {
           xs={12}
         >
           <TextField
-            error={Boolean(props.touched.cellPhoneNumber && props.errors.cellPhoneNumber)}
+            error={Boolean(props.touched.cellphoneNumber && props.errors.cellphoneNumber)}
             fullWidth
-            helperText={props.touched.cellPhoneNumber && props.errors.cellPhoneNumber}
+            helperText={props.touched.cellphoneNumber && props.errors.cellphoneNumber}
             label="Número de teléfono"
             size="small"
-            name="cellPhoneNumber"
+            name="cellphoneNumber"
             onBlur={props.onBlur}
             onChange={props.onChange}
             required
-            value={props.values.cellPhoneNumber}
+            value={props.values.cellphoneNumber}
             variant="outlined"
           />
         </Grid>

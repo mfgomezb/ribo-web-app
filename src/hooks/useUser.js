@@ -1,5 +1,5 @@
 import axios from '../utils/axios';
-import { useMutation, usePaginatedQuery } from 'react-query';
+import { useMutation, usePaginatedQuery, useQuery } from 'react-query';
 import { useSnackbar } from 'notistack';
 import useAuth from './useAuth';
 import Qs from 'qs'
@@ -68,5 +68,25 @@ export const useGetUser = (userId) => {
       .then(res => {
         return res.data
       }), {})
+}
 
+export const checkEmail = (email) => {
+    return axios.post(`api/customers/check-email`, { email: email })
+      .then( res => {
+        return res.data
+      })
+      .catch(err => {
+        return err
+      })
+}
+
+export const createNewUser = (values) => {
+  console.log(values)
+  return axios.post('api/customers/', { ...values })
+    .then( res => {
+      return res.data
+    })
+    .catch(err => {
+      return err
+    })
 }
