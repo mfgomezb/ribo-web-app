@@ -89,14 +89,14 @@ const CustomerInformationForm = ({
             variant="h3"
             color="textPrimary"
           >
-            Información de contacto
+            Información de bancaria {values.investor && ' y de inversión'}
           </Typography>
           <Box mt={2}>
             <Typography
               variant="subtitle1"
               color="textSecondary"
             >
-              Ingrese los detalles de contacto del usuario. El email debe ser único. Se debe de incluir una referencia de contacto
+              Ingrese el banco y el número de cuenta donde seran enviados los desembolsos de dinero.
             </Typography>
           </Box>
           <Box mt={2}>

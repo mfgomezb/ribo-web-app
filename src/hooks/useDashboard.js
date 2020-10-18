@@ -8,7 +8,8 @@ export const useGetTodayStatus = (country) => {
     axios.get(`api/test/summary/status/${country}`)
       .then(res => {
         return res.data
-      })
+      }),
+    { staleTime: Infinity }
   )
 }
 
@@ -24,7 +25,8 @@ export const useGetPayments = (country, period) => {
     axios.get(`api/test/summary/payments/${country}/${gtDate}/${ltDate}`)
       .then(res => {
         return res.data
-      })
+      }),
+    { staleTime: Infinity }
   )
 }
 
@@ -32,7 +34,8 @@ export const useReceivedPayments = (country, period) => {
   return useQuery(['receivedPayments', country, period], () =>
     axios
       .get(`api/payments/received/country/${country}/period/${period}`)
-      .then(res => res.data)
+      .then(res => res.data),
+    { staleTime: Infinity }
   );
 };
 
@@ -40,7 +43,8 @@ export const useCollection = (country, status) => {
   return useQuery(['collections', country, status], () =>
     axios
       .get(`api/collection/country/${country}/status/${status}`)
-      .then(res => res.data)
+      .then(res => res.data),
+    { staleTime: Infinity }
   );
 };
 
@@ -48,7 +52,8 @@ export const useCashAvailable = country => {
   return useQuery(['cashAvailable', country], () =>
     axios
       .get(`api/transactions/cash-available/country/${country}`)
-      .then(res => res.data)
+      .then(res => res.data),
+    { staleTime: Infinity }
   );
 };
 
@@ -58,7 +63,8 @@ export const useInterestEarned = (country, period) => {
       .get(
         `api/transactions/interest-earned/country/${country}/period/${period}`
       )
-      .then(res => res.data)
+      .then(res => res.data),
+    { staleTime: Infinity }
   );
 };
 

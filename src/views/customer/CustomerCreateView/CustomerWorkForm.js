@@ -101,14 +101,14 @@ const CustomerInformationForm = ({
             variant="h3"
             color="textPrimary"
           >
-            Información de contacto
+            Información Laboral
           </Typography>
           <Box mt={2}>
             <Typography
               variant="subtitle1"
               color="textSecondary"
             >
-              Ingrese los detalles de contacto del usuario. El email debe ser único. Se debe de incluir una referencia de contacto
+              Ingrese los detalles laborales del cliente. Recuerde que los ingresos deben de ser mensuales y en USD.
             </Typography>
           </Box>
           <Box mt={2}>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useLocation, useHistory } from 'react-router-dom';
 import clsx from 'clsx';
+import qs from 'qs';
 import numeral from 'numeral';
 import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -171,11 +172,13 @@ const Results = ({
   ...rest
 }) => {
   const classes = useStyles();
+  const { pathname, search } = useLocation()
+  const history = useHistory()
   const [currentTab, setCurrentTab] = useState('all');
   const [selectedCustomers, setSelectedCustomers] = useState([]);
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
-  const [query, setQuery] = useState('');
+  const [page, setPage] = useState(qs.parse(search).page || 1);
+  const [limit, setLimit] = useState(qs.parse(search).limit || 10);
+  const [query, setQuery] = useState(qs.parse(search).query || '');
   const [sort, setSort] = useState(sortOptions[0].value);
   const [filters, setFilters] = useState({
     investor: true,
@@ -183,7 +186,7 @@ const Results = ({
   });
   const [params, setParams] = useState({ page, limit, query, filters })
   const {isLoading, data, error} = useGetUsers(params)
-
+  console.log(qs.parse(search))
 
 
 
@@ -211,6 +214,7 @@ const Results = ({
 
   React.useEffect(() => {
     setParams({page, limit, query, filters})
+    history.push(pathname+ "?" + qs.stringify({page: page, limit: limit, query: query, filter: filters }))
   }, [page, limit, query, filters])
 
   const handleSortChange = (event) => {

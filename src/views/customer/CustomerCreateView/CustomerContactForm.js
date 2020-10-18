@@ -124,7 +124,7 @@ const CustomerInformationForm = ({
               variant="subtitle1"
               color="textSecondary"
             >
-              Ingrese los detalles de contacto del usuario. El email debe ser único. Se debe de incluir una referencia de contacto
+              Ingrese los detalles de contacto del usuario. El email debe ser único. Se debe de incluir una referencia de contacto.
             </Typography>
           </Box>
           <Box mt={2}>
