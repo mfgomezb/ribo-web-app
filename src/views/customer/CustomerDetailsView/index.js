@@ -13,12 +13,13 @@ import {
 } from '@material-ui/core';
 import Page from 'src/components/Page';
 import axios from 'src/utils/axios';
-import { useParams } from 'react-router-dom'
+import { useParams, useRouteMatch, Link, Route } from 'react-router-dom'
 import useIsMountedRef from 'src/hooks/useIsMountedRef';
 import { useGetUser } from 'src/hooks/useUser'
 import Header from './Header';
 import Details from './Details';
-import Invoices from './Invoices';
+import Loans from './Loans';
+import CustomerView from './CustomerView'
 import Logs from './Logs';
 
 const useStyles = makeStyles((theme) => ({
@@ -31,39 +32,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CustomerDetailsView = () => {
+  const {url, path} = useRouteMatch()
   const classes = useStyles();
-  const {customerId} = useParams()
+  const {customerId, customerView} = useParams()
   const {isLoading, data, error } = useGetUser(customerId)
-  const isMountedRef = useIsMountedRef();
-  const [customer, setCustomer] = useState(null);
-  const [currentTab, setCurrentTab] = useState('details');
-  console.log(customerId)
+  const [currentTab, setCurrentTab] = useState(customerView);
   const tabs = [
-    { value: 'details', label: 'Detalles' },
-    { value: 'prestamos', label: 'Creditos' },
-    { value: 'inversiones', label: 'Inversiones' }
+    { value: 'details', label: 'Detalles', },
+    { value: 'loans', label: 'Creditos',},
+    { value: 'investments', label: 'Inversiones',}
   ];
 
   const handleTabsChange = (event, value) => {
     setCurrentTab(value);
   };
 
-  // const getCustomer = useCallback(async () => {
-  //   try {
-  //     const response = await axios.get('/api/customers/1');
-  //
-  //     if (isMountedRef.current) {
-  //       setCustomer(response.data.customer);
-  //     }
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // }, [isMountedRef]);
-  //
-  // useEffect(() => {
-  //   getCustomer();
-  // }, [getCustomer]);
-  //
   if (isLoading) {
     return null;
   }
@@ -87,16 +70,16 @@ const CustomerDetailsView = () => {
                 <Tab
                   key={tab.value}
                   label={tab.label}
+                  component={Link}
                   value={tab.value}
+                  to={`/app/management/customers/${customerId}/${tab.value}`}
                 />
               ))}
             </Tabs>
           </Box>
           <Divider />
           <Box mt={3}>
-            {currentTab === 'details' && <Details customer={data} />}
-            {currentTab === 'invoices' && <Invoices />}
-            {currentTab === 'logs' && <Logs />}
+                <CustomerView customer={data} customerView={customerView || 'details'}/>
           </Box>
       </Container>
     </Page>

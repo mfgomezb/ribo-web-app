@@ -153,14 +153,22 @@ const routes = [
       },
       {
         exact: true,
-        path: '/app/management/customers/:customerId',
-        component: lazy(() => import('src/views/customer/CustomerDetailsView'))
-      },
-      {
-        exact: true,
         path: '/app/management/customers/:customerId/edit',
         component: lazy(() => import('src/views/customer/CustomerEditView'))
       },
+      {
+        exact: true,
+        path: ['/app/management/customers/:customerId',
+          '/app/management/customers/:customerId/:customerView'
+        ],
+        component: lazy(() => import('src/views/customer/CustomerDetailsView'))
+      },
+      // {
+      //   exact: true,
+      //   path: '/app/management/customers/:customerId/:customerView',
+      //   component: lazy(() => import('src/views/customer/CustomerDetailsView/CustomerView'))
+      // },
+
       {
         exact: true,
         path: '/app/management/invoices',
