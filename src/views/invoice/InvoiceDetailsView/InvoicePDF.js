@@ -275,6 +275,24 @@ const InvoicePDF = ({ invoice }) => {
           <Text style={styles.body1}>
             Please make sure you have the right bank registration number as I
             had issues before and make sure you guys cover transfer expenses.
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab asperiores at cumque cupiditate dolorem
+              nulla numquam optio. Atque blanditiis cumque iure voluptates. Fuga, iste nisi! Eos ex odio quidem
+              recusandae!</p><p>Accusamus alias aperiam atque deserunt dolore dolorum eligendi error facilis fugiat
+            illo, inventore ipsam iste magni maiores necessitatibus officiis placeat praesentium quae qui quibusdam quis
+            reiciendis rem saepe sequi velit?</p><p>Ab amet commodi dolor officia rerum ut voluptas. Accusamus aliquid
+            asperiores eaque eos expedita facilis impedit incidunt ipsa iste laboriosam modi molestias porro
+            reprehenderit rerum sed, sint ut veritatis voluptatem.</p><p>A architecto consequuntur debitis ea eveniet
+            excepturi illum iusto maxime nam nemo nihil nisi non nostrum odio, pariatur praesentium quas quibusdam quis
+            ratione repudiandae rerum sequi, sint totam ut veritatis?</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab asperiores at cumque cupiditate dolorem
+              nulla numquam optio. Atque blanditiis cumque iure voluptates. Fuga, iste nisi! Eos ex odio quidem
+              recusandae!</p><p>Accusamus alias aperiam atque deserunt dolore dolorum eligendi error facilis fugiat
+            illo, inventore ipsam iste magni maiores necessitatibus officiis placeat praesentium quae qui quibusdam quis
+            reiciendis rem saepe sequi velit?</p><p>Ab amet commodi dolor officia rerum ut voluptas. Accusamus aliquid
+            asperiores eaque eos expedita facilis impedit incidunt ipsa iste laboriosam modi molestias porro
+            reprehenderit rerum sed, sint ut veritatis voluptatem.</p><p>A architecto consequuntur debitis ea eveniet
+            excepturi illum iusto maxime nam nemo nihil nisi non nostrum odio, pariatur praesentium quas quibusdam quis
+            ratione repudiandae rerum sequi, sint totam ut veritatis?</p>
           </Text>
         </View>
       </Page>

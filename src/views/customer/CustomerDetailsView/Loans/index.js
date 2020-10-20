@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { Box, Grid, makeStyles } from '@material-ui/core';
+import { Box, Button, Grid, makeStyles, SvgIcon } from '@material-ui/core';
 import BorrowerInfo from './BorrowerInfo';
 import LoansInfo from './LoansInfo';
 import ScheduleInfo from './ScheduleInfo';
+import { Link as RouterLink } from 'react-router-dom';
+import { Plus as PlusIcon } from 'react-feather';
 
 const useStyles = makeStyles(() => ({
   root: {}
@@ -31,7 +33,24 @@ const Details = ({
         xl={3}
         xs={12}
       >
-        <BorrowerInfo customer={customer} />
+        <Grid item>
+          <BorrowerInfo customer={customer} />
+        </Grid>
+        <Box mt={2} item>
+          <Button
+            color="secondary"
+            variant="contained"
+            component={RouterLink}
+            to={`/app/management/customers/${customer._id}/new-loan`}
+            startIcon={
+              <SvgIcon fontSize="small">
+                <PlusIcon />
+              </SvgIcon>
+            }
+          >
+            Nuevo prestamo
+          </Button>
+        </Box>
       </Grid>
       <Grid
         item

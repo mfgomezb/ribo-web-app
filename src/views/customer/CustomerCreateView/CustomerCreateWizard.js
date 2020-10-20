@@ -5,13 +5,10 @@ import { Link as RouterLink } from 'react-router-dom';
 import {
   Avatar,
   Box,
-  Breadcrumbs,
   Button,
   Card,
   CardContent,
-  Container,
   Grid,
-  Link,
   Paper,
   Step,
   StepConnector,
@@ -22,7 +19,6 @@ import {
   makeStyles,
   withStyles
 } from '@material-ui/core';
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import {
   User as UserIcon,
   Star as StarIcon,
@@ -127,7 +123,7 @@ const useStyles = makeStyles((theme) => ({
 
 const CustomerCreateView  = () => {
   const classes = useStyles();
-  const [activeStep, setActiveStep] = useState(5);
+  const [activeStep, setActiveStep] = useState(0);
   const [newUser, setNewUser] = useState('')
   const [customerValues, setCustomerValues] = useState({})
   const [completed, setCompleted] = useState(false);

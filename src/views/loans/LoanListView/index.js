@@ -6,35 +6,34 @@ import React, {
 import {
   Box,
   Container,
-  Divider,
   makeStyles
 } from '@material-ui/core';
 import axios from 'src/utils/axios';
-import useIsMountedRef from 'src/hooks/useIsMountedRef';
 import Page from 'src/components/Page';
+import useIsMountedRef from 'src/hooks/useIsMountedRef';
 import Header from './Header';
-import InvoicePreview from './InvoicePreview';
+import Results from './Results';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
     minHeight: '100%',
     paddingTop: theme.spacing(3),
-    paddingBottom: theme.spacing(3)
+    paddingBottom: 100
   }
 }));
 
-const InvoiceDetailsView = () => {
+const ProductListView = () => {
   const classes = useStyles();
   const isMountedRef = useIsMountedRef();
-  const [invoice, setInvoice] = useState(null);
+  const [products, setProducts] = useState([]);
 
-  const getInvoice = useCallback(async () => {
+  const getProducts = useCallback(async () => {
     try {
-      const response = await axios.get('/api/invoices/1');
+      const response = await axios.get('/api/products');
 
       if (isMountedRef.current) {
-        setInvoice(response.data.invoice);
+        setProducts(response.data.products);
       }
     } catch (err) {
       console.error(err);
@@ -42,27 +41,24 @@ const InvoiceDetailsView = () => {
   }, [isMountedRef]);
 
   useEffect(() => {
-    getInvoice();
-  }, [getInvoice]);
-
-  // if (!invoice) {
-  //   return null;
-  // }
+    getProducts();
+  }, [getProducts]);
 
   return (
     <Page
       className={classes.root}
-      title="Invoice Details"
+      title="Product List"
     >
-      <Container maxWidth="lg">
-        <Header invoice={invoice} />
-        <Box my={2}>
-          <Divider />
-        </Box>
-        <InvoicePreview invoice={invoice} />
+      <Container maxWidth={false}>
+        <Header />
+        {products && (
+          <Box mt={3}>
+            <Results products={products} />
+          </Box>
+        )}
       </Container>
     </Page>
   );
 };
 
-export default InvoiceDetailsView;
+export default ProductListView;
