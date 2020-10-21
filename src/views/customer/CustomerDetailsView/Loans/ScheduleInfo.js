@@ -72,7 +72,7 @@ const getStatusLabel = (dayDiff) => {
 const getDaysBehind = (date) => {
   let end = DateTime.fromISO(date);
   let start = DateTime.local();
-  return end.diff(start, 'days').days;
+  return Math.round(end.diff(start, 'days').days);
 }
 
 
@@ -192,7 +192,7 @@ const LoansInfo = ({ className, ...rest }) => {
                           variant="body2"
                           color="textSecondary"
                         >
-                          {daysBehind < 0 && Math.round(daysBehind)+1}
+                          {daysBehind < 0 && daysBehind+1}
                         </Typography>
                       </TableCell>
                       <TableCell>
