@@ -1,6 +1,9 @@
 {
   "name": "@devias-io/material-kit-pro-react",
   "author": "DeviasIO",
+  "engines": {
+    "node": "14.9.0"
+  },
   "licence": "UNLICENSED",
   "version": "3.1.0",
   "private": true,
