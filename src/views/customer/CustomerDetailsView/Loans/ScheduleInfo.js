@@ -38,7 +38,7 @@ const scheduleStatus = dayDiff => {
     return 'PENDING'
   } else if (dayDiff < 0 && dayDiff >= -5) {
     return 'GRACE'
-  } else if (dayDiff <= -6) {
+  } else {
     return 'OVERDUE'
   }
 }
