@@ -48,7 +48,7 @@ const routes = [
   {
     exact: true,
     guard: GuestGuard,
-    path: '/login',
+    path: ['/login', '/'],
     component: lazy(() => import('src/views/auth/LoginView'))
   },
   {
@@ -57,22 +57,22 @@ const routes = [
     path: '/verify/:verifyId',
     component: lazy(() => import('src/views/auth/VerifyView'))
   },
-  {
-    exact: true,
-    path: '/login-unprotected',
-    component: lazy(() => import('src/views/auth/LoginView'))
-  },
+  // {
+  //   exact: true,
+  //   path: '/login-unprotected',
+  //   component: lazy(() => import('src/views/auth/LoginView'))
+  // },
   {
     exact: true,
     guard: GuestGuard,
     path: '/register',
     component: lazy(() => import('src/views/auth/RegisterView'))
   },
-  {
-    exact: true,
-    path: '/register-unprotected',
-    component: lazy(() => import('src/views/auth/RegisterView'))
-  },
+  // {
+  //   exact: true,
+  //   path: '/register-unprotected',
+  //   component: lazy(() => import('src/views/auth/RegisterView'))
+  // },
   {
     path: '/app',
     guard: AuthGuard,
@@ -353,16 +353,16 @@ const routes = [
     path: '*',
     layout: MainLayout,
     routes: [
-      {
-        exact: true,
-        path: '/',
-        component: HomeView
-      },
-      {
-        exact: true,
-        path: '/pricing',
-        component: lazy(() => import('src/views/pricing/PricingView'))
-      },
+      // {
+      //   exact: true,
+      //   path: '/',
+      //   component: HomeView
+      // },
+      // {
+      //   exact: true,
+      //   path: '/pricing',
+      //   component: lazy(() => import('src/views/pricing/PricingView'))
+      // },
       {
         component: () => <Redirect to="/404" />
       }
