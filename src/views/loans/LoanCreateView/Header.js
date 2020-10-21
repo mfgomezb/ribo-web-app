@@ -52,14 +52,14 @@ const Header = ({ className, ...rest }) => {
             variant="body1"
             color="textPrimary"
           >
-            Products
+            Prestamos
           </Typography>
         </Breadcrumbs>
         <Typography
           variant="h3"
           color="textPrimary"
         >
-          Create a new product
+          Formulario de creación de nuevo préstamo
         </Typography>
       </Grid>
       <Grid item>
@@ -67,7 +67,7 @@ const Header = ({ className, ...rest }) => {
           component={RouterLink}
           to="/app/management/products"
         >
-          Cancel
+          Cancelar
         </Button>
       </Grid>
     </Grid>
