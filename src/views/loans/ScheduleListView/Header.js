@@ -72,7 +72,7 @@ const Header = ({ className, ...rest }) => {
           variant="h3"
           color="textPrimary"
         >
-          Listado de préstamos
+          All Products
         </Typography>
         <Box mt={2}>
           <Button

@@ -77,18 +77,18 @@ const sections = [
         ]
       },
       {
-        title: 'Products',
+        title: 'Prestamos',
         icon: ShoppingCartIcon,
         href: '/app/management/products',
         items: [
           {
-            title: 'List Products',
-            href: '/app/management/products'
+            title: 'Listado de préstamos',
+            href: '/app/management/loans'
           },
           {
-            title: 'Create Product',
-            href: '/app/management/products/create'
-          }
+            title: 'Listado de cuotas',
+            href: '/app/management/schedules'
+          },
         ]
       },
       {

@@ -2,7 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { Box, Button, Grid, SvgIcon, makeStyles} from '@material-ui/core';
-import BorrowerInfo from './BorrowerInfo';
+import GlobalPosition from 'src/views/customer/CustomerDetailsView/Investments/GlobalPosition';
+import InvestmentPosition from 'src/views/customer/CustomerDetailsView/Investments/InvestmentPosition';
+import ReturnsSummary from 'src/views/customer/CustomerDetailsView/Investments/ReturnsSummary';
+import PortfolioSummary from 'src/views/customer/CustomerDetailsView/Investments/PortfolioSummary';
 import LoansInfo from './LoansInfo';
 import ScheduleInfo from './ScheduleInfo';
 import { Link as RouterLink } from 'react-router-dom';
@@ -37,51 +40,40 @@ const Details = ({
         xs={12}
       >
         <Grid item>
-          <BorrowerInfo customer={customer} />
+          <GlobalPosition customer={customer} />
         </Grid>
-        <Box mt={2} item>
-          <Button
-            color="secondary"
-            variant="contained"
-            component={RouterLink}
-            to={`/app/management/customers/${customer._id}/new-loan`}
-            startIcon={
-              <SvgIcon fontSize="small">
-                <PlusIcon />
-              </SvgIcon>
-            }
-          >
-            Nuevo prestamo
-          </Button>
-        </Box>
       </Grid>
       <Grid
         item
-        // container
-        lg={9}
+        lg={3}
         md={6}
         xl={3}
         xs={12}
-        spacing={3}
       >
-        <Grid
-          item
-          lg={12}
-          md={12}
-          xl={12}
-          xs={12}
-        >
-          <ScheduleInfo customer={customer} />
+        <Grid item>
+          <ReturnsSummary customer={customer}/>
         </Grid>
-        <Grid
-          item
-          className={clsx(classes.mt, className)}
-          lg={12}
-          md={12}
-          xl={12}
-          xs={12}
-        >
-          <LoansInfo customer={customer} />
+      </Grid>
+      <Grid
+        item
+        lg={3}
+        md={6}
+        xl={3}
+        xs={12}
+      >
+        <Grid item>
+          <InvestmentPosition customer={customer}/>
+        </Grid>
+      </Grid>
+      <Grid
+        item
+        lg={3}
+        md={6}
+        xl={3}
+        xs={12}
+      >
+        <Grid item>
+          <PortfolioSummary customer={customer}/>
         </Grid>
       </Grid>
     </Grid>

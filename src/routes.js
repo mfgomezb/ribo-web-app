@@ -170,6 +170,13 @@ const routes = [
       },
       {
         exact: true,
+        path: ['/app/management/loan/:loanId',
+          '/app/management/loan/:loanId/:loanView'
+        ],
+        component: lazy(() => import('src/views/loans/LoanDetailsView'))
+      },
+      {
+        exact: true,
         path: '/app/management/invoices',
         component: lazy(() => import('src/views/invoice/InvoiceListView'))
       },
@@ -190,8 +197,13 @@ const routes = [
       },
       {
         exact: true,
-        path: '/app/management/products',
-        component: lazy(() => import('src/views/product/ProductListView'))
+        path: '/app/management/loans',
+        component: lazy(() => import('src/views/loans/LoanListView'))
+      },
+      {
+        exact: true,
+        path: '/app/management/schedules',
+        component: lazy(() => import('src/views/loans/ScheduleListView'))
       },
       {
         exact: true,

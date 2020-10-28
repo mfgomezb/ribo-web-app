@@ -36,7 +36,7 @@ const CustomerDetailsView = () => {
   const classes = useStyles();
   const {customerId, customerView} = useParams()
   const {isLoading, data, error } = useGetUser(customerId)
-  const [currentTab, setCurrentTab] = useState(customerView);
+  const [currentTab, setCurrentTab] = useState(customerView || 'details');
   const tabs = [
     { value: 'details', label: 'Detalles', },
     { value: 'loans', label: 'Creditos',},

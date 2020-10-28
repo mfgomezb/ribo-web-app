@@ -3,7 +3,6 @@ import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
-  Box,
   Breadcrumbs,
   Button,
   Grid,
@@ -12,32 +11,27 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
-import {
-  PlusCircle as PlusCircleIcon,
-  Download as DownloadIcon,
-  Upload as UploadIcon
-} from 'react-feather';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import { Edit as EditIcon } from 'react-feather';
+import numeral from 'numeral';
 
 const useStyles = makeStyles((theme) => ({
-  root: {},
-  action: {
-    marginBottom: theme.spacing(1),
-    '& + &': {
-      marginLeft: theme.spacing(1)
-    }
+  root: {
+    marginTop: theme.spacing(3)
   }
 }));
 
-const Header = ({ className, ...rest }) => {
-  const classes = useStyles();
+const currencyFormat = (number, currency) => {
+  return numeral(number).format(`${currency}0,0.00`)
+}
 
+const Header = ({ className, details, ...rest }) => {
+  const classes = useStyles();
   return (
     <Grid
       container
       spacing={3}
       justify="space-between"
-      className={clsx(classes.root, className)}
       {...rest}
     >
       <Grid item>
@@ -65,52 +59,30 @@ const Header = ({ className, ...rest }) => {
             variant="body1"
             color="textPrimary"
           >
-            Products
+            Préstamos
           </Typography>
         </Breadcrumbs>
         <Typography
           variant="h3"
           color="textPrimary"
+          className={classes.root}
         >
-          Listado de préstamos
+          {`${details?.fullName ?? ''} - ${currencyFormat(details?.capital ?? 0)} - ${details?.startDate ?? 0}`}
         </Typography>
-        <Box mt={2}>
-          <Button
-            className={classes.action}
-            startIcon={
-              <SvgIcon fontSize="small">
-                <UploadIcon />
-              </SvgIcon>
-            }
-          >
-            Import
-          </Button>
-          <Button
-            className={classes.action}
-            startIcon={
-              <SvgIcon fontSize="small">
-                <DownloadIcon />
-              </SvgIcon>
-            }
-          >
-            Export
-          </Button>
-        </Box>
       </Grid>
       <Grid item>
         <Button
           color="secondary"
           variant="contained"
-          className={classes.action}
           component={RouterLink}
-          to="/app/management/products/create"
+          to={`/app/management/customers/${details?._borrower}`}
           startIcon={
             <SvgIcon fontSize="small">
-              <PlusCircleIcon />
+              <EditIcon />
             </SvgIcon>
           }
         >
-          New Product
+          Ver cliente
         </Button>
       </Grid>
     </Grid>
@@ -118,7 +90,8 @@ const Header = ({ className, ...rest }) => {
 };
 
 Header.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
+  customer: PropTypes.object.isRequired
 };
 
 export default Header;

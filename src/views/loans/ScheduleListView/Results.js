@@ -31,9 +31,36 @@ import {
   Search as SearchIcon
 } from 'react-feather';
 import Label from 'src/components/Label';
-import {useGetLoanList} from '../../../hooks/useLoans';
+import {useGetScheduleList} from '../../../hooks/useLoans';
 import qs from 'qs';
 import { useOfFunds as useOfFundsOptions } from 'src/views/loans/LoanListView/FormConstants'
+import { DateTime } from 'luxon';
+
+
+const getStatusLabel = (status) => {
+
+  const map = {
+    OVERDUE: {
+      text: 'VENCIDO',
+      color: 'error'
+    },
+    PENDING: {
+      text: 'PENDIENTE',
+      color: 'success'
+    },
+    GRACE: {
+      text: 'GRACIA',
+      color: 'warning'
+    },
+  };
+  const { text, color } = map[status];
+
+  return (
+    <Label color={color}>
+      {text}
+    </Label>
+  );
+};
 
 
 const categoryOptions = [
@@ -42,16 +69,16 @@ const categoryOptions = [
     name: 'Todos'
   },
   {
-    id: 'OPEN',
-    name: 'Abierto'
+    id: 'PENDING',
+    name: 'Pendiente'
   },
   {
-    id: 'CLOSED',
-    name: 'Cerrado'
+    id: 'GRACE',
+    name: 'Gracia'
   },
   {
-    id: 'LOSS',
-    name: 'Perdida'
+    id: 'OVERDUE',
+    name: 'Vencido'
   },
 ];
 
@@ -203,9 +230,6 @@ const useStyles = makeStyles((theme) => ({
   image: {
     height: 68,
     width: 68
-  },
-  nameColumn: {
-    minWidth: 150
   }
 }));
 
@@ -232,7 +256,7 @@ const Results = ({ className, products, ...rest }) => {
     // isRestructured: false,
   });
   const [params, setParams] = useState({ page, limit, query, filters })
-  const {isLoading, data, error} = useGetLoanList(params)
+  const {isLoading, data, error} = useGetScheduleList(params)
 
   React.useEffect(() => {
     setParams({page, limit, query, filters})
@@ -465,53 +489,41 @@ const Results = ({ className, products, ...rest }) => {
                 <TableCell>
                   Prestamo
                 </TableCell>
-                <TableCell >
-                  Nombre
-                </TableCell>
-                <TableCell>
-                  Capital
-                </TableCell>
-                <TableCell>
-                  Balance
-                </TableCell>
                 <TableCell>
                   Cuota
                 </TableCell>
                 <TableCell>
-                  Vencimiento
+                  Nombre
                 </TableCell>
                 <TableCell>
-                  Cuotas restantes
+                  Fecha
                 </TableCell>
                 <TableCell>
-                  Finalización
+                  Estatus
                 </TableCell>
                 <TableCell>
-                  Interés
-                </TableCell>
-                <TableCell>
-                  Duración
-                </TableCell>
-                <TableCell>
-                  Frecuencia de pago
-                </TableCell>
-                <TableCell>
-                  Método de Amortización
-                </TableCell>
-                <TableCell>
-                  Uso de los fondos
-                </TableCell>
-                <TableCell>
-                  País
+                  Días
                 </TableCell>
                 <TableCell align="right">
-                  Estatus
+                  Cuota
+                </TableCell>
+                <TableCell align="right">
+                  Balance
+                </TableCell>
+                <TableCell align="right">
+                  Divisa
+                </TableCell>
+                <TableCell align="right">
+                  Pais
+                </TableCell>
+                <TableCell align="right">
+                  Acción
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {!isLoading && data?.results.map((product) => {
-                let UFO = useOfFundsOptions.find( e =>  e.value === product.useOfFunds[0]).label
+                // let UFO = useOfFundsOptions.find( e =>  e.value === product.useOfFunds[0]).label
                 let country = countryOptions.find( e =>  e.id === product.country).name
                 return (
                   <TableRow
@@ -526,10 +538,21 @@ const Results = ({ className, products, ...rest }) => {
                         underline="none"
                         to={`/app/management/loan/${product._id}/details`}
                       >
+                        {product._loan.slice(product._loan.length -8, product._loan.length)}
+                      </Link>
+                    </TableCell>
+                    <TableCell>
+                      <Link
+                        variant="subtitle2"
+                        color="textPrimary"
+                        component={RouterLink}
+                        underline="none"
+                        to={`/app/management/loan/${product._id}/details`}
+                      >
                         {product._id.slice(product._id.length -8, product._id.length)}
                       </Link>
                     </TableCell>
-                    <TableCell className={classes.nameColumn}>
+                    <TableCell>
                       <Link
                         variant="subtitle2"
                         color="textPrimary"
@@ -539,74 +562,40 @@ const Results = ({ className, products, ...rest }) => {
                       >
                         {product.fullName}
                       </Link>
-                      {/*{product.image ? (*/}
-                      {/*  <img*/}
-                      {/*    alt="Product"*/}
-                      {/*    src={product.image}*/}
-                      {/*    className={classes.image}*/}
-                      {/*  />*/}
-                      {/*) : (*/}
-                      {/*  <Box*/}
-                      {/*    p={2}*/}
-                      {/*    bgcolor="background.dark"*/}
-                      {/*  >*/}
-                      {/*    <SvgIcon>*/}
-                      {/*      <ImageIcon />*/}
-                      {/*    </SvgIcon>*/}
-                      {/*  </Box>*/}
-                      {/*)}*/}
                     </TableCell>
                     <TableCell>
-                        {currencyFormat(product.capital, '$')}
+                      {DateTime.fromISO(product.date).toFormat('DD').toString()}
                     </TableCell>
                     <TableCell>
-                      {currencyFormat(product.status === 'CLOSED' ? 0: product.capitalRemaining, '$')}
+                      {getStatusLabel(product.status)}
                     </TableCell>
                     <TableCell>
-                      {currencyFormat(product?.installmentDue, '$')}
-                    </TableCell>
-                    <TableCell>
-                      {product?.installmentDueDate}
-                    </TableCell>
-                    <TableCell>
-                      {product.status === 'CLOSED' ? '' : product?.installmentsRemaining}
-                    </TableCell>
-                    <TableCell>
-                      {product?.lastInstallmentDate}
-                    </TableCell>
-                    <TableCell>
-                      {product.interestRate || product.interest}
-                    </TableCell>
-                    <TableCell>
-                      {product.numberOfInstallments || product.duration}
-                    </TableCell>
-                    <TableCell>
-                      {product.paymentFrequency || product.period}
-                    </TableCell>
-                    <TableCell>
-                      {product.amortizationMethod || product.loanType}
-                    </TableCell>
-                    <TableCell>
-                      {UFO}
-                    </TableCell>
-                    <TableCell>
-                      {country}
+                      {product.dayDifference}
                     </TableCell>
                     <TableCell align="right">
-                      {product.status === 'OPEN' ? 'Abierto' : 'Cerrado'}
+                      {currencyFormat(product.interest+product.principal, '$')}
                     </TableCell>
-                    {/*<TableCell align="right">*/}
-                    {/*  <IconButton>*/}
-                    {/*    <SvgIcon fontSize="small">*/}
-                    {/*      <EditIcon />*/}
-                    {/*    </SvgIcon>*/}
-                    {/*  </IconButton>*/}
-                    {/*  <IconButton>*/}
-                    {/*    <SvgIcon fontSize="small">*/}
-                    {/*      <ArrowRightIcon />*/}
-                    {/*    </SvgIcon>*/}
-                    {/*  </IconButton>*/}
-                    {/*</TableCell>*/}
+                    <TableCell align="right">
+                      {currencyFormat(product.balance, '$')}
+                    </TableCell>
+                    <TableCell align="right">
+                      {product.currency}
+                    </TableCell>
+                    <TableCell align="right">
+                      {product.country}
+                    </TableCell>
+                    <TableCell align="right">
+                      <IconButton>
+                        <SvgIcon fontSize="small">
+                          <EditIcon />
+                        </SvgIcon>
+                      </IconButton>
+                      <IconButton>
+                        <SvgIcon fontSize="small">
+                          <ArrowRightIcon />
+                        </SvgIcon>
+                      </IconButton>
+                    </TableCell>
                   </TableRow>
                 );
               })}

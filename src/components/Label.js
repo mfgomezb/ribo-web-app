@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { fade, makeStyles } from '@material-ui/core';
+import { colors, fade, makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,6 +41,10 @@ const useStyles = makeStyles((theme) => ({
   warning: {
     color: theme.palette.warning.main,
     backgroundColor: fade(theme.palette.warning.main, 0.08)
+  },
+  neutral: {
+    color: colors.blueGrey[400],
+    backgroundColor: fade(colors.blueGrey[400], 0.08)
   }
 }));
 
@@ -71,7 +75,7 @@ Label.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
   style: PropTypes.object,
-  color: PropTypes.oneOf(['primary', 'secondary', 'error', 'warning', 'success'])
+  color: PropTypes.oneOf(['primary', 'secondary', 'error', 'warning', 'success', 'neutral'])
 };
 
 export default Label;

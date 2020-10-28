@@ -186,10 +186,6 @@ const Results = ({
   });
   const [params, setParams] = useState({ page, limit, query, filters })
   const {isLoading, data, error} = useGetUsers(params)
-  console.log(qs.parse(search))
-
-
-
 
   const handleTabsChange = (event, value) => {
     const updatedFilters = {

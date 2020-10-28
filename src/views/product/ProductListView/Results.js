@@ -33,58 +33,58 @@ import Label from 'src/components/Label';
 
 const categoryOptions = [
   {
-    id: 'all',
-    name: 'All'
+    id: 'ALL',
+    name: 'Todos'
   },
   {
-    id: 'dress',
-    name: 'Dress'
+    id: 'OPEN',
+    name: 'Abierto'
   },
   {
-    id: 'jewelry',
-    name: 'Jewelry'
+    id: 'CLOSED',
+    name: 'Cerrado'
   },
   {
-    id: 'blouse',
-    name: 'Blouse'
+    id: 'LOSS',
+    name: 'Perdida'
   },
-  {
-    id: 'beauty',
-    name: 'Beauty'
-  }
 ];
 
 const avalabilityOptions = [
   {
-    id: 'all',
-    name: 'All'
+    id: 'ALL',
+    name: 'Todos'
   },
   {
-    id: 'available',
-    name: 'Available'
+    name: 'Perú',
+    id: 'PERU'
   },
   {
-    id: 'unavailable',
-    name: 'Unavailable'
+    id: 'DOMINICAN_REPUBLIC',
+    name: 'República Dominicana',
+  },
+  {
+    name: 'USA',
+    id: 'USA'
   }
 ];
 
 const sortOptions = [
   {
     value: 'updatedAt|desc',
-    label: 'Last update (newest first)'
+    label: 'Ultima actualización (recientes)'
   },
   {
     value: 'updatedAt|asc',
-    label: 'Last update (oldest first)'
+    label: 'Ultima actualización (antiguos)'
   },
   {
     value: 'createdAt|desc',
-    label: 'Creation date (newest first)'
+    label: 'Fecha de creación (recientes)'
   },
   {
     value: 'createdAt|asc',
-    label: 'Creation date (oldest first)'
+    label: 'Fecha de creación (antiguos)'
   }
 ];
 
@@ -221,7 +221,7 @@ const Results = ({ className, products, ...rest }) => {
 
     let value = null;
 
-    if (event.target.value !== 'all') {
+    if (event.target.value !== 'ALL') {
       value = event.target.value;
     }
 
@@ -236,7 +236,7 @@ const Results = ({ className, products, ...rest }) => {
 
     let value = null;
 
-    if (event.target.value !== 'all') {
+    if (event.target.value !== 'ALL') {
       value = event.target.value;
     }
 
@@ -303,7 +303,7 @@ const Results = ({ className, products, ...rest }) => {
     setLimit(parseInt(event.target.value));
   };
 
-  // Usually query is done on backend with indexing solutions
+  // UsuALLy query is done on backend with indexing solutions
   const filteredProducts = applyFilters(products, query, filters);
   const paginatedProducts = applyPagination(filteredProducts, page, limit);
   const enableBulkOperations = selectedProducts.length > 0;
@@ -341,7 +341,7 @@ const Results = ({ className, products, ...rest }) => {
           />
           <Box flexGrow={1} />
           <TextField
-            label="Sort By"
+            label="Ordenar por"
             name="sort"
             onChange={handleSortChange}
             select
@@ -366,12 +366,12 @@ const Results = ({ className, products, ...rest }) => {
         >
           <TextField
             className={classes.categoryField}
-            label="Category"
+            label="Estatus"
             name="category"
             onChange={handleCategoryChange}
             select
             SelectProps={{ native: true }}
-            value={filters.category || 'all'}
+            value={filters.category || 'ALL'}
             variant="outlined"
           >
             {categoryOptions.map((categoryOption) => (
@@ -385,12 +385,31 @@ const Results = ({ className, products, ...rest }) => {
           </TextField>
           <TextField
             className={classes.availabilityField}
-            label="Availability"
+            label="País"
             name="availability"
             onChange={handleAvailabilityChange}
             select
             SelectProps={{ native: true }}
-            value={filters.availability || 'all'}
+            value={filters.availability || 'ALL'}
+            variant="outlined"
+          >
+            {avalabilityOptions.map((avalabilityOption) => (
+              <option
+                key={avalabilityOption.id}
+                value={avalabilityOption.id}
+              >
+                {avalabilityOption.name}
+              </option>
+            ))}
+          </TextField>
+          <TextField
+            className={classes.availabilityField}
+            label="Uso de los fondos"
+            name="availability"
+            onChange={handleAvailabilityChange}
+            select
+            SelectProps={{ native: true }}
+            value={filters.availability || 'ALL'}
             variant="outlined"
           >
             {avalabilityOptions.map((avalabilityOption) => (
@@ -411,7 +430,7 @@ const Results = ({ className, products, ...rest }) => {
                 name="inStock"
               />
             )}
-            label="In Stock"
+            label="Restructurado"
           />
           <FormControlLabel
             className={classes.shippableField}
@@ -545,12 +564,12 @@ const Results = ({ className, products, ...rest }) => {
                     </TableCell>
                     <TableCell align="right">
                       <IconButton>
-                        <SvgIcon fontSize="small">
+                        <SvgIcon fontSize="smALL">
                           <EditIcon />
                         </SvgIcon>
                       </IconButton>
                       <IconButton>
-                        <SvgIcon fontSize="small">
+                        <SvgIcon fontSize="smALL">
                           <ArrowRightIcon />
                         </SvgIcon>
                       </IconButton>
