@@ -59,32 +59,32 @@ const Header = ({ className, ...rest }) => {
             to="/app/management"
             component={RouterLink}
           >
-            Management
+            Administración
           </Link>
           <Typography
             variant="body1"
             color="textPrimary"
           >
-            Products
+            Prestamos
           </Typography>
         </Breadcrumbs>
         <Typography
           variant="h3"
           color="textPrimary"
         >
-          All Products
+          Todos los préstamos
         </Typography>
         <Box mt={2}>
-          <Button
-            className={classes.action}
-            startIcon={
-              <SvgIcon fontSize="small">
-                <UploadIcon />
-              </SvgIcon>
-            }
-          >
-            Import
-          </Button>
+          {/*<Button*/}
+          {/*  className={classes.action}*/}
+          {/*  startIcon={*/}
+          {/*    <SvgIcon fontSize="small">*/}
+          {/*      <UploadIcon />*/}
+          {/*    </SvgIcon>*/}
+          {/*  }*/}
+          {/*>*/}
+          {/*  Import*/}
+          {/*</Button>*/}
           <Button
             className={classes.action}
             startIcon={
@@ -93,7 +93,7 @@ const Header = ({ className, ...rest }) => {
               </SvgIcon>
             }
           >
-            Export
+            Exportar
           </Button>
         </Box>
       </Grid>
@@ -103,14 +103,14 @@ const Header = ({ className, ...rest }) => {
           variant="contained"
           className={classes.action}
           component={RouterLink}
-          to="/app/management/products/create"
-          startIcon={
-            <SvgIcon fontSize="small">
-              <PlusCircleIcon />
-            </SvgIcon>
-          }
+          to="/app/management/loans"
+          // startIcon={
+          //   <SvgIcon fontSize="small">
+          //     <PlusCircleIcon />
+          //   </SvgIcon>
+          // }
         >
-          New Product
+          Préstamos
         </Button>
       </Grid>
     </Grid>

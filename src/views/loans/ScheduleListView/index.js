@@ -47,7 +47,7 @@ const ProductListView = () => {
   return (
     <Page
       className={classes.root}
-      title="Product List"
+      title="Ribo | Cronogramas"
     >
       <Container maxWidth={false}>
         <Header />

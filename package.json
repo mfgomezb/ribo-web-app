@@ -1,6 +1,6 @@
 {
-  "name": "@devias-io/material-kit-pro-react",
-  "author": "DeviasIO",
+  "name": "@ribo/admin-panel",
+  "author": "Ribo",
   "engines": {
     "node": "14.9.0"
   },

@@ -47,7 +47,7 @@ const ProductListView = () => {
   return (
     <Page
       className={classes.root}
-      title="Product List"
+      title="Ribo | Listado de Préstamos"
     >
       <Container maxWidth={false}>
         <Header />

@@ -41,7 +41,7 @@ export const useLoanDetailsView = (loanId) => {
 
 export const useGetLoanList = (params) => {
   let queryParams = Qs.stringify({ ...params, filter: params.query, fields: 'fullName,email,businessName' }, {encode: false})
-  return usePaginatedQuery(['loan-search'], () =>
+  return usePaginatedQuery(['loan-search', params], () =>
     axios.get(`api/loan/loans-search?${queryParams}`)
       .then(res => {
         return res.data
@@ -50,7 +50,7 @@ export const useGetLoanList = (params) => {
 
 export const useGetScheduleList = (params) => {
   let queryParams = Qs.stringify({ ...params, filter: params.query, fields: 'fullName,email,businessName' }, {encode: false})
-  return usePaginatedQuery(['schedule-search'], () =>
+  return usePaginatedQuery(['schedule-search', params], () =>
     axios.get(`api/loan/schedule-search?${queryParams}`)
       .then(res => {
         return res.data
