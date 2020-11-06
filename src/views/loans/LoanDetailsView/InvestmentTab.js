@@ -27,6 +27,8 @@ import {
 import Label from 'src/components/Label';
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import { useLoanScheduleLoanView } from 'src/hooks/useLoans';
+import { useDispatch, useSelector } from 'react-redux';
+import { handleLoanInitialData, handleLoanInvestorsPosition } from '../../../reducers/loans';
 
 
 
@@ -34,120 +36,53 @@ const currencyFormat = (number, currency) => {
   return numeral(number).format(`${currency}0,0.00`)
 }
 
-const scheduleStatus = dayDiff => {
-  if (dayDiff >= 0) {
-    return 'PENDING'
-  } else if (dayDiff < 0 && dayDiff >= -5) {
-    return 'GRACE'
-  } else {
-    return 'OVERDUE'
+
+const tableContent = investor => {
+
+  let investment = investor.entries?.['INVESTMENT'] || 0
+  let ri = investor.entries?.['REBALANCING_INVESTMENT'] || 0
+  let divestment = investor.entries?.['DIVESTMENT'] || 0
+  let fee = investor.entries?.['FEE'] || 0
+  let rd = investor.entries?.['REBALANCING_DIVESTMENT'] || 0
+  let interest = investor.entries?.['INTEREST'] || 0
+  let mii = investor.entries?.['MANAGEMENT_INTEREST_INCOME'] || 0
+  let mfi = investor.entries?.['MANAGEMENT_FEE_INCOME'] || 0
+  let mic = investor.entries?.['MANAGEMENT_INTEREST_COST'] || 0
+  let mfc = investor.entries?.['MANAGEMENT_FEE_COST'] || 0
+  let capital = investor.entries?.['CAPITAL'] || 0
+  investment = investment + ri
+  divestment = divestment + rd
+  let position = (investment + divestment)*-1
+  let cost = mic + mfc + (fee < 0 ? fee : 0)
+  let income = mii + mfi + interest + (fee < 0 ? 0 : fee)
+  return {
+    fullName: investor.fullName,
+    capital,
+    investment,
+    divestment,
+    position,
+    cost,
+    income,
+    operatingResult: income+cost,
+    netIncome: +investment+divestment+capital+income+cost
+
   }
 }
-const getStatusLabel = (status) => {
-  // let status = scheduleStatus(dayDiff)
-
-  const map = {
-    PAID: {
-      text: 'PAGO',
-      color: 'success'
-    },
-    PAID_LATE: {
-      text: 'PAGO TARDE',
-      color: 'warning'
-    },
-    OVERDUE: {
-      text: 'VENCIDO',
-      color: 'error'
-    },
-    PENDING: {
-      text: 'PENDIENTE',
-      color: 'primary'
-    },
-    GRACE: {
-      text: 'GRACIA',
-      color: 'warning'
-    },
-  };
-
-  const { text, color } = map[status];
-
-  return (
-    <Label color={color}>
-      {text}
-    </Label>
-  );
-};
-
-const getDaysBehind = (date, startDate = DateTime.local().toString()) => {
-  let end = DateTime.fromISO(date);
-  let start = DateTime.fromISO(startDate)  ;
-  return Math.round(end.diff(start, 'days').days);
-}
-
-const isPaymentFulfilled = (data) => {
-  let {interest, interest_pmt, principal, principal_pmt} = data
-  let installment = interest + principal
-  let installmentPayment = interest_pmt + principal_pmt
-  return installmentPayment >= installment*0.99
-}
-
-const isPastDate = daysBehind => {
-  return daysBehind <= 0;
-}
-
-const statusSetter = (data) => {
-  let isDue = isPastDate(getDaysBehind(data.date))
-  let isFulfilled = isPaymentFulfilled(data)
-  if (isDue && isFulfilled) {
-    let paymentDate = data?.lastPayment || data?.date_pmt
-    let days = getDaysBehind(data.date, paymentDate)
-    let isPaidLate = isPastDate(days+1)
-    if (isPaidLate) {
-      return 'PAID_LATE'
-    }
-    return 'PAID'
-  } else if (isDue && !isFulfilled) {
-    return 'OVERDUE'
-  } else if (!isDue && isFulfilled){
-    return 'PAID'
-  } else {
-    return 'PENDING'
-  }
-}
-
-const applyPagination = (data, page, limit) => {
-  return (data) ? data.slice(page * limit, page * limit + limit) : []
-};
 
 const useStyles = makeStyles(() => ({
   root: {}
 }));
 
 const InvestmentTab = ({ className, loanId, ...rest }) => {
-  const { isLoading, data, error } = useLoanScheduleLoanView(loanId)
+  const dispatch = useDispatch()
+  const loanInvestors = useSelector((state) => state.loan.loanInvestors)
   const classes = useStyles()
-  const [page, setPage] = useState(0);
-  const [limit, setLimit] = useState(10);
 
+  React.useEffect(() => {
+    dispatch(handleLoanInvestorsPosition(loanId))
+  }, [dispatch])
 
-
-  const handlePageChange = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleLimitChange = (event) => {
-    setLimit(parseInt(event.target.value));
-  };
-
-  if (isLoading) {
-    return null
-  }
-  //
-  // React.useEffect( () => {
-  //   let pagination = applyPagination(data, page, limit)
-  //   setPaginatedSchedule(pagination)
-  // }, [data])
-
+  console.log(loanInvestors)
   return (
     <div
       className={clsx(classes.root, className)}
@@ -156,7 +91,7 @@ const InvestmentTab = ({ className, loanId, ...rest }) => {
       <Card>
         <CardHeader
           action={<GenericMoreButton />}
-          title="Pagos recibidos"
+          title="Resumen de inversión"
         />
         <Divider />
         <PerfectScrollbar>
@@ -165,44 +100,31 @@ const InvestmentTab = ({ className, loanId, ...rest }) => {
               <TableHead>
                 <TableRow>
                   <TableCell>
-                    ID
-                    {/*<Typography*/}
-                    {/*  variant="body2"*/}
-                    {/*  color="textSecondary"*/}
-                    {/*>*/}
-
-                    {/*</Typography>*/}
-                  </TableCell>
-                  <TableCell>
-                    Fecha
+                    #
                   </TableCell>
                   <TableCell>
                     Inversor
                   </TableCell>
                   <TableCell>
-                    Compra
-                    {/*Estatus*/}
-                    {/*<Typography*/}
-                    {/*  variant="body2"*/}
-                    {/*  color="textSecondary"*/}
-                    {/*>*/}
-                    {/*  días*/}
-                    {/*</Typography>*/}
+                    Posición
+                  </TableCell>
+                  <TableCell>
+                    Inversión
                   </TableCell>
                   <TableCell>
                     Venta
-                    {/*<Typography*/}
-                    {/*  variant="body2"*/}
-                    {/*  color="textSecondary"*/}
-                    {/*>*/}
-                    {/*  balance*/}
-                    {/*</Typography>*/}
                   </TableCell>
                   <TableCell>
-                    Intereses
+                    Capital
                   </TableCell>
                   <TableCell>
-                    Comisiones
+                    Ingresos
+                  </TableCell>
+                  <TableCell>
+                    Egreso
+                  </TableCell>
+                  <TableCell style={{whiteSpace: 'nowrap'}}>
+                    Ingreso Operativo
                   </TableCell>
                   <TableCell>
                     Utilidad
@@ -210,53 +132,51 @@ const InvestmentTab = ({ className, loanId, ...rest }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {data.map((schedule, index) => {
-                  let {principal, principal_pmt, interest, interest_pmt, currency, date, _loan, payment} = schedule
-                  // let daysBehind = getDaysBehind(date)
-                  // let payment = principal + interest
-                  // let paymentBalance = principal - principal_pmt + interest - interest_pmt
-                  // let principalBalance = principal - principal_pmt
-                  // let interestBalance = interest - interest_pmt
+                {loanInvestors && loanInvestors.map((investor, index) => {
+                  let {
+                    fullName,
+                    capital,
+                    position,
+                    divestment,
+                    investment,
+                    cost,
+                    income,
+                    operatingResult,
+                    netIncome,
+                  } = tableContent(investor)
                   return (
                     <TableRow
-                      key={schedule._id}
+                      key={investor._id}
                     >
                       <TableCell>
-                          {index}
+                        {index+1}
                       </TableCell>
-                      <TableCell>
-                        {DateTime.fromISO(date).toFormat('DD').toString()}
+                      <TableCell style={{whiteSpace: 'nowrap'}}>
+                        {fullName}
                       </TableCell>
-                      <TableCell>
-                        {index !== 0 && getStatusLabel(statusSetter(schedule))}
+                      <TableCell style={{whiteSpace: 'nowrap'}}>
+                        {currencyFormat(position,'$')}
                       </TableCell>
-                      <TableCell>
-                        {currencyFormat(principal,currency)}
-                        <Typography
-                          variant="body2"
-                          color="textSecondary"
-                        >
-                          {/*{daysBehind < 0 && daysBehind+1}*/}
-                        </Typography>
+                      <TableCell style={{whiteSpace: 'nowrap'}}>
+                        {currencyFormat(investment,'$')}
                       </TableCell>
-                      <TableCell>
-                        {currencyFormat(interest,currency)}
-                        <Typography
-                          variant="body2"
-                          color="textSecondary"
-                        >
-                          {/*{currencyFormat(paymentBalance, currency)}*/}
-                        </Typography>
+                      <TableCell style={{whiteSpace: 'nowrap'}}>
+                        {currencyFormat(divestment,'$')}
                       </TableCell>
-                      <TableCell>
-                        {currencyFormat(payment,currency)}
+                      <TableCell style={{whiteSpace: 'nowrap'}}>
+                        {currencyFormat(capital,'$')}
                       </TableCell>
-                      <TableCell>
-                        {currencyFormat(principal_pmt, currency)}
+                      <TableCell style={{whiteSpace: 'nowrap'}}>
+                        {currencyFormat(income,'$')}
                       </TableCell>
-                      <TableCell>
-                        {currencyFormat(interest_pmt, currency)}
-                        {/*{daysBehind < -5 ? (-(0.05/30)*daysBehind*973) : 0}*/}
+                      <TableCell style={{whiteSpace: 'nowrap'}}>
+                        {currencyFormat(cost,'$')}
+                      </TableCell>
+                      <TableCell style={{whiteSpace: 'nowrap'}}>
+                        {currencyFormat(operatingResult,'$')}
+                      </TableCell>
+                      <TableCell style={{whiteSpace: 'nowrap'}}>
+                        {currencyFormat(netIncome,'$')}
                       </TableCell>
                     </TableRow>
                   );
@@ -265,15 +185,6 @@ const InvestmentTab = ({ className, loanId, ...rest }) => {
             </Table>
           </Box>
         </PerfectScrollbar>
-        {/*<TablePagination*/}
-        {/*  component="div"*/}
-        {/*  count={isLoading ? 0: data.length}*/}
-        {/*  onChangePage={handlePageChange}*/}
-        {/*  onChangeRowsPerPage={handleLimitChange}*/}
-        {/*  page={page}*/}
-        {/*  rowsPerPage={limit}*/}
-        {/*  rowsPerPageOptions={[5, 10, 25]}*/}
-        {/*/>*/}
       </Card>
     </div>
   );

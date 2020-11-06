@@ -227,7 +227,7 @@ const Results = ({ className, products, ...rest }) => {
   const [paginatedProducts, setPaginatedProducts] = useState([])
   const [filters, setFilters] = useState({
     country: null,
-    status: null,
+    status: 'OPEN',
     useOfFunds: null,
     // isRestructured: false,
   });
@@ -235,8 +235,19 @@ const Results = ({ className, products, ...rest }) => {
   const {isLoading, data, error} = useGetLoanList(params)
 
   React.useEffect(() => {
-    setParams({page, limit, query, filters})
-    history.push(pathname+ "?" + qs.stringify({page: page, limit: limit, query: query, ...filters}))
+
+    const listener = event => {
+      if (event.code === "Enter" || event.code === "NumpadEnter") {
+        setParams({page, limit, query, filters})
+        history.push(pathname+ "?" + qs.stringify({page: page, limit: limit, query: query, ...filters}))
+      }
+    };
+
+    document.addEventListener("keydown", listener);
+    return () => {
+      document.removeEventListener("keydown", listener);
+    };
+
   }, [page, limit, query, filters])
 
   React.useEffect(() => {
@@ -245,6 +256,19 @@ const Results = ({ className, products, ...rest }) => {
       setPaginatedProducts(paginated);
     }
   }, [data])
+  //
+  // React.useEffect(() => {
+  //   const listener = event => {
+  //     if (event.code === "Enter" || event.code === "NumpadEnter") {
+  //       console.log("Enter key was pressed. Run your function.");
+  //       // callMyFunction();
+  //     }
+  //   };
+  //   document.addEventListener("keydown", listener);
+  //   return () => {
+  //     document.removeEventListener("keydown", listener);
+  //   };
+  // }, []);
 
 
 
@@ -253,6 +277,8 @@ const Results = ({ className, products, ...rest }) => {
     setQuery(event.target.value);
     setPage(0);
   };
+
+
 
   const handleStatusChange = (event) => {
     event.persist();
@@ -267,6 +293,8 @@ const Results = ({ className, products, ...rest }) => {
       ...prevFilters,
       status: value
     }));
+
+
   };
 
   const handleCountryChange = (event) => {
@@ -282,6 +310,7 @@ const Results = ({ className, products, ...rest }) => {
       ...prevFilters,
       country: value
     }));
+
   };
 
   const handleUseOfFundsChange = (event) => {
@@ -297,6 +326,7 @@ const Results = ({ className, products, ...rest }) => {
       ...prevFilters,
       useOfFunds: value
     }));
+
   };
 
   // const handleRestructureChange = (event) => {
@@ -358,6 +388,7 @@ const Results = ({ className, products, ...rest }) => {
               )
             }}
             onChange={handleQueryChange}
+            name="query"
             placeholder="Search products"
             value={query}
             variant="outlined"
@@ -462,46 +493,46 @@ const Results = ({ className, products, ...rest }) => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>
+                <TableCell style={{whiteSpace: 'nowrap'}}>
                   Prestamo
                 </TableCell>
                 <TableCell >
                   Nombre
                 </TableCell>
-                <TableCell>
+                <TableCell style={{whiteSpace: 'nowrap'}}>
                   Capital
                 </TableCell>
-                <TableCell>
+                <TableCell style={{whiteSpace: 'nowrap'}}>
                   Balance
                 </TableCell>
-                <TableCell>
+                <TableCell style={{whiteSpace: 'nowrap'}}>
                   Cuota
                 </TableCell>
-                <TableCell>
+                <TableCell style={{whiteSpace: 'nowrap'}}>
                   Vencimiento
                 </TableCell>
-                <TableCell>
+                <TableCell style={{whiteSpace: 'nowrap'}}>
                   Cuotas restantes
                 </TableCell>
-                <TableCell>
+                <TableCell style={{whiteSpace: 'nowrap'}}>
                   Finalización
                 </TableCell>
-                <TableCell>
+                <TableCell style={{whiteSpace: 'nowrap'}}>
                   Interés
                 </TableCell>
-                <TableCell>
+                <TableCell style={{whiteSpace: 'nowrap'}}>
                   Duración
                 </TableCell>
-                <TableCell>
+                <TableCell style={{whiteSpace: 'nowrap'}}>
                   Frecuencia de pago
                 </TableCell>
-                <TableCell>
+                <TableCell style={{whiteSpace: 'nowrap'}}>
                   Método de Amortización
                 </TableCell>
-                <TableCell>
+                <TableCell style={{whiteSpace: 'nowrap'}}>
                   Uso de los fondos
                 </TableCell>
-                <TableCell>
+                <TableCell style={{whiteSpace: 'nowrap'}}>
                   País
                 </TableCell>
                 <TableCell align="right">

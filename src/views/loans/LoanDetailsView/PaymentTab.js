@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link as RouterLink, useParams } from 'react-router-dom';
+// import { Link as RouterLink, useParams } from 'react-router-dom';
 import clsx from 'clsx';
 import { DateTime } from 'luxon';
 import numeral from 'numeral';
@@ -14,19 +14,21 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  TablePagination,
+  // TablePagination,
   TableRow,
-  Typography,
-  makeStyles,
-  Link
+  // Typography,
+  makeStyles, Button
+  // Link
 } from '@material-ui/core';
-import {
-  Edit as EditIcon,
-  ArrowRight as ArrowRightIcon
-} from 'react-feather';
+// import {
+//   Edit as EditIcon,
+//   ArrowRight as ArrowRightIcon
+// } from 'react-feather';
 import Label from 'src/components/Label';
 import GenericMoreButton from 'src/components/GenericMoreButton';
-import { useLoanScheduleLoanView } from 'src/hooks/useLoans';
+import {handlePaymentRemoval} from 'src/reducers/loans';
+import DeleteIcon from '@material-ui/icons/DeleteOutlined';
+import { useSelector, useDispatch } from 'react-redux';
 
 
 
@@ -115,38 +117,25 @@ const statusSetter = (data) => {
   }
 }
 
-const applyPagination = (data, page, limit) => {
-  return (data) ? data.slice(page * limit, page * limit + limit) : []
-};
 
 const useStyles = makeStyles(() => ({
   root: {}
 }));
 
 const PaymentTab = ({ className, loanId, ...rest }) => {
-  const { isLoading, data, error } = useLoanScheduleLoanView(loanId)
+  const dispatch = useDispatch()
+  const loanPayments = useSelector((state) => state.loan.loanPayments)
   const classes = useStyles()
-  const [page, setPage] = useState(0);
-  const [limit, setLimit] = useState(10);
+
+  const handleDelete = payment => {
+    console.log(payment)
+    dispatch(handlePaymentRemoval(payment))
+  }
 
 
-
-  const handlePageChange = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleLimitChange = (event) => {
-    setLimit(parseInt(event.target.value));
-  };
-
-  if (isLoading) {
+  if (!loanPayments) {
     return null
   }
-  //
-  // React.useEffect( () => {
-  //   let pagination = applyPagination(data, page, limit)
-  //   setPaginatedSchedule(pagination)
-  // }, [data])
 
   return (
     <div
@@ -155,7 +144,15 @@ const PaymentTab = ({ className, loanId, ...rest }) => {
     >
       <Card>
         <CardHeader
-          action={<GenericMoreButton />}
+          action={
+            <Box >
+              <Button
+                onClick={() => handleDelete(loanPayments[0])}
+                startIcon={<DeleteIcon />}>
+                Eliminar último pago
+              </Button>
+              <GenericMoreButton />
+            </Box>}
           title="Pagos recibidos"
         />
         <Divider />
@@ -164,39 +161,30 @@ const PaymentTab = ({ className, loanId, ...rest }) => {
             <Table size="small">
               <TableHead>
                 <TableRow>
+
                   <TableCell>
                     #
-                    {/*<Typography*/}
-                    {/*  variant="body2"*/}
-                    {/*  color="textSecondary"*/}
-                    {/*>*/}
-
-                    {/*</Typography>*/}
                   </TableCell>
-                  <TableCell>
-                    Fecha
+                  <TableCell style={{whiteSpace: 'nowrap'}}>
+                    Fecha de Pago
+                  </TableCell>
+                  <TableCell style={{whiteSpace: 'nowrap'}}>
+                    Fecha Pactada
                   </TableCell>
                   <TableCell>
                     Monto
                   </TableCell>
                   <TableCell>
-                    Cuenta
-                    {/*Estatus*/}
-                    {/*<Typography*/}
-                    {/*  variant="body2"*/}
-                    {/*  color="textSecondary"*/}
-                    {/*>*/}
-                    {/*  días*/}
-                    {/*</Typography>*/}
+                    Estatus
                   </TableCell>
                   <TableCell>
+                    Cuenta
+                  </TableCell>
+                  <TableCell>
+                    Dias
+                  </TableCell>
+                  <TableCell style={{whiteSpace: 'nowrap'}}>
                     Tipo de Pago
-                    {/*<Typography*/}
-                    {/*  variant="body2"*/}
-                    {/*  color="textSecondary"*/}
-                    {/*>*/}
-                    {/*  balance*/}
-                    {/*</Typography>*/}
                   </TableCell>
                   <TableCell>
                     Método
@@ -207,56 +195,66 @@ const PaymentTab = ({ className, loanId, ...rest }) => {
                   <TableCell>
                     Comentario
                   </TableCell>
+                  <TableCell>
+                    Registro
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {data.map((schedule, index) => {
-                  let {principal, principal_pmt, interest, interest_pmt, currency, date, _loan, payment} = schedule
-                  // let daysBehind = getDaysBehind(date)
-                  // let payment = principal + interest
-                  // let paymentBalance = principal - principal_pmt + interest - interest_pmt
-                  // let principalBalance = principal - principal_pmt
-                  // let interestBalance = interest - interest_pmt
+                {loanPayments.map((payment, index, arr) => {
+                  let {
+                    _id,
+                    date_pmt,
+                    amount,
+                    cashAccount,
+                    comment,
+                    paymentType,
+                    method,
+                    reference,
+                    date,
+                    dayDifference,
+                    status,
+                    created_at,
+                  } = payment
                   return (
                     <TableRow
-                      key={schedule._id}
+                      key={_id}
                     >
                       <TableCell>
-                          {index}
+                          {arr.length - index}
                       </TableCell>
-                      <TableCell>
+                      <TableCell style={{whiteSpace: 'nowrap'}}>
+                        {DateTime.fromISO(date_pmt).toFormat('DD').toString()}
+                      </TableCell>
+                      <TableCell style={{whiteSpace: 'nowrap'}}>
                         {DateTime.fromISO(date).toFormat('DD').toString()}
                       </TableCell>
                       <TableCell>
-                        {index !== 0 && getStatusLabel(statusSetter(schedule))}
+                        {currencyFormat(amount)}
                       </TableCell>
                       <TableCell>
-                        {currencyFormat(principal,currency)}
-                        <Typography
-                          variant="body2"
-                          color="textSecondary"
-                        >
-                          {/*{daysBehind < 0 && daysBehind+1}*/}
-                        </Typography>
+                        {status}
                       </TableCell>
                       <TableCell>
-                        {currencyFormat(interest,currency)}
-                        <Typography
-                          variant="body2"
-                          color="textSecondary"
-                        >
-                          {/*{currencyFormat(paymentBalance, currency)}*/}
-                        </Typography>
+                        {cashAccount}
                       </TableCell>
                       <TableCell>
-                        {currencyFormat(payment,currency)}
+                        {dayDifference}
                       </TableCell>
                       <TableCell>
-                        {currencyFormat(principal_pmt, currency)}
+                        {paymentType || ''}
                       </TableCell>
                       <TableCell>
-                        {currencyFormat(interest_pmt, currency)}
-                        {/*{daysBehind < -5 ? (-(0.05/30)*daysBehind*973) : 0}*/}
+                        {method || ''}
+                      </TableCell>
+                      <TableCell>
+                        {reference || ''}
+                      </TableCell>
+                      <TableCell>
+                        {comment || ''}
+                      </TableCell>
+                      <TableCell style={{whiteSpace: 'nowrap'}}>
+                        {DateTime.fromISO(created_at).toFormat('DD').toString()}
                       </TableCell>
                     </TableRow>
                   );

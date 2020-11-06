@@ -18,16 +18,18 @@ import {
   TableRow,
   Typography,
   makeStyles,
-  Link
+  Link,
+  Button
 } from '@material-ui/core';
 import {
   Edit as EditIcon,
   ArrowRight as ArrowRightIcon
 } from 'react-feather';
+import { useSelector, useDispatch } from 'react-redux'
+import {removeLoanInstallment} from 'src/reducers/loans';
 import Label from 'src/components/Label';
 import GenericMoreButton from 'src/components/GenericMoreButton';
-import { useLoanScheduleLoanView } from 'src/hooks/useLoans';
-
+import LoanEditModal from 'src/views/loans/LoanDetailsView/LoanPaymentModal';
 
 
 const currencyFormat = (number, currency) => {
@@ -124,29 +126,32 @@ const useStyles = makeStyles(() => ({
 }));
 
 const ScheduleInfo = ({ className, loanId, ...rest }) => {
-  const { isLoading, data, error } = useLoanScheduleLoanView(loanId)
   const classes = useStyles()
-  const [page, setPage] = useState(0);
-  const [limit, setLimit] = useState(10);
+  const dispatch = useDispatch()
+  const loanSchedule = useSelector((state) => state.loan.loanSchedule)
+  const [isOpened, setOpened] = useState(false);
+  const [selectedSchedule, setSelectedSchedule] = useState(null)
 
+  const handleOpen = (e) => {
+    setSelectedSchedule(e)
+  }
 
-
-  const handlePageChange = (event, newPage) => {
-    setPage(newPage);
+  const handleClose = () => {
+    setSelectedSchedule(null)
+    dispatch(removeLoanInstallment())
   };
 
-  const handleLimitChange = (event) => {
-    setLimit(parseInt(event.target.value));
-  };
+  React.useEffect(() => {
+    if (selectedSchedule) {
+      setOpened(true)
+    }
+  }, [selectedSchedule])
 
-  if (isLoading) {
+
+  if (!loanSchedule) {
     return null
   }
-  //
-  // React.useEffect( () => {
-  //   let pagination = applyPagination(data, page, limit)
-  //   setPaginatedSchedule(pagination)
-  // }, [data])
+
 
   return (
     <div
@@ -166,37 +171,21 @@ const ScheduleInfo = ({ className, loanId, ...rest }) => {
                 <TableRow>
                   <TableCell>
                     #
-                    {/*<Typography*/}
-                    {/*  variant="body2"*/}
-                    {/*  color="textSecondary"*/}
-                    {/*>*/}
-
-                    {/*</Typography>*/}
                   </TableCell>
                   <TableCell>
                     Fecha
+                  </TableCell>
+                  <TableCell>
+                    Detalles
                   </TableCell>
                   <TableCell>
                     Estatus
                   </TableCell>
                   <TableCell>
                     Capital
-                    {/*Estatus*/}
-                    {/*<Typography*/}
-                    {/*  variant="body2"*/}
-                    {/*  color="textSecondary"*/}
-                    {/*>*/}
-                    {/*  días*/}
-                    {/*</Typography>*/}
                   </TableCell>
                   <TableCell>
                     Interés
-                    {/*<Typography*/}
-                    {/*  variant="body2"*/}
-                    {/*  color="textSecondary"*/}
-                    {/*>*/}
-                    {/*  balance*/}
-                    {/*</Typography>*/}
                   </TableCell>
                   <TableCell>
                     Cuota
@@ -213,34 +202,31 @@ const ScheduleInfo = ({ className, loanId, ...rest }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {data.map((schedule, index) => {
-                  let {principal, principal_pmt, interest, interest_pmt, currency, date, _loan, payment} = schedule
-                  // let daysBehind = getDaysBehind(date)
-                  // let payment = principal + interest
-                  // let paymentBalance = principal - principal_pmt + interest - interest_pmt
-                  // let principalBalance = principal - principal_pmt
-                  // let interestBalance = interest - interest_pmt
+                {loanSchedule.map((schedule, index) => {
+                  let {principal, principal_pmt, interest, interest_pmt, currency, date,  payment, _id} = schedule
+                  let status = statusSetter(schedule)
                   return (
                     <TableRow
-                      key={schedule._id}
+                      key={_id}
                     >
                       <TableCell>
-                          {index}
+                        {index}
                       </TableCell>
                       <TableCell>
                         {DateTime.fromISO(date).toFormat('DD').toString()}
                       </TableCell>
                       <TableCell>
-                        {index !== 0 && getStatusLabel(statusSetter(schedule))}
+                        <Button
+                          onClick={() => handleOpen(_id)}
+                        >
+                          Ver
+                        </Button>
+                      </TableCell>
+                      <TableCell>
+                        {index !== 0 && getStatusLabel(status)}
                       </TableCell>
                       <TableCell>
                         {currencyFormat(principal,currency)}
-                        <Typography
-                          variant="body2"
-                          color="textSecondary"
-                        >
-                          {/*{daysBehind < 0 && daysBehind+1}*/}
-                        </Typography>
                       </TableCell>
                       <TableCell>
                         {currencyFormat(interest,currency)}
@@ -266,22 +252,19 @@ const ScheduleInfo = ({ className, loanId, ...rest }) => {
                         {/*{currency}*/}
                       </TableCell>
                     </TableRow>
+
                   );
                 })}
               </TableBody>
             </Table>
           </Box>
         </PerfectScrollbar>
-        {/*<TablePagination*/}
-        {/*  component="div"*/}
-        {/*  count={isLoading ? 0: data.length}*/}
-        {/*  onChangePage={handlePageChange}*/}
-        {/*  onChangeRowsPerPage={handleLimitChange}*/}
-        {/*  page={page}*/}
-        {/*  rowsPerPage={limit}*/}
-        {/*  rowsPerPageOptions={[5, 10, 25]}*/}
-        {/*/>*/}
       </Card>
+      {selectedSchedule && isOpened && <LoanEditModal
+        open={isOpened}
+        onClose={handleClose}
+        scheduleData={selectedSchedule}
+      />}
     </div>
   );
 };

@@ -54,7 +54,6 @@ const scheduleStatus = dayDiff => {
 
 const getStatusLabel = (date) => {
   let days = getDaysBehind(date)
-  console.log(days)
   let status = scheduleStatus(days)
 
   const map = {
@@ -308,7 +307,7 @@ const BorrowerInfo = ({
 
 BorrowerInfo.propTypes = {
   className: PropTypes.string,
-  customer: PropTypes.object.isRequired
+  // customer: PropTypes.object.isRequired
 };
 
 export default BorrowerInfo;

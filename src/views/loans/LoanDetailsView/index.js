@@ -1,7 +1,5 @@
 import React, {
-  useCallback,
   useState,
-  useEffect
 } from 'react';
 import {
   Box,
@@ -9,22 +7,16 @@ import {
   Divider,
   Tab,
   Tabs,
-  makeStyles, Grid, CardHeader, Table, TableBody, TableRow, TableCell, Typography, Card
+  makeStyles, Grid
 } from '@material-ui/core';
 import Page from 'src/components/Page';
-// import axios from 'src/utils/axios';
-import { useParams, useRouteMatch, Link, Route } from 'react-router-dom'
-// import useIsMountedRef from 'src/hooks/useIsMountedRef';
+import { useParams, Link } from 'react-router-dom'
 import { useLoanDetailsView } from 'src/hooks/useLoans'
+import { useDispatch, useSelector } from 'react-redux'
 import Header from './Header';
-import clsx from 'clsx';
-import Overview from 'src/views/loans/LoanDetailsView/Overview'
 import LoanInfo from 'src/views/loans/LoanDetailsView/LoanInfo'
 import CustomerView from 'src/views/loans/LoanDetailsView/CustomerView'
-// import Details from './Details';
-// import Loans from './Loans';
-// import CustomerView from './CustomerView'
-// import Logs from './Logs';
+import {handleLoanInitialData} from 'src/reducers/loans'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,9 +34,10 @@ const useStyles = makeStyles((theme) => ({
 
 const LoanDetailsView = () => {
   const classes = useStyles();
+  const dispatch = useDispatch()
+  const loanDetails = useSelector((state) => state.loan.loanDetails)
   const {loanId, loanView} = useParams()
-  const {isLoading, data, error } = useLoanDetailsView(loanId)
-  const [currentTab, setCurrentTab] = useState('details');
+  const [currentTab, setCurrentTab] = useState( loanView || 'details');
   const tabs = [
     { value: 'details', label: 'Detalles', },
     { value: 'payments', label: 'Pagos',},
@@ -53,12 +46,16 @@ const LoanDetailsView = () => {
     { value: 'config', label: 'Configuración',},
   ];
 
-  // const data = {}
+  React.useEffect(() => {
+    dispatch(handleLoanInitialData(loanId))
+  }, [dispatch])
+
+
   const handleTabsChange = (event, value) => {
     setCurrentTab(value);
   };
 
-  if (isLoading) {
+  if (!loanDetails) {
     return null;
   }
 
@@ -68,7 +65,7 @@ const LoanDetailsView = () => {
       title="Ribo - Detalles préstamo"
     >
       <Container maxWidth={false}>
-        <Header details={data} />
+        <Header details={loanDetails} />
           <Grid
             className={classes.mt}
             item
@@ -110,7 +107,7 @@ const LoanDetailsView = () => {
               xl={3}
               xs={12}
             >
-              <LoanInfo details={data}/>
+              <LoanInfo details={loanDetails}/>
             </Grid>
             <Grid
               item

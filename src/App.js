@@ -23,6 +23,15 @@ const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 const history = createBrowserHistory();
 const queryCache = new QueryCache();
 
+const queryConfig = {
+    enabled: true,
+    retry: 3,
+    staleTime: 0,
+    cacheTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    refetchInterval: Infinity
+}
+
 const App = () => {
   const { settings } = useSettings();
 
@@ -33,7 +42,7 @@ const App = () => {
   });
 
   return (
-    <ReactQueryCacheProvider queryCache={queryCache}>
+    <ReactQueryCacheProvider queryCache={queryCache} config={queryConfig}>
       <ReactQueryDevtools initialIsOpen />
       <ThemeProvider theme={theme}>
         <StylesProvider jss={jss}>

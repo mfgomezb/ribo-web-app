@@ -33,7 +33,7 @@ const DashboardView = () => {
   return (
     <Page
       className={classes.root}
-      title="Dashboard"
+      title="Ribo | Dashboard"
     >
       <Container maxWidth={false}>
         <Header />
