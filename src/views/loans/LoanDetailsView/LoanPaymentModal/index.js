@@ -15,10 +15,9 @@ import {
 } from 'react-feather';
 import Payments from './Payments';
 import { useDispatch, useSelector } from 'react-redux';
-import { useGetLoanInstallment } from '../../../../hooks/useLoans';
 import LoanPaymentForm from 'src/views/loans/LoanDetailsView/LoanPaymentModal/LoanPaymentForm'
 import { useProcessPayment } from '../../../../hooks/usePayments';
-import { handleInstallmentInitialData } from 'src/reducers/loans';
+import { handleInstallmentInitialData, handleLoanInitialData } from 'src/actions/loans';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -57,6 +56,7 @@ const PaymentModal = ({
       setPaymentValues(values)
       await processPayment(values)
       await dispatch(handleInstallmentInitialData(scheduleData))
+      await dispatch(handleLoanInitialData(installmentDetails._loan))
 
       enqueueSnackbar('Pago procesado', {
         variant: 'success'

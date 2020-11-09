@@ -26,7 +26,7 @@ import {
   ArrowRight as ArrowRightIcon
 } from 'react-feather';
 import { useSelector, useDispatch } from 'react-redux'
-import {removeLoanInstallment} from 'src/reducers/loans';
+import {removeLoanInstallment} from 'src/actions/loans';
 import Label from 'src/components/Label';
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import LoanEditModal from 'src/views/loans/LoanDetailsView/LoanPaymentModal';

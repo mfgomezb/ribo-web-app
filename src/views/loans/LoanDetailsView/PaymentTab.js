@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 // import { Link as RouterLink, useParams } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
 import clsx from 'clsx';
 import { DateTime } from 'luxon';
 import numeral from 'numeral';
@@ -26,7 +27,7 @@ import {
 // } from 'react-feather';
 import Label from 'src/components/Label';
 import GenericMoreButton from 'src/components/GenericMoreButton';
-import {handlePaymentRemoval} from 'src/reducers/loans';
+import {handlePaymentRemoval} from 'src/actions/loans';
 import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -123,13 +124,23 @@ const useStyles = makeStyles(() => ({
 }));
 
 const PaymentTab = ({ className, loanId, ...rest }) => {
-  const dispatch = useDispatch()
-  const loanPayments = useSelector((state) => state.loan.loanPayments)
   const classes = useStyles()
+  const dispatch = useDispatch()
+  const { enqueueSnackbar } = useSnackbar();
+  const loanPayments = useSelector((state) => state.loan.loanPayments)
+  const loading = useSelector((state) => state.loan.loading)
 
-  const handleDelete = payment => {
-    console.log(payment)
-    dispatch(handlePaymentRemoval(payment))
+  const handleDelete = async payment => {
+    try {
+      await dispatch(handlePaymentRemoval(payment))
+      enqueueSnackbar('Pago eliminado correctamente', {
+        variant: 'success'
+      });
+    } catch (e) {
+      enqueueSnackbar('Error al eliminar pago', {
+        variant: 'error'
+      });
+    }
   }
 
 
@@ -148,6 +159,7 @@ const PaymentTab = ({ className, loanId, ...rest }) => {
             <Box >
               <Button
                 onClick={() => handleDelete(loanPayments[0])}
+                disabled={loading}
                 startIcon={<DeleteIcon />}>
                 Eliminar último pago
               </Button>

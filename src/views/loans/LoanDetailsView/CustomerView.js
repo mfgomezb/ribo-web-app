@@ -8,6 +8,7 @@ import {
 } from 'react-router-dom'
 import ScheduleInfo from './ScheduleInfo';
 import PaymentTab from './PaymentTab';
+import Config from './Config';
 import TransactionTab from './TransactionTab';
 import InvestmentTab from './InvestmentTab';
 
@@ -30,7 +31,7 @@ function CustomerView ({
     case 'investors':
       return <InvestmentTab loanId={loanId} />
     case 'config':
-      return <PaymentTab loanId={loanId} />
+      return <Config loanId={loanId} />
     default:
       return null
   }

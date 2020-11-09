@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Header from './Header';
 import LoanInfo from 'src/views/loans/LoanDetailsView/LoanInfo'
 import CustomerView from 'src/views/loans/LoanDetailsView/CustomerView'
-import {handleLoanInitialData} from 'src/reducers/loans'
+import {handleLoanInitialData} from 'src/actions/loans'
 
 const useStyles = makeStyles((theme) => ({
   root: {

@@ -28,7 +28,7 @@ import Label from 'src/components/Label';
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import { useLoanScheduleLoanView } from 'src/hooks/useLoans';
 import { useDispatch, useSelector } from 'react-redux';
-import { handleLoanInitialData, handleLoanInvestorsPosition } from '../../../reducers/loans';
+import { handleLoanInitialData, handleLoanInvestorsPosition } from '../../../actions/loans';
 
 
 

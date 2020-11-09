@@ -19,7 +19,7 @@ import {
 } from '@material-ui/core';
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import { useSelector, useDispatch } from 'react-redux';
-import { handleLoanTransactionInitialData } from 'src/reducers/loans';
+import { handleLoanTransactionInitialData } from 'src/actions/loans';
 
 const currencyFormat = (number, currency) => {
   return numeral(number).format(`${currency}0,0.00`)
