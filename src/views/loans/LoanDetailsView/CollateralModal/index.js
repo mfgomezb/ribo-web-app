@@ -15,15 +15,14 @@ import {
   XCircle as CloseIcon,
 } from 'react-feather';
 import { useDispatch, useSelector } from 'react-redux';
-import {fetchCommissionProfiles} from 'src/utils/API'
 import { useGetLoanInstallment } from '../../../../hooks/useLoans';
 import { useProcessPayment } from '../../../../hooks/usePayments';
 import { handleInstallmentInitialData } from 'src/actions/loans';
 import useIsMountedRef from '../../../../hooks/useIsMountedRef';
-import CommissionForm from 'src/views/loans/LoanDetailsView/CommissionModal/CommissionForm'
-import CommissionList from './CommissionList';
+import CollateralForm from 'src/views/loans/LoanDetailsView/CollateralModal/CollateralForm'
+import CollateralList from './CollateralList';
 import axios from '../../../../utils/axios';
-import { useNewCommission } from '../../../../hooks/useCommission';
+import { useNewCollateral } from '../../../../hooks/useCollateral';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const CommissionModal = ({
+const CollateralModal = ({
   className,
   onClose,
   open,
@@ -50,35 +49,15 @@ const CommissionModal = ({
   const {loanId} = useParams()
   const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar } = useSnackbar();
-  const [commissionProfiles, setCommissionProfiles] = React.useState([])
-  const [newCommission, newCommissionInfo] = useNewCommission()
+  // const [commissionProfiles, setCollateralProfiles] = React.useState([])
 
-
-  const getCommissionProfiles = React.useCallback(async () => {
-    try {
-      let profiles = []
-      if (open) {
-        profiles = await fetchCommissionProfiles(loanId)
-      }
-
-      if (isMountedRef.current) {
-        setCommissionProfiles(profiles)
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }, [isMountedRef, open]);
-
-  React.useEffect(() => {
-    getCommissionProfiles();
-  }, [getCommissionProfiles]);
 
 
   return (
     <Dialog
       onClose={onClose}
       open={open}
-      maxWidth="sm"
+      maxWidth="md"
       fullWidth
       {...rest}
     >
@@ -91,7 +70,7 @@ const CommissionModal = ({
             variant="body1"
             color="textSecondary"
           >
-            Administración de comisiones
+            Administración de colaterales
           </Typography>
           <IconButton onClick={onClose}>
             <SvgIcon>
@@ -108,13 +87,12 @@ const CommissionModal = ({
             xs={12}
             sm={12}
           >
-            <CommissionForm
+            <CollateralForm
               loan={loanId}
-              commissionProfiles={commissionProfiles}
-              info={newCommissionInfo}
+              info={{}}
             />
             <Box mt={2}>
-              <CommissionList profiles={commissionProfiles}/>
+              {/*<CollateralList profiles={commissionProfiles}/>*/}
             </Box>
           </Grid>
         </Grid>
@@ -123,7 +101,7 @@ const CommissionModal = ({
   );
 };
 
-CommissionModal.propTypes = {
+CollateralModal.propTypes = {
   // card: PropTypes.object.isRequired,
   className: PropTypes.string,
   // list: PropTypes.object.isRequired,
@@ -131,9 +109,9 @@ CommissionModal.propTypes = {
   open: PropTypes.bool.isRequired
 };
 
-CommissionModal.defaultProps = {
+CollateralModal.defaultProps = {
   open: false,
   onClose: () => {}
 };
 
-export default CommissionModal;
+export default CollateralModal;

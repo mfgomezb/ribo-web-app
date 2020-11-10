@@ -5,11 +5,12 @@ import clsx from 'clsx';
 import {
   Box,
   TableBody,
-  makeStyles, Table, TableHead, TableRow, TableCell
+  makeStyles, Table, TableHead, TableRow, TableCell, IconButton, SvgIcon
 } from '@material-ui/core';
-import { DateTime } from 'luxon';
 import numeral from 'numeral';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { Trash2 as DeleteIcon } from 'react-feather';
+import {handleRemoveCommission} from '../../../../actions/commissions';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -24,10 +25,16 @@ const currencyFormat = (number, currency) => {
 
 const CommissionList = ({
                         className,
+                        profiles,
                         ...rest
                       }) => {
   const classes = useStyles();
+  const dispatch = useDispatch()
   const commissions = useSelector((state) => state.commission.commissions)
+
+  const handleDelete = async (commission) => {
+    await dispatch(handleRemoveCommission(commission._id, commission._loan ))
+  }
 
   return (
     <div
@@ -44,24 +51,34 @@ const CommissionList = ({
               <TableCell>
                 Perfil
               </TableCell>
-              <TableCell align="right">
+              <TableCell>
                 Porcentaje
+              </TableCell>
+              <TableCell align="right">
+                Acción
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {commissions.map( (commission, index) => {
               return (
-                <TableRow key={commission._id}>
+                <TableRow key={commission?._id}>
                   <TableCell>
                     {index+1}
                   </TableCell>
                   <TableCell>
-                    {commission.fullName}
+                    {commission?.fullName}
+                  </TableCell>
+                  <TableCell>
+                    {commission?.pct * 100}
                   </TableCell>
                   <TableCell align="right">
-                    {commission.pct * 100}
-                  </TableCell>
+                    <IconButton onClick={() => handleDelete(commission)}>
+                      <SvgIcon fontSize="small">
+                        <DeleteIcon />
+                      </SvgIcon>
+                    </IconButton>
+                    </TableCell>
                 </TableRow>
               )
             })

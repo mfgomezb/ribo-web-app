@@ -1,3 +1,5 @@
+
+
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -22,9 +24,9 @@ const currencyFormat = (number, currency) => {
 }
 
 const PaymentsList = ({
-  className,
-  ...rest
-}) => {
+                        className,
+                        ...rest
+                      }) => {
   const classes = useStyles();
   const installmentPayments = useSelector((state) => state.loan.installmentDetails.payments)
 
@@ -33,7 +35,7 @@ const PaymentsList = ({
       className={clsx(classes.root, className)}
       {...rest}
     >
-        <Box p={1}>
+      <Box p={1}>
         <Table size="small">
           <TableHead>
             <TableRow>
@@ -42,7 +44,7 @@ const PaymentsList = ({
               </TableCell>
               <TableCell>
                 Fecha
-                </TableCell>
+              </TableCell>
               <TableCell>
                 Monto
               </TableCell>
@@ -51,29 +53,29 @@ const PaymentsList = ({
               </TableCell>
             </TableRow>
           </TableHead>
-            <TableBody>
-              {installmentPayments && installmentPayments.map( (payment, index) => {
-                return (
-                  <TableRow key={payment._id}>
-                    <TableCell>
-                      {index+1}
-                    </TableCell>
-                    <TableCell>
-                      {DateTime.fromISO(payment.date_pmt).toFormat('DD').toString()}
-                    </TableCell>
-                    <TableCell>
-                      {currencyFormat(payment.amount, payment.currency)}
-                    </TableCell>
-                    <TableCell align="right">
-                      {payment.cashAccount}
-                    </TableCell>
-                  </TableRow>
-                  )
-                })
-              }
-            </TableBody>
+          <TableBody>
+            {installmentPayments && installmentPayments.map( (payment, index) => {
+              return (
+                <TableRow key={payment._id}>
+                  <TableCell>
+                    {index+1}
+                  </TableCell>
+                  <TableCell>
+                    {DateTime.fromISO(payment.date_pmt).toFormat('DD').toString()}
+                  </TableCell>
+                  <TableCell>
+                    {currencyFormat(payment.amount, payment.currency)}
+                  </TableCell>
+                  <TableCell align="right">
+                    {payment.cashAccount}
+                  </TableCell>
+                </TableRow>
+              )
+            })
+            }
+          </TableBody>
         </Table>
-        </Box>
+      </Box>
     </div>
   );
 };

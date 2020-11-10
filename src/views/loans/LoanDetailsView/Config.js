@@ -28,15 +28,11 @@ import {
 import { useSelector, useDispatch } from 'react-redux'
 import {removeLoanInstallment} from 'src/actions/loans';
 import Label from 'src/components/Label';
-import NewCommissionModal from 'src/views/loans/LoanDetailsView/CommissionModal'
-import GenericMoreButton from 'src/components/GenericMoreButton';
-import LoanEditModal from 'src/views/loans/LoanDetailsView/LoanPaymentModal';
-import Brief from '../../project/ProjectDetailsView/Overview/Brief';
-import Files from '../../project/ProjectDetailsView/Overview/Files';
-import Metadata from '../../project/ProjectDetailsView/Overview/Metadata';
-// import Members from '../../project/ProjectDetailsView/Overview/Members';
 import getInitials from '../../../utils/getInitials';
 import CommissionModal from 'src/views/loans/LoanDetailsView/CommissionModal'
+import CollateralModal from 'src/views/loans/LoanDetailsView/CollateralModal'
+import { handleLoanCommissionsInitialData } from '../../../actions/commissions';
+import { handleLoanCollateralsInitialData } from '../../../actions/collaterals';
 
 
 const currencyFormat = (number, currency) => {
@@ -134,31 +130,6 @@ const useStyles = makeStyles(() => ({
 
 const ConfigInfo = ({ className, loanId, ...rest }) => {
   const classes = useStyles()
-  const dispatch = useDispatch()
-  const loanSchedule = useSelector((state) => state.loan.loanSchedule)
-  const [isOpened, setOpened] = useState(false);
-  const [selectedSchedule, setSelectedSchedule] = useState(null)
-
-  const handleOpen = (e) => {
-    setSelectedSchedule(e)
-  }
-
-  const handleClose = () => {
-    setSelectedSchedule(null)
-    dispatch(removeLoanInstallment())
-  };
-
-  React.useEffect(() => {
-    if (selectedSchedule) {
-      setOpened(true)
-    }
-  }, [selectedSchedule])
-
-
-  if (!loanSchedule) {
-    return null
-  }
-
 
   return (
     <Grid
@@ -183,20 +154,39 @@ const ConfigInfo = ({ className, loanId, ...rest }) => {
       >
         <Commissions members={[]} />
         {/*<Brief project={project} />*/}
-        <Box mt={3}>
-          <Commissions members={[]} />
-        </Box>
-        {/*<Box mb={3}>*/}
-        {/*  <Metadata project={project} />*/}
-        {/*</Box>*/}
-
       </Grid>
     </Grid>
   );
 };
 
-const Collaterals = ({ className, members, ...rest }) => {
-  const classes = useStyles();
+const collateralBoxStyles = makeStyles(() => ({
+  root: {},
+  header: {
+    paddingBottom: 0
+  },
+  content: {
+    paddingTop: 0
+  }
+}));
+
+const Collaterals = ({ className, ...rest }) => {
+  const classes = collateralBoxStyles();
+  const { loanId } = useParams()
+  const dispatch = useDispatch()
+  const collaterals = useSelector( state => state.collateral.collaterals)
+  const [isOpened, setOpened] = useState(false);
+
+  React.useEffect(() => {
+    dispatch(handleLoanCollateralsInitialData(loanId))
+  },[])
+
+  const handleOpen = () => {
+    setOpened(true);
+  };
+
+  const handleClose = () => {
+    setOpened(false);
+  };
 
   return (
     <Card
@@ -212,7 +202,7 @@ const Collaterals = ({ className, members, ...rest }) => {
       />
       <CardContent className={classes.content}>
         <List>
-          {members.map((member) => (
+          {collaterals.map((member) => (
             <ListItem
               disableGutters
               key={member.id}
@@ -236,17 +226,39 @@ const Collaterals = ({ className, members, ...rest }) => {
       </CardContent>
       <Divider />
       <CardActions>
-        <Button>
+        <Button onClick={() => handleOpen()}>
           Administrar colaterales
         </Button>
       </CardActions>
+      <CollateralModal
+        open={isOpened}
+        onClose={ () => handleClose()}
+      />
     </Card>
   );
 };
 
-const Commissions = ({ className, members, ...rest }) => {
-  const classes = useStyles();
+
+const commissionBoxStyles = makeStyles(() => ({
+  root: {},
+  header: {
+    paddingBottom: 0
+  },
+  content: {
+    paddingTop: 0
+  }
+}));
+
+const Commissions = ({ className, ...rest }) => {
+  const classes = commissionBoxStyles();
+  const {loanId} = useParams()
+  const dispatch = useDispatch()
+  const commissions = useSelector( state => state.commission.commissions)
   const [isOpened, setOpened] = useState(false);
+
+  React.useEffect(() => {
+      dispatch(handleLoanCommissionsInitialData(loanId))
+  },[])
 
   const handleOpen = () => {
     setOpened(true);
@@ -269,38 +281,38 @@ const Commissions = ({ className, members, ...rest }) => {
         }}
       />
       <CardContent className={classes.content}>
-        {/*<List>*/}
-        {/*  {members.map((member) => (*/}
-        {/*    <ListItem*/}
-        {/*      disableGutters*/}
-        {/*      key={member.id}*/}
-        {/*    >*/}
-        {/*      <ListItemAvatar>*/}
-        {/*        <Avatar*/}
-        {/*          alt="Author"*/}
-        {/*          src={member.avatar}*/}
-        {/*        >*/}
-        {/*          {getInitials(member.name)}*/}
-        {/*        </Avatar>*/}
-        {/*      </ListItemAvatar>*/}
-        {/*      <ListItemText*/}
-        {/*        primary={member.name}*/}
-        {/*        primaryTypographyProps={{ variant: 'h6' }}*/}
-        {/*        secondary={member.bio}*/}
-        {/*      />*/}
-        {/*    </ListItem>*/}
-        {/*  ))}*/}
-        {/*</List>*/}
+        <List>
+          { commissions.map((member) => (
+            <ListItem
+              disableGutters
+              key={member?._salesman}
+            >
+              <ListItemAvatar>
+                <Avatar
+                  alt="Author"
+                  // src={member.avatar}
+                >
+                  {getInitials(member?.fullName)}
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText
+                primary={member?.fullName}
+                primaryTypographyProps={{ variant: 'h6' }}
+                secondary={(member?.pct * 100) + '%'}
+              />
+            </ListItem>
+          ))}
+        </List>
       </CardContent>
       <Divider />
       <CardActions>
-        <Button onClick={handleOpen} fullWidth>
+        <Button onClick={() => handleOpen()} fullWidth>
           Administrar comisiones
         </Button>
       </CardActions>
       <CommissionModal
         open={isOpened}
-        onClose={handleClose}
+        onClose={ () => handleClose()}
       />
     </Card>
   );
@@ -308,11 +320,6 @@ const Commissions = ({ className, members, ...rest }) => {
 
 ConfigInfo.propTypes = {
   className: PropTypes.string,
-  // orders: PropTypes.array.isRequired
-};
-
-ConfigInfo.defaultProps = {
-  orders: []
 };
 
 export default ConfigInfo;

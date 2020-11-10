@@ -38,7 +38,6 @@ export function fetchInstallmentDetails (installmentId) {
 }
 
 
-
 export async function fetchLoanTransactions(loanId) {
   return axios
     .get(`api/transaction/loan/${loanId}`)
@@ -58,4 +57,82 @@ export function postInstallmentPayment (values) {
   return axios
     .post(`api/payment/installment/${values._loanSchedule}`, values)
     .then((res) => res.data);
+}
+
+
+// Commissions routes
+
+export function fetchLoanCommissions (loanId) {
+  return axios
+    .get(`api/commissions/loan/${loanId}`)
+    .then(res => {
+      return res.data;
+    })
+}
+
+export function fetchCommissionProfiles (loanId) {
+  return axios
+    .get(`api/commissions/profiles/${loanId}`)
+    .then(res => {
+      return res.data;
+    })
+}
+
+export function postLoanCommission (values) {
+  console.log('API', values)
+  return axios
+    .post(`api/commissions/${values._loan}`, values)
+    .then(res => {
+      return res.data;
+    })
+}
+
+export function removeLoanCommission (commissionId, loanId) {
+  return axios
+    .delete(`api/commissions/${commissionId}/loan/${loanId}`)
+    .then(res => {
+      return res.data;
+    })
+}
+
+// Collaterals routes
+
+export function fetchLoanCollaterals (loanId) {
+  return axios
+    .get(`api/collaterals/loan/${loanId}`)
+    .then(res => {
+      return res.data;
+    })
+}
+
+export function fetchCollateralProfiles (loanId) {
+  return axios
+    .get(`api/collaterals/profiles/${loanId}`)
+    .then(res => {
+      return res.data;
+    })
+}
+
+export function postLoanCollateral (values) {
+  return axios
+    .post(`api/collaterals/${values._loan}`, values)
+    .then(res => {
+      return res.data;
+    })
+}
+
+export function updateLoanCollateral (values) {
+  return axios
+    .post(`api/collaterals/${values._loan}`, values)
+    .then(res => {
+      return res.data;
+    })
+}
+
+export function removeLoanCollateral (collateralId, loanId) {
+  return axios
+    .delete(`api/collaterals/${collateralId}/loan/${loanId}`)
+    .then(res => {
+      return res.data;
+    })
 }

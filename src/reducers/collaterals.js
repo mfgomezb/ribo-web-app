@@ -1,36 +1,36 @@
 
 import  {
-  RECEIVE_COMMISSIONS,
-  REMOVE_COMMISSION,
-  ADD_COMMISSION,
+  RECEIVE_COLLATERALS,
+  REMOVE_COLLATERAL,
+  ADD_COLLATERAL,
   START_ASYNC_OPERATION,
   FINISH_ASYNC_OPERATION,
-} from 'src/actions/commissions'
+} from 'src/actions/collaterals'
 
 let initialState = {
   loading: false,
-  commissions: []
+  collaterals: []
 }
 
-export default function commissions(state=initialState, action) {
+export default function collaterals(state=initialState, action) {
   switch (action.type) {
-    case RECEIVE_COMMISSIONS:
-      const {commissions} = action
+    case RECEIVE_COLLATERALS:
+      const {collaterals} = action
       return {
         ...state,
-        ['commissions']: commissions
+        ['collaterals']: collaterals
       }
-    case REMOVE_COMMISSION:
-      const { removedCommission } = action
+    case REMOVE_COLLATERAL:
+      const { removedCollateral } = action
       return {
         ...state,
-        ['commissions']: state.commissions.filter(com => com._id !== removedCommission._id)
+        ['collaterals']: state.collaterals.filter(com => com._id !== removedCollateral._id)
       }
-    case ADD_COMMISSION:
-      const { newCommission } = action
+    case ADD_COLLATERAL:
+      const { newCollateral } = action
       return{
         ...state,
-        ['commissions']: state.commissions.concat(newCommission)
+        ['collaterals']: state.collaterals.concat(newCollateral)
       }
     case START_ASYNC_OPERATION:
       return {

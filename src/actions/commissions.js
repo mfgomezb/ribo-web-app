@@ -1,12 +1,9 @@
 
 // actions
 import {
-  deleteInstallmentPayment,
-  fetchInstallmentDetails,
-  fetchLoanDetails, fetchLoanInvestorsPosition,
-  fetchLoanPayments,
-  fetchLoanSchedule,
-  fetchLoanTransactions
+  fetchLoanCommissions,
+  postLoanCommission,
+  removeLoanCommission,
 } from '../utils/API';
 
 export const RECEIVE_COMMISSIONS = 'RECEIVE_COMMISSIONS'
@@ -58,12 +55,12 @@ export function handleLoanCommissionsInitialData(loanId) {
   }
 }
 
-export function handleAddNewCommission(loanId, data) {
+export function handleAddNewCommission(data) {
   return (dispatch) => {
     dispatch(startAsyncOperation())
-    return addLoanCommission(loanId, data)
-      .then(() => dispatch(addCommission(data)))
-      .then(() => fetchLoanCommissions(loanId))
+    return postLoanCommission(data)
+      // .then(() => dispatch(addCommission(data)))
+      .then(() => fetchLoanCommissions(data._loan))
       .then( data => dispatch(receiveLoanCommissions(data)))
       .finally( () => dispatch(finishAsyncOperation()))
   }
@@ -72,7 +69,7 @@ export function handleAddNewCommission(loanId, data) {
 export function handleRemoveCommission(commissionId, loanId) {
   return (dispatch) => {
     dispatch(startAsyncOperation())
-    return removeLoanCommission(commissionId)
+    return removeLoanCommission(commissionId, loanId)
       .then(() => dispatch(removeCommission(commissionId)))
       .then(() => fetchLoanCommissions(loanId))
       .then( data => dispatch(receiveLoanCommissions(data)))

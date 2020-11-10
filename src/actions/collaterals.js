@@ -1,35 +1,35 @@
 
 // actions
 import {
-  fetchLoanCommissions,
-  postLoanCommission,
-  removeLoanCommission,
+  fetchLoanCollaterals,
+  postLoanCollateral,
+  removeLoanCollateral,
 } from '../utils/API';
 
-export const RECEIVE_COMMISSIONS = 'RECEIVE_COMMISSIONS'
-export const REMOVE_COMMISSION = 'REMOVE_COMMISSION'
-export const ADD_COMMISSION = 'ADD_COMMISSION'
+export const RECEIVE_COLLATERALS = 'RECEIVE_COLLATERALS'
+export const REMOVE_COLLATERAL = 'REMOVE_COLLATERAL'
+export const ADD_COLLATERAL = 'ADD_COLLATERAL'
 export const START_ASYNC_OPERATION = 'START_ASYNC_OPERATION'
 export const FINISH_ASYNC_OPERATION = 'FINISH_ASYNC_OPERATION'
 
-export function receiveLoanCommissions (commissions) {
+export function receiveLoanCollaterals (commissions) {
   return {
-    type: RECEIVE_COMMISSIONS,
+    type: RECEIVE_COLLATERALS,
     commissions,
   }
 }
 
-export function removeCommission (removedCommission) {
+export function removeCollateral (removedCollateral) {
   return {
-    type: REMOVE_COMMISSION,
-    removedCommission,
+    type: REMOVE_COLLATERAL,
+    removedCollateral,
   }
 }
 
-export function addCommission (newCommission) {
+export function addCollateral (newCollateral) {
   return {
-    type: ADD_COMMISSION,
-    newCommission,
+    type: ADD_COLLATERAL,
+    newCollateral,
   }
 }
 
@@ -46,33 +46,33 @@ export function finishAsyncOperation () {
 }
 
 
-export function handleLoanCommissionsInitialData(loanId) {
+export function handleLoanCollateralsInitialData(loanId) {
   return (dispatch) => {
     dispatch(startAsyncOperation())
-    return fetchLoanCommissions(loanId)
-      .then( data => dispatch(receiveLoanCommissions(data)))
+    return fetchLoanCollaterals(loanId)
+      .then( data => dispatch(receiveLoanCollaterals(data)))
       .finally( () => dispatch(finishAsyncOperation()))
   }
 }
 
-export function handleAddNewCommission(data) {
+export function handleAddNewCollateral(data) {
   return (dispatch) => {
     dispatch(startAsyncOperation())
-    return postLoanCommission(data)
-      // .then(() => dispatch(addCommission(data)))
-      .then(() => fetchLoanCommissions(data._loan))
-      .then( data => dispatch(receiveLoanCommissions(data)))
+    return postLoanCollateral(data)
+      // .then(() => dispatch(addCollateral(data)))
+      .then(() => fetchLoanCollaterals(data._loan))
+      .then( data => dispatch(receiveLoanCollaterals(data)))
       .finally( () => dispatch(finishAsyncOperation()))
   }
 }
 
-export function handleRemoveCommission(commissionId, loanId) {
+export function handleRemoveCollateral(commissionId, loanId) {
   return (dispatch) => {
     dispatch(startAsyncOperation())
-    return removeLoanCommission(commissionId, loanId)
-      .then(() => dispatch(removeCommission(commissionId)))
-      .then(() => fetchLoanCommissions(loanId))
-      .then( data => dispatch(receiveLoanCommissions(data)))
+    return removeLoanCollateral(commissionId, loanId)
+      .then(() => dispatch(removeCollateral(commissionId)))
+      .then(() => fetchLoanCollaterals(loanId))
+      .then( data => dispatch(receiveLoanCollaterals(data)))
       .finally( () => dispatch(finishAsyncOperation()))
   }
 }

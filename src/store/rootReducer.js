@@ -6,6 +6,8 @@ import { reducer as kanbanReducer } from 'src/slices/kanban';
 import { reducer as mailReducer } from 'src/slices/mail';
 import { reducer as notificationReducer } from 'src/slices/notification';
 import loans  from 'src/reducers/loans'
+import commissions  from 'src/reducers/commissions'
+import collaterals  from 'src/reducers/collaterals'
 
 const rootReducer = combineReducers({
   calendar: calendarReducer,
@@ -14,6 +16,8 @@ const rootReducer = combineReducers({
   kanban: kanbanReducer,
   mail: mailReducer,
   loan: loans,
+  commission: commissions,
+  collateral: collaterals,
   notifications: notificationReducer
 });
 

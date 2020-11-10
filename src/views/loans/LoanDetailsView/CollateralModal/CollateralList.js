@@ -23,9 +23,9 @@ const currencyFormat = (number, currency) => {
   return numeral(number).format(`${currency}0,0.00`)
 }
 
-const CommissionList = ({
+const CollateralList = ({
                         className,
-                        profiles,
+                        // profiles,
                         ...rest
                       }) => {
   const classes = useStyles();
@@ -90,11 +90,11 @@ const CommissionList = ({
   );
 };
 
-CommissionList.propTypes = {
+CollateralList.propTypes = {
   className: PropTypes.string,
 };
 
-export default CommissionList;
+export default CollateralList;
 
 
 

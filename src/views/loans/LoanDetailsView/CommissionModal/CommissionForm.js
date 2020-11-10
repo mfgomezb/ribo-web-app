@@ -12,7 +12,9 @@ import {
   InputAdornment,
   makeStyles, InputLabel, Select, FormHelperText, FormControl
 } from '@material-ui/core';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { handleAddNewCommission } from 'src/actions/commissions'
+import { useSnackbar } from 'notistack';
 
 
 const cashAccountsConstants = {
@@ -56,31 +58,26 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const PaymentForm = ({ className, onPayment, info, ...rest }) => {
-  const installmentDetails = useSelector((state) => state.loan.installmentDetails)
-  let {principal, interest, principal_pmt, interest_pmt, status} = installmentDetails
+const CommissionForm = ({ className, loan, commissionProfiles, onCommission, info, ...rest }) => {
+  const dispatch = useDispatch()
+  const { enqueueSnackbar } = useSnackbar();
+  const commissions = useSelector( (state) => state.commission.commissions)
   const classes = useStyles();
+  const filteredProfiles = commissionProfiles.filter(e => commissions.map( e => e._salesman).indexOf(e._id))
+  const totalPct = (commissions.reduce((acc, e) => {
+    return (acc + e.pct * 100);
+  },0)) || 0
+
   return (
     <Formik
       enableReinitialize={true}
       initialValues={{
-        _loanSchedule: installmentDetails._id,
-        _loan: installmentDetails._loan,
-        currency: installmentDetails.currency,
-        amount: (status === 'PAID') ? 0: (principal+interest-principal_pmt-interest_pmt),
-        comment: '',
-        reference: '',
-        cashAccount: cashAccountsConstants[installmentDetails.country][0]['value'],
-        paymentType: 'REGULAR',
-        method: 'TRANSFER',
-        date_pmt: DateTime.local().toString().slice(0,16),
+        _salesman: filteredProfiles[0]?._id || '',
+        _loan: loan,
+        pct: 0
       }}
       validationSchema={Yup.object().shape({
-        date_pmt: Yup.date().when('startDate', (startDate, schema) => {
-          let date = new Date()
-          date.setDate(date.getDate() + 1)
-          if (date) return schema.max(date, 'Fecha maxima día+1')
-        }),
+        pct: Yup.number().moreThan(0, `El porcentaje debe de ser mayor que 0 o menor que ${100 - totalPct}`).max(100 -totalPct , `El porcentaje debe de ser mayor que 0 o menor que ${100 - totalPct}`).required('Es necesario el [porcentaje de comisión]'),
       })}
       onSubmit={async (values, {
         setErrors,
@@ -89,20 +86,20 @@ const PaymentForm = ({ className, onPayment, info, ...rest }) => {
         resetForm
       }) => {
         try {
+          await dispatch(handleAddNewCommission(values))
           setStatus({ success: true });
           setSubmitting(false);
-
-          if (onPayment) {
-            let payment = await onPayment(values);
-            if (payment) {
-              resetForm()
-            }
-          }
-
+          resetForm()
+          enqueueSnackbar('Comisión registrada exitosamente', {
+            variant: 'success'
+          })
         } catch (err) {
           setStatus({ success: false });
           setErrors({ submit: err.message });
           setSubmitting(false);
+          enqueueSnackbar(`Error al registrar la comisión`, {
+              variant: 'error'
+          });
         }
       }}
     >
@@ -135,77 +132,24 @@ const PaymentForm = ({ className, onPayment, info, ...rest }) => {
                   spacing={3}
                 >
                   <Grid item xs={12} md={6}>
-                    <TextField
-                      error={Boolean(touched.amount && errors.amount)}
-                      fullWidth
-                      required
-                      disabled={status === 'PAID'}
-                      helperText={touched.amount && errors.amount}
-                      label="Monto"
-                      InputProps={{
-                        startAdornment:(
-                          <InputAdornment position="start">{installmentDetails.currency}</InputAdornment>)
-                      }}
-                      name="amount"
-                      type="number"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      value={values.amount}
-                      variant="outlined"
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <TextField
-                      id="datetime-local"
-                      error={Boolean(touched.date_pmt && errors.date_pmt)}
-                      fullWidth
-                      disabled={status === 'PAID'}
-                      required
-                      type="datetime-local"
-                      helperText={touched.date_pmt && errors.date_pmt }
-                      label="Fecha y hora de pago"
-                      name="date_pmt"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      value={values.date_pmt}
-                      variant="outlined"
-                      InputLabelProps={{ shrink: true }}
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <TextField
-                      error={Boolean(touched.reference && errors.reference)}
-                      fullWidth
-                      disabled={status === 'PAID'}
-                      required
-                      helperText={touched.reference && errors.reference}
-                      label="Referencia"
-                      name="reference"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      value={values.reference}
-                      variant="outlined"
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={6}>
                     <FormControl fullWidth variant="outlined" >
-                      <InputLabel htmlFor="outlined-age-native-simple">Método de pago</InputLabel>
+                      <InputLabel htmlFor="outlined-age-native-simple">Perfil</InputLabel>
                       <Select
                         native
                         required
-                        disabled={status === 'PAID'}
+                        disabled={totalPct === 100 || filteredProfiles.length === 0}
                         error={Boolean(touched.method && errors.method)}
-                        value={values.method}
+                        value={values._salesman}
                         onChange={handleChange}
-                        label="Método de pago"
+                        label="Perfil"
                         inputProps={{
-                          name: 'method',
+                          name: '_salesman',
                           id: 'outlined-pf-native-simple',
                         }}
                       >
-                        {methodConstants.map((e) => {
+                        {filteredProfiles.map((e) => {
                           return (
-                            <option value={e.value}>{e.label}</option>
+                            <option key={e._id} value={e._id}>{e.fullName}</option>
                           )
                         })}
                       </Select>
@@ -213,66 +157,22 @@ const PaymentForm = ({ className, onPayment, info, ...rest }) => {
                     </FormControl>
                   </Grid>
                   <Grid item xs={12} md={6}>
-                    <FormControl fullWidth variant="outlined" >
-                      <InputLabel htmlFor="outlined-age-native-simple">Tipo de pago</InputLabel>
-                      <Select
-                        native
-                        required
-                        disabled={status === 'PAID'}
-                        error={Boolean(touched.paymentType && errors.paymentType)}
-                        value={values.paymentType}
-                        onChange={handleChange}
-                        label="Tipo de pago"
-                        inputProps={{
-                          name: 'paymentType',
-                          id: 'outlined-pf-native-simple',
-                        }}
-                      >
-                        {paymentTypeConstants.map((e) => {
-                          return (
-                            <option value={e.value}>{e.label}</option>
-                          )
-                        })}
-                      </Select>
-                      <FormHelperText>{touched.paymentType && errors.paymentType}</FormHelperText>
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <FormControl fullWidth variant="outlined" >
-                      <InputLabel htmlFor="outlined-age-native-simple">Cuenta</InputLabel>
-                      <Select
-                        native
-                        required
-                        disabled={status === 'PAID'}
-                        error={Boolean(touched.cashAccount && errors.cashAccount)}
-                        value={values.cashAccount}
-                        onChange={handleChange}
-                        label="Cuenta"
-                        inputProps={{
-                          name: 'cashAccount',
-                          id: 'outlined-pf-native-simple',
-                        }}
-                      >
-                        {cashAccountsConstants[installmentDetails.country].map((e) => {
-                          return (
-                            <option value={e.value}>{e.label}</option>
-                          )
-                        })}
-                      </Select>
-                      <FormHelperText>{touched.cashAccount && errors.cashAccount}</FormHelperText>
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={12} md={12}>
                     <TextField
-                      error={Boolean(touched.comment && errors.comment)}
+                      error={Boolean(touched.pct && errors.pct)}
                       fullWidth
-                      disabled={status === 'PAID'}
-                      helperText={touched.comment && errors.comment}
-                      label="Comentario"
-                      name="comment"
+                      required
+                      disabled={totalPct === 100 || filteredProfiles.length === 0}
+                      helperText={touched.pct && errors.pct}
+                      label="Comision (%)"
+                      InputProps={{
+                        startAdornment:(
+                          <InputAdornment position="start">%</InputAdornment>)
+                      }}
+                      name="pct"
+                      type="number"
                       onBlur={handleBlur}
                       onChange={handleChange}
-                      value={values.comment}
+                      value={values.pct}
                       variant="outlined"
                     />
                   </Grid>
@@ -289,12 +189,12 @@ const PaymentForm = ({ className, onPayment, info, ...rest }) => {
                     disabled={isSubmitting || info.isLoading}
                   >
                     {info.isLoading
-                      ? 'Procesando pago'
+                      ? 'Agregando'
                       : info.isError
                       ? 'Error'
                       : info.isSuccess
-                      ? 'Procesar nuevo pago'
-                      : 'Procesar pago'
+                      ? 'Agregar nueva comisión'
+                      : 'Agregar comisión'
                     }
                   </Button>
                 </Box>
@@ -306,8 +206,8 @@ const PaymentForm = ({ className, onPayment, info, ...rest }) => {
   );
 };
 
-PaymentForm.propTypes = {
+CommissionForm.propTypes = {
   className: PropTypes.string
 };
 
-export default PaymentForm;
+export default CommissionForm;

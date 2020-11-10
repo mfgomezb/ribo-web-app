@@ -107,14 +107,14 @@ const PaymentForm = ({ className, onPayment, info, ...rest }) => {
       }}
     >
       {({
-        errors,
-        handleBlur,
-        handleChange,
-        handleSubmit,
-        isSubmitting,
-        touched,
-        values
-      }) =>  (
+          errors,
+          handleBlur,
+          handleChange,
+          handleSubmit,
+          isSubmitting,
+          touched,
+          values
+        }) =>  (
         <form
           onSubmit={handleSubmit}
           className={clsx(classes.root, className)}
@@ -278,26 +278,26 @@ const PaymentForm = ({ className, onPayment, info, ...rest }) => {
                   </Grid>
                 </Grid>
               </Box>
-                <Box mt={2}
-                     display="flex"
-                     justifyContent="flex-end"
+              <Box mt={2}
+                   display="flex"
+                   justifyContent="flex-end"
+              >
+                <Button
+                  color="secondary"
+                  variant="contained"
+                  type="submit"
+                  disabled={isSubmitting || info.isLoading}
                 >
-                  <Button
-                    color="secondary"
-                    variant="contained"
-                    type="submit"
-                    disabled={isSubmitting}
-                  >
-                    {info.isLoading
-                      ? 'Procesando pago'
-                      : info.isError
+                  {info.isLoading
+                    ? 'Procesando pago'
+                    : info.isError
                       ? 'Error'
                       : info.isSuccess
-                      ? 'Procesar nuevo pago'
-                      : 'Procesar pago'
-                    }
-                  </Button>
-                </Box>
+                        ? 'Procesar nuevo pago'
+                        : 'Procesar pago'
+                  }
+                </Button>
+              </Box>
             </Grid>
           </Grid>
         </form>

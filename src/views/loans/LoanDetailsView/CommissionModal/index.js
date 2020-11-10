@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSnackbar } from 'notistack';
+import {useParams} from 'react-router-dom'
 import {
   Box,
   Dialog,
@@ -13,11 +14,16 @@ import {
 import {
   XCircle as CloseIcon,
 } from 'react-feather';
-import Payments from './Payments';
 import { useDispatch, useSelector } from 'react-redux';
+import {fetchCommissionProfiles} from 'src/utils/API'
 import { useGetLoanInstallment } from '../../../../hooks/useLoans';
 import { useProcessPayment } from '../../../../hooks/usePayments';
 import { handleInstallmentInitialData } from 'src/actions/loans';
+import useIsMountedRef from '../../../../hooks/useIsMountedRef';
+import CommissionForm from 'src/views/loans/LoanDetailsView/CommissionModal/CommissionForm'
+import CommissionList from './CommissionList';
+import axios from '../../../../utils/axios';
+import { useNewCommission } from '../../../../hooks/useCommission';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,45 +41,38 @@ const useStyles = makeStyles((theme) => ({
 
 const CommissionModal = ({
   className,
-  scheduleData,
   onClose,
   open,
   ...rest
 }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const {loanId} = useParams()
+  const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar } = useSnackbar();
-  // const installmentDetails = useSelector((state) => state.loan.installmentDetails)
-  // const [ paymentValues, setPaymentValues ] = React.useState({})
-  // const [processPayment, processPaymentInfo] = useProcessPayment()
-
-  // React.useEffect(() => {
-  //   dispatch(handleInstallmentInitialData(scheduleData))
-  // }, [dispatch])
+  const [commissionProfiles, setCommissionProfiles] = React.useState([])
+  const [newCommission, newCommissionInfo] = useNewCommission()
 
 
-  //
-  // const handlePayment = async (values) => {
-  //   try {
-  //     setPaymentValues(values)
-  //     await processPayment(values)
-  //     await dispatch(handleInstallmentInitialData(scheduleData))
-  //
-  //     enqueueSnackbar('Pago procesado', {
-  //       variant: 'success'
-  //     });
-  //     return true
-  //   } catch (e) {
-  //     enqueueSnackbar('Fallo al procesar pago', {
-  //       variant: 'error'
-  //     });
-  //   }
-  //
-  // };
+  const getCommissionProfiles = React.useCallback(async () => {
+    try {
+      let profiles = []
+      if (open) {
+        profiles = await fetchCommissionProfiles(loanId)
+      }
 
-  // if (!installmentDetails) {
-  //   return null
-  // }
+      if (isMountedRef.current) {
+        setCommissionProfiles(profiles)
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }, [isMountedRef, open]);
+
+  React.useEffect(() => {
+    getCommissionProfiles();
+  }, [getCommissionProfiles]);
+
 
   return (
     <Dialog
@@ -109,7 +108,14 @@ const CommissionModal = ({
             xs={12}
             sm={12}
           >
-            {/*{installmentDetails && <LoanPaymentForm onPayment={handlePayment} info={processPaymentInfo} paymentDetails={installmentDetails} />}*/}
+            <CommissionForm
+              loan={loanId}
+              commissionProfiles={commissionProfiles}
+              info={newCommissionInfo}
+            />
+            <Box mt={2}>
+              <CommissionList profiles={commissionProfiles}/>
+            </Box>
           </Grid>
         </Grid>
       </div>
