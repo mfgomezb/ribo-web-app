@@ -286,7 +286,7 @@ const PaymentForm = ({ className, onPayment, info, ...rest }) => {
                     color="secondary"
                     variant="contained"
                     type="submit"
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || info.isLoading}
                   >
                     {info.isLoading
                       ? 'Procesando pago'
