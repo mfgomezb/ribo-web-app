@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { useSnackbar } from 'notistack';
 import {DateTime} from 'luxon'
+import { rounder } from '../../../../utils/numbers'
 import {
   Box,
   Button,
@@ -23,34 +24,21 @@ import {
   Typography,
   makeStyles, InputLabel, Select, FormControl
 } from '@material-ui/core';
-import ScheduleTable from './ScheduleTable'
-import { postCreateLoan} from '../../../utils/API';
+import { postRestructureLoan } from '../../../../utils/API';
+import ScheduleTable from '../../LoanCreateView/ScheduleTable';
 import QuillEditor from 'src/components/QuillEditor';
 import FilesDropzone from 'src/components/FilesDropzone';
 import { paymentFrequency as paymentFrequencyConstants,
-          useOfFunds as useOfFundsConstants,
-          currencies as currenciesConstants,
-          amortizationMethod as amortizationMethodConstants,
-          lateFees as lateFeesConstants,
-          insuranceRequiredLoans,
-} from './FormConstants';
+  useOfFunds as useOfFundsConstants,
+  currencies as currenciesConstants,
+  amortizationMethod as amortizationMethodConstants,
+  lateFees as lateFeesConstants,
+  insuranceRequiredLoans,
+} from '../../LoanCreateView/FormConstants';
+import numeral from 'numeral';
+import { handleLoanInitialData } from '../../../../actions/loans';
+import { useDispatch } from 'react-redux';
 
-
-
-const categories = [
-  {
-    id: 'shirts',
-    name: 'Shirts'
-  },
-  {
-    id: 'phones',
-    name: 'Phones'
-  },
-  {
-    id: 'cars',
-    name: 'Cars'
-  }
-];
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -61,17 +49,16 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const LoanCreateForm = ({ className, ...rest }) => {
-  const {customerId} = useParams()
+const LoanCreateForm = ({ className, isRestructure, capitalToRestructure, ...rest }) => {
+  const {loanId} = useParams()
+  const dispatch = useDispatch();
   const classes = useStyles();
   const history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
   return (
     <Formik
       initialValues={{
-        _borrower: customerId,
-        location:'',
-        capital:'',
+        capital:  rounder(capitalToRestructure, 4) || '',
         numberOfInstallments:'', //done
         paymentFrequency: 'monthly',
         interestOnlyPeriods:0,
@@ -79,15 +66,6 @@ const LoanCreateForm = ({ className, ...rest }) => {
         firstPaymentDate: '',
         interestRate:'',
         amortizationMethod:'lineal',
-        useOfFunds:'consumer',
-        currency:'USD',
-        commission: 1,
-        autoInvest: true,
-        insurancePremium: '',
-        investmentAmount: '',
-        investments: '',
-        lateFeeType: 'percentage',
-        lateFeeRate: 0,
         submit: null
       }}
       validationSchema={Yup.object().shape({
@@ -101,7 +79,7 @@ const LoanCreateForm = ({ className, ...rest }) => {
             } else {
               return schema.max(0, 'Si se amortiza en un sola cuota tienen que haber intereses')
             }
-        }),
+          }),
         startDate: Yup.date().required(),
         firstPaymentDate: Yup.date().when('startDate', (startDate, schema) => {
 
@@ -112,16 +90,6 @@ const LoanCreateForm = ({ className, ...rest }) => {
         }),
         interestRate: Yup.number().moreThan(0, 'Las tasa de interes debe de ser mayor que cero').required('Es necesario ingresar la tasa de interés'),
         amortizationMethod: Yup.mixed().oneOf(amortizationMethodConstants.map(e => e.value)).required('Es necesario seleccionar un metodo de amortización'),
-        useOfFunds: Yup.mixed().oneOf(useOfFundsConstants.map(e => e.value)).required('Es necesario seleccionar un uso de los fondos'),
-        currency: Yup.mixed().oneOf(currenciesConstants.map(e => e.value)).required('Es necesario seleccionar una divisa'),
-        commission: Yup.number().min(0, 'El valor de la comisión debe de ser 0 o mayor que cero'),
-        insurancePremium: Yup.number()
-          .when('useOfFunds', (useOfFunds, schema) => {
-              if (insuranceRequiredLoans.indexOf(useOfFunds) !== -1){
-                return schema.min(1, 'Debe de ser mayor que cero')
-              }
-          }),
-        lateFeeType: Yup.mixed().oneOf(lateFeesConstants.map(e => e.value)).required('Es necesario seleccionar una esquema'),
       })}
       onSubmit={async (values, {
         setErrors,
@@ -130,34 +98,35 @@ const LoanCreateForm = ({ className, ...rest }) => {
       }) => {
         try {
           // NOTE: Make API request
-          console.log(values)
           setStatus({ success: true });
           setSubmitting(false);
-          let newLoan = await postCreateLoan(values)
+          await postRestructureLoan(loanId, values)
+          await dispatch(handleLoanInitialData(loanId))
 
-          enqueueSnackbar('Prestamo creado', {
+          enqueueSnackbar('Prestamo restructurado', {
             variant: 'success'
           });
 
-          history.push(`/app/management/loan/${newLoan._id}`);
 
         } catch (err) {
-          console.error(err);
           setStatus({ success: false });
           setErrors({ submit: err.message });
           setSubmitting(false);
+          enqueueSnackbar('Fallo al restructurar el prestamo', {
+            variant: 'error'
+          });
         }
       }}
     >
       {({
-        errors,
-        handleBlur,
-        handleChange,
-        handleSubmit,
-        isSubmitting,
-        touched,
-        values
-      }) =>  (
+          errors,
+          handleBlur,
+          handleChange,
+          handleSubmit,
+          isSubmitting,
+          touched,
+          values
+        }) =>  (
         <form
           onSubmit={handleSubmit}
           className={clsx(classes.root, className)}
@@ -172,7 +141,6 @@ const LoanCreateForm = ({ className, ...rest }) => {
               xs={12}
               lg={7}
             >
-              <Box >
                 <Card>
                   <CardHeader title="Especificaciones del cronograma de pago" />
                   <Divider />
@@ -189,6 +157,7 @@ const LoanCreateForm = ({ className, ...rest }) => {
                           helperText={touched.capital && errors.capital}
                           label="Capital"
                           name="capital"
+                          disabled={isRestructure}
                           type="number"
                           onBlur={handleBlur}
                           onChange={handleChange}
@@ -326,217 +295,22 @@ const LoanCreateForm = ({ className, ...rest }) => {
                           </Select>
                           <FormHelperText>{touched.amortizationMethod && errors.amortizationMethod ? errors.interestRate
                             : <ul>
-                                <li> El método flat mantiene el interés constante.</li>
-                                <li> El método lineal incrementa los pagos de capital y disminuye el interés.</li>
-                                <li> El método bullet amortiza la totalidad del capital en la última cuota.</li>
-                              </ul>
-                              }</FormHelperText>
+                              <li> El método flat mantiene el interés constante.</li>
+                              <li> El método lineal incrementa los pagos de capital y disminuye el interés.</li>
+                              <li> El método bullet amortiza la totalidad del capital en la última cuota.</li>
+                            </ul>
+                          }</FormHelperText>
                         </FormControl>
                       </Grid>
                     </Grid>
                   </CardContent>
                 </Card>
-              </Box>
-              <Box mt={2}>
-                <Grid
-                  item
-                  xs={12}
-                  md={12}
-                >
-                  <Card>
-                    <CardHeader title="Características del préstamo" />
-                    <Divider />
-                    <CardContent>
-                      <Grid
-                        container
-                        spacing={3}
-                      >
-                        <Grid item xs={12} md={6}>
-                          <TextField
-                            fullWidth
-                            label="Uso de los fondos"
-                            name="useOfFunds"
-                            onChange={handleChange}
-                            select
-                            required
-                            SelectProps={{ native: true }}
-                            value={values.useOfFunds}
-                            variant="outlined"
-                          >
-                            {useOfFundsConstants.map((e) => (
-                              <option
-                                value={e.value}
-                              >
-                                {e.label}
-                              </option>
-                            ))}
-                          </TextField>
-                        </Grid>
-                        <Grid item xs={12} md={6}>
-                          <TextField
-                            fullWidth
-                            required
-                            label="Divisa"
-                            name="currency"
-                            onChange={handleChange}
-                            select
-                            SelectProps={{ native: true }}
-                            value={values.currency}
-                            variant="outlined"
-                          >
-                            {currenciesConstants.map((e) => (
-                              <option
-                                value={e.value}
-                              >
-                                {e.label}
-                              </option>
-                            ))}
-                          </TextField>
-                        </Grid>
-                      </Grid>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              </Box>
-              <Box mt={2}>
-                <Grid
-                  item
-                  xs={12}
-                  md={12}
-                >
-                  <Card>
-                    <CardHeader title="Transacciones asociadas" />
-                    <Divider />
-                    <CardContent>
-                      <Grid
-                        container
-                        spacing={3}
-                      >
-                      <Grid item xs={12} md={6}>
-                        <TextField
-                          error={Boolean(touched.commission && errors.commission)}
-                          fullWidth
-                          helperText={touched.commission && errors.commission ? errors.commission : 'Comisión debe de ser un numero mayor a 0 y menor a 100'}
-                          label="Comisión por desembolso"
-                          name="commission"
-                          type="number"
-                          InputProps={{
-                            startAdornment:(
-                              <InputAdornment position="start">%</InputAdornment>)
-                          }}
-                          onBlur={handleBlur}
-                          onChange={handleChange}
-                          value={values.commission}
-                          variant="outlined"
-                        />
-                      </Grid>
-                      <Grid item xs={12} md={6}>
-                        <TextField
-                          error={Boolean(touched.insurancePremium && errors.insurancePremium)}
-                          fullWidth
-                          required={insuranceRequiredLoans.indexOf(values.useOfFunds) !== -1}
-                          disabled={insuranceRequiredLoans.indexOf(values.useOfFunds) === -1}
-                          helperText={touched.insurancePremium && errors.insurancePremium}
-                          label="Prima de seguro"
-                          name="insurancePremium"
-                          onBlur={handleBlur}
-                          onChange={handleChange}
-                          value={values.insurancePremium}
-                          variant="outlined"
-                        />
-                      </Grid>
-                      </Grid>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              </Box>
-              <Box mt={2}>
-                  <Card>
-                    <CardHeader title="Estructura de penalizaciones" />
-                    <Divider />
-                    <CardContent>
-                      <Grid
-                        container
-                        spacing={3}
-                      >
-                        <Grid item xs={12} md={6}>
-                          <TextField
-                            fullWidth
-                            required
-                            label="Tipo de mora"
-                            name="lateFeeType"
-                            helperText={touched.lateFeeType && errors.lateFeeType ? errors.lateFeeType
-                              : 'Tipo de intereses de mora a cobrar'}
-                            onChange={handleChange}
-                            select
-                            SelectProps={{ native: true }}
-                            value={values.lateFeeType}
-                            variant="outlined"
-                          >
-                            {lateFeesConstants.map((e) => (
-                              <option
-                                value={e.value}
-                              >
-                                {e.label}
-                              </option>
-                            ))}
-
-                          </TextField>
-                        </Grid>
-                        <Grid item xs={12} md={6}>
-                          <TextField
-                            error={Boolean(touched.lateFeeRate && errors.lateFeeRate)}
-                            fullWidth
-                            helperText={touched.lateFeeRate && errors.lateFeeRate ? errors.lateFeeRate :
-                              'Si el tipo de mora es flat debe de ser un monto nominal, si es porcentual, un valor entre 0 y  100. El valor porcentual se cobrará sobre el monto de capital adeudado'}
-                            label="Valor de la mora diaria"
-                            InputProps={{
-                              startAdornment:(
-                                values.lateFeeType === 'percentage' ?
-                                  <InputAdornment position="start">%</InputAdornment> :
-                                  <InputAdornment position="start">$</InputAdornment>
-                              )
-                            }}
-                            name="lateFeeRate"
-                            type="number"
-                            onBlur={handleBlur}
-                            onChange={handleChange}
-                            value={values.lateFeeRate}
-                            variant="outlined"
-                          />
-                        </Grid>
-                      </Grid>
-                    </CardContent>
-                  </Card>
-              </Box>
-              <Box mt={2}>
-                <Card>
-                  <CardHeader title="Inversión" />
-                  <Divider />
-                  <CardContent>
-                    <Box mt={2}>
-                      <FormControlLabel
-                        control={(
-                          <Checkbox
-                            checked={values.autoInvest}
-                            // onChange={handleChange}
-                            value={values.autoInvest}
-                            name="autoInvest"
-                          />
-                        )}
-                        label="Auto inversión"
-                      />
-                    </Box>
-                  </CardContent>
-                </Card>
-              </Box>
             </Grid>
             <Grid
               item
               xs={12}
               lg={5}
             >
-              <Box>
                 <Card>
                   <CardHeader title="Cronograma de pago" />
                   <Divider />
@@ -553,7 +327,6 @@ const LoanCreateForm = ({ className, ...rest }) => {
                     />
                   </CardContent>
                 </Card>
-              </Box>
             </Grid>
           </Grid>
           {errors.submit && (
@@ -570,7 +343,7 @@ const LoanCreateForm = ({ className, ...rest }) => {
               type="submit"
               disabled={isSubmitting}
             >
-              Crear préstamo
+              Restructurar prestamo
             </Button>
           </Box>
         </form>

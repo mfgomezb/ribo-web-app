@@ -28,12 +28,17 @@ import {
 import { useSelector, useDispatch } from 'react-redux'
 import {removeLoanInstallment} from 'src/actions/loans';
 import Label from 'src/components/Label';
+import { currentStatus, collateralTypes } from 'src/utils/constants'
 import getInitials from '../../../utils/getInitials';
 import CommissionModal from 'src/views/loans/LoanDetailsView/CommissionModal'
 import CollateralModal from 'src/views/loans/LoanDetailsView/CollateralModal'
 import { handleLoanCommissionsInitialData } from '../../../actions/commissions';
 import { handleLoanCollateralsInitialData } from '../../../actions/collaterals';
 
+
+const percentageFormat = (number) => {
+  return numeral(number).format(`0.00%`)
+}
 
 const currencyFormat = (number, currency) => {
   return numeral(number).format(`${currency}0,0.00`)
@@ -202,23 +207,38 @@ const Collaterals = ({ className, ...rest }) => {
       />
       <CardContent className={classes.content}>
         <List>
-          {collaterals.map((member) => (
+          {collaterals.map((collateral) => (
             <ListItem
               disableGutters
-              key={member.id}
+              key={collateral._id}
             >
               <ListItemAvatar>
                 <Avatar
                   alt="Author"
-                  src={member.avatar}
+                  src={collateral?.avatar}
                 >
-                  {getInitials(member.name)}
+                  {collateral?.type}
                 </Avatar>
               </ListItemAvatar>
               <ListItemText
-                primary={member.name}
+                primary={currencyFormat(collateral?.value, '$')}
                 primaryTypographyProps={{ variant: 'h6' }}
-                secondary={member.bio}
+              />
+              <ListItemText
+                primary={percentageFormat(collateral?.loanPrincipalToValue)}
+                primaryTypographyProps={{ variant: 'h6' }}
+              />
+              <ListItemText
+                primary={collateralTypes[collateral?.type]}
+                primaryTypographyProps={{ variant: 'h6' }}
+              />
+              <ListItemText
+                primary={DateTime.fromISO(collateral?.registerDate).toFormat('DD').toString()}
+                primaryTypographyProps={{ variant: 'h6' }}
+              />
+              <ListItemText
+                primary={currentStatus[collateral?.currentStatus[0]?.status]}
+                primaryTypographyProps={{ variant: 'h6' }}
               />
             </ListItem>
           ))}

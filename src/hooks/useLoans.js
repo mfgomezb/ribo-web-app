@@ -21,6 +21,16 @@ export const useBorrowerUnpaidSchedule = (borrowerId) => {
   );
 };
 
+
+export const useBorrowerCreditDetails = (borrowerId) => {
+  return useQuery(['creditDetails', borrowerId], () =>
+      axios
+        .get(`api/loan/credit-details/borrower/${borrowerId}`)
+        .then(res => res.data),
+    { staleTime: Infinity }
+  );
+};
+
 export const useLoanScheduleLoanView = (loanId) => {
   return useQuery(['loanSchedule',loanId], () =>
       axios

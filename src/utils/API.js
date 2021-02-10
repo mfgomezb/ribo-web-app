@@ -136,3 +136,28 @@ export function removeLoanCollateral (collateralId, loanId) {
       return res.data;
     })
 }
+
+
+export function postCreateLoan (values) {
+  return axios
+    .post(`api/loan/v2/create`, values)
+    .then(res => {
+      return res.data;
+    })
+}
+
+export function postRestructureLoan (id, values) {
+  return axios
+    .post(`api/loan/restructure/${id}`, values)
+    .then(res => {
+      return res.data;
+    })
+}
+
+export function deleteLoan (id) {
+  return axios
+    .delete(`api/loan/${id}`)
+    .then(res => {
+      return res.data;
+    })
+}

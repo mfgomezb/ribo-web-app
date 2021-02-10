@@ -10,6 +10,39 @@ exports.paymentFrequency = {
   weekly: 'Semanal',
 }
 
+exports.condition = {
+  new: 'Nuevo',
+  excellent: 'Excelente',
+  good: 'Bien',
+  fair: 'Normal',
+  damaged: 'Daños importantes'
+}
+
+exports.currentStatus = {
+  depositedIntoBranch: 'Depositado',
+  collateralWithBorrower: 'Con prestatario',
+  returnedToBorrower: 'Regresado al prestatario',
+  reposessionInitiated: 'Iniciada la recuperación del activo',
+  repossed: 'Recuperado',
+  underAuction: 'Subasta',
+  sold: 'Vendido',
+  transferedOwnership: 'Transferencia de propiedad',
+  lost: 'Perdido',
+  stolen: 'Robado',
+  insuranceClaim: 'Enviado al seguro'
+}
+
+exports.collateralTypes = {
+  automobile: 'Automovil',
+  motorcycle: 'Motocicleta',
+  receivables: 'Cuentas por cobrar',
+  investments: 'Inversiones',
+  machinaryAndEquipment: 'Maquinaria',
+  valuablesAndColletibles: 'Prendas',
+  electronicItems: 'Electronicos',
+  employmentBenefit: 'Beneficios/Sueldo',
+}
+
 exports.collateralTypesFormConstants = [
   { value: 'automobile', label: 'Automovil' },
   { value: 'motorcycle', label: 'Motocicleta' },
@@ -34,3 +67,13 @@ exports.currentStatusFormConstants = [
   { value: 'stolen', label: 'Robado' },
   { value: 'insuranceClaim', label: 'Enviado al seguro' }
 ];
+
+exports.conditionFormConstants = [
+  { value: 'new', label: 'Nuevo' },
+  { value: 'excellent', label: 'Excelente' },
+  { value: 'good', label: 'Bien' },
+  { value: 'fair', label: 'Normal' },
+  { value: 'damaged', label: 'Daños importantes' }
+];
+
+

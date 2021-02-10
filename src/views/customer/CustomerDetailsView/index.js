@@ -54,7 +54,7 @@ const CustomerDetailsView = () => {
   return (
     <Page
       className={classes.root}
-      title="Customer Details"
+      title="Ribo | Detalles de cliente"
     >
       <Container maxWidth={false}>
         <Header customer={data} />

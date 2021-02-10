@@ -12,10 +12,10 @@ export const ADD_COLLATERAL = 'ADD_COLLATERAL'
 export const START_ASYNC_OPERATION = 'START_ASYNC_OPERATION'
 export const FINISH_ASYNC_OPERATION = 'FINISH_ASYNC_OPERATION'
 
-export function receiveLoanCollaterals (commissions) {
+export function receiveLoanCollaterals (collaterals) {
   return {
     type: RECEIVE_COLLATERALS,
-    commissions,
+    collaterals,
   }
 }
 

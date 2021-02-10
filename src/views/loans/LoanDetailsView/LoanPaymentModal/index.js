@@ -21,6 +21,7 @@ import { handleInstallmentInitialData, handleLoanInitialData } from 'src/actions
 
 const useStyles = makeStyles((theme) => ({
   root: {
+
     padding: theme.spacing(3)
   },
   listName: {

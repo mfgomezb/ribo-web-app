@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
@@ -17,6 +17,13 @@ import {
 import LockOpenIcon from '@material-ui/icons/LockOpenOutlined';
 import PersonIcon from '@material-ui/icons/PersonOutline';
 import Label from 'src/components/Label';
+import { useParams } from 'react-router-dom';
+import { useBorrowerCreditDetails, useBorrowerUnpaidSchedule } from '../../../../hooks/useLoans';
+import numeral from 'numeral';
+
+const currencyFormat = (number, currency) => {
+  return numeral(number).format(`${currency}0,0.00`)
+}
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -31,6 +38,22 @@ const BorrowerInfo = ({
   ...rest
 }) => {
   const classes = useStyles();
+  const {customerId} = useParams()
+  const { isLoading, data, error } = useBorrowerCreditDetails(customerId)
+
+
+  if (isLoading || error) {
+    return (
+      <Card
+        className={clsx(classes.root, className)}
+        {...rest}
+      >
+        <CardHeader title="Información crediticia" />
+        <Divider />
+        ...loading
+      </Card>
+    )
+  }
 
   return (
     <Card
@@ -63,7 +86,7 @@ const BorrowerInfo = ({
                 variant="body2"
                 color="textSecondary"
               >
-                100000
+                {currencyFormat(data.lend,'USD')}
               </Typography>
             </TableCell>
           </TableRow>
@@ -76,7 +99,7 @@ const BorrowerInfo = ({
                 variant="body2"
                 color="textSecondary"
               >
-                60000
+                {currencyFormat(data.repaid,'USD')}
               </Typography>
             </TableCell>
           </TableRow>
@@ -89,7 +112,7 @@ const BorrowerInfo = ({
                 variant="body2"
                 color="textSecondary"
               >
-                40000
+                {currencyFormat(data.balance,'USD')}
               </Typography>
             </TableCell>
           </TableRow>
@@ -147,14 +170,14 @@ const BorrowerInfo = ({
           </TableRow>
           <TableRow>
             <TableCell className={classes.fontWeightMedium}>
-              Tasa promedio
+              Tasa promedio / IRR
             </TableCell>
             <TableCell align="right">
               <Typography
                 variant="body2"
                 color="textSecondary"
               >
-                5%
+                {data.interestRate} / {data.IRR}
               </Typography>
             </TableCell>
           </TableRow>
@@ -167,7 +190,7 @@ const BorrowerInfo = ({
                 variant="body2"
                 color="textSecondary"
               >
-                12
+                {data.duration} meses
               </Typography>
             </TableCell>
           </TableRow>

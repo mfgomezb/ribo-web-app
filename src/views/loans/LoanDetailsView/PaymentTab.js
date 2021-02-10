@@ -236,7 +236,7 @@ const PaymentTab = ({ className, loanId, ...rest }) => {
                           {arr.length - index}
                       </TableCell>
                       <TableCell style={{whiteSpace: 'nowrap'}}>
-                        {DateTime.fromISO(date_pmt).toFormat('DD').toString()}
+                        {DateTime.fromISO(date_pmt, { setZone: true }).setLocale('ES').toFormat('ff').toString()}
                       </TableCell>
                       <TableCell style={{whiteSpace: 'nowrap'}}>
                         {DateTime.fromISO(date).toFormat('DD').toString()}

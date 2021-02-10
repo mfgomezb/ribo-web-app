@@ -89,7 +89,7 @@ const TransactionTab = ({ className, ...rest }) => {
                         {DateTime.fromISO(date).toFormat('DD').toString()}
                       </TableCell>
                       <TableCell>
-                        {_investor.firstName.split(" ")[0]+" "+_investor.lastName.split(" ")[0]}
+                        {_investor && _investor.firstName.split(" ")[0]+" "+_investor.lastName.split(" ")[0]}
                       </TableCell>
                       <TableCell>
                         {concept}

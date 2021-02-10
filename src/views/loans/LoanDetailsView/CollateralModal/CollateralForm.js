@@ -6,7 +6,8 @@ import { Formik } from 'formik';
 import {DateTime} from 'luxon'
 import {
   collateralTypesFormConstants,
-  currentStatusFormConstants
+  currentStatusFormConstants,
+  conditionFormConstants,
 } from 'src/utils/constants'
 import {
   Box,
@@ -81,7 +82,7 @@ const CollateralForm = ({ className, loan, commissionProfiles, onCollateral, inf
         modelNumber: '',
         color: '',
         dateOfManufacture: '',
-        condition: '',
+        condition: conditionFormConstants[0].value,
         address: '',
         description: '',
         registrationNumber: '',
@@ -178,7 +179,7 @@ const CollateralForm = ({ className, loan, commissionProfiles, onCollateral, inf
                         startAdornment:(
                           <InputAdornment position="start">$</InputAdornment>)
                       }}
-                      name="pct"
+                      name="value"
                       type="number"
                       onBlur={handleBlur}
                       onChange={handleChange}
@@ -239,7 +240,30 @@ const CollateralForm = ({ className, loan, commissionProfiles, onCollateral, inf
                       variant="outlined"
                     />
                   </Grid>
-
+                  <Grid item xs={12} md={6}>
+                    <FormControl fullWidth variant="outlined" >
+                      <InputLabel htmlFor="outlined-age-native-simple">Condición</InputLabel>
+                      <Select
+                        native
+                        required
+                        error={Boolean(touched.condition && errors.condition)}
+                        value={values.condition}
+                        onChange={handleChange}
+                        label="Condición"
+                        inputProps={{
+                          name: 'condition',
+                          id: 'outlined-pf-native-simple',
+                        }}
+                      >
+                        {conditionFormConstants.map((e) => {
+                          return (
+                            <option key={e.value} value={e.value}>{e.label}</option>
+                          )
+                        })}
+                      </Select>
+                      <FormHelperText>{touched.condition && errors.condition}</FormHelperText>
+                    </FormControl>
+                  </Grid>
                   <Grid item xs={12} md={6}>
                     <TextField
                       error={Boolean(touched.model && errors.model)}
@@ -265,29 +289,6 @@ const CollateralForm = ({ className, loan, commissionProfiles, onCollateral, inf
                       value={values.color}
                       variant="outlined"
                     />
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <FormControl fullWidth variant="outlined" >
-                      <InputLabel htmlFor="outlined-age-native-simple">Condición</InputLabel>
-                      <Select
-                        native
-                        error={Boolean(touched.condition && errors.condition)}
-                        value={values.condition}
-                        onChange={handleChange}
-                        label="Condición"
-                        inputProps={{
-                          name: 'condition',
-                          id: 'outlined-pf-native-simple',
-                        }}
-                      >
-                        {[].map((e) => {
-                          return (
-                            <option key={e.value} value={e.value}>{e.label}</option>
-                          )
-                        })}
-                      </Select>
-                      <FormHelperText>{touched.condition && errors.condition}</FormHelperText>
-                    </FormControl>
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <TextField

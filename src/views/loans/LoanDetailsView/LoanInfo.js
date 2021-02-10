@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useHistory, useParams } from 'react-router-dom';
 import clsx from 'clsx';
 import {
   Box,
@@ -20,6 +21,9 @@ import CloudDownload from '@material-ui/icons/CloudDownloadOutlined';
 import Label from 'src/components/Label';
 import numeral from 'numeral';
 import { DateTime } from 'luxon';
+import { deleteLoan } from '../../../utils/API'
+import RestructureModal from './RestructureLoanModal';
+import { removeLoanInstallment } from '../../../actions/loans';
 
 const currencyFormat = (number, currency) => {
   return numeral(number).format(`${currency}0,0.00`)
@@ -87,6 +91,28 @@ const BorrowerInfo = ({
   ...rest
 }) => {
   const classes = useStyles();
+  const { loanId } = useParams()
+  const history = useHistory();
+  const [isOpened, setOpened] = useState(false);
+
+  const handleOpen = () => {
+    setOpened(true)
+  }
+
+  const handleClose = () => {
+    setOpened(false)
+  }
+
+
+  const onDelete = async () => {
+    try {
+      let deletedLoan = await deleteLoan(loanId)
+      console.log(deletedLoan)
+      history.push(`/app/management/customers/${deletedLoan._borrower._id}`);
+    } catch (e) {
+      console.log(e)
+    }
+  }
 
   return (
     <Card
@@ -294,13 +320,23 @@ const BorrowerInfo = ({
         <Button startIcon={<CloudDownload />}>
           Descargar
         </Button>
-        <Button startIcon={<BuildIcon />}>
+        <Button
+          onClick={() => handleOpen()}
+          startIcon={<BuildIcon />}
+          >
           Reestructurar
         </Button>
-        <Button startIcon={<DeleteIcon />}>
+        <Button
+          onClick={() => onDelete()}
+          startIcon={<DeleteIcon />}>
           Eliminar
         </Button>
       </Box>
+      {isOpened && <RestructureModal
+        open={isOpened}
+        onClose={handleClose}
+        capitalToRestructure={details?.unpaidPrincipal}
+      />}
     </Card>
   );
 };
