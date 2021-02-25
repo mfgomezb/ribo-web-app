@@ -7,6 +7,7 @@ import {
   Card,
   CardHeader,
   Divider,
+  Grid,
   Table,
   TableBody,
   TableCell,
@@ -18,8 +19,73 @@ import LockOpenIcon from '@material-ui/icons/LockOpenOutlined';
 import PersonIcon from '@material-ui/icons/PersonOutline';
 import Label from 'src/components/Label';
 import { useParams } from 'react-router-dom';
-import { useBorrowerCreditDetails, useBorrowerUnpaidSchedule } from '../../../../hooks/useLoans';
+import { useBorrowerCreditDetails,
+  useBorrowerUnpaidSchedule,
+  useBorrowerInterestGenerated,
+  useBorrowerOwedStatus
+} from '../../../../hooks/useLoans';
 import numeral from 'numeral';
+import { DateTime } from 'luxon';
+import Skeleton from '@material-ui/lab/Skeleton';
+
+const variants = ['h1', 'h3', 'body1', 'caption'];
+
+function Loading() {
+
+  return (
+    <div style={{'padding': '10px'}}>
+      {variants.map((variant) => (
+        <Typography component="div" key={variant} variant={variant}>
+          <Skeleton />
+        </Typography>
+      ))}
+    </div>
+  );
+}
+
+
+const getDaysBehind = (date) => {
+  let end = DateTime.fromISO(date);
+  let start = DateTime.local();
+  return Math.round(end.diff(start, 'days').days);
+}
+
+const scheduleStatus = dayDiff => {
+  if (dayDiff >= 0) {
+    return 'PENDING'
+  } else if (dayDiff < 0 && dayDiff >= -5) {
+    return 'GRACE'
+  } else {
+    return 'OVERDUE'
+  }
+}
+
+const getStatusLabel = (dayDiff) => {
+  let status = scheduleStatus(dayDiff)
+
+  const map = {
+    OVERDUE: {
+      text: 'VENCIDO',
+      color: 'error'
+    },
+    PENDING: {
+      text: 'AL DIA',
+      color: 'success'
+    },
+    GRACE: {
+      text: 'GRACIA',
+      color: 'warning'
+    },
+  };
+
+  const { text, color } = map[status];
+
+  return (
+    <Label color={color}>
+      {text}
+    </Label>
+  );
+};
 
 const currencyFormat = (number, currency) => {
   return numeral(number).format(`${currency}0,0.00`)
@@ -39,10 +105,25 @@ const BorrowerInfo = ({
 }) => {
   const classes = useStyles();
   const {customerId} = useParams()
+  const [upcomingPayment, setUpcomingPayments] = useState(0)
   const { isLoading, data, error } = useBorrowerCreditDetails(customerId)
+  const { isLoading: isLoadingUpcomingPayments, data: dataUpcomingPayments, error: errorUpcomingPayments } = useBorrowerUnpaidSchedule(customerId)
+  const { isLoading: isLoadingInterest, data: interestData, error: interestError } = useBorrowerInterestGenerated(customerId)
+  const { isLoading: isLoadingOwed, data: owedData, error: owedError } = useBorrowerOwedStatus(customerId)
 
 
-  if (isLoading || error) {
+  React.useEffect( () => {
+    if (!isLoadingUpcomingPayments) {
+      let totalUpcoming = dataUpcomingPayments
+        .filter( pmt => DateTime.fromISO(pmt.date) >= DateTime.local())
+        .reduce( (acc, pmt) => {return acc + pmt.interest + pmt.principal}, 0)
+      setUpcomingPayments(totalUpcoming)
+    }
+
+  }, [dataUpcomingPayments])
+
+
+  if (isLoading || isLoadingUpcomingPayments ||isLoadingInterest || error) {
     return (
       <Card
         className={clsx(classes.root, className)}
@@ -50,7 +131,13 @@ const BorrowerInfo = ({
       >
         <CardHeader title="Información crediticia" />
         <Divider />
-        ...loading
+        <Table>
+          <TableBody>
+            <TableRow>
+              <Loading/>
+            </TableRow>
+          </TableBody>
+        </Table>
       </Card>
     )
   }
@@ -69,11 +156,38 @@ const BorrowerInfo = ({
               Estatus
             </TableCell>
             <TableCell align="right">
+              {!isLoadingOwed ? getStatusLabel(getDaysBehind(owedData.firstUnpaidInstallment)) : 0}
               <Typography
                 variant="body2"
                 color="textSecondary"
               >
-                Atrasado - X días
+              </Typography>
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell className={classes.fontWeightMedium}>
+              Monto vencido
+            </TableCell>
+            <TableCell align="right">
+              <Typography
+                variant="body2"
+                color="textSecondary"
+              >
+                {!isLoadingOwed ?
+                  currencyFormat(owedData.hasOwnProperty('totalOwed') ? owedData.totalOwed : 0 , 'USD') : 0}
+              </Typography>
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell className={classes.fontWeightMedium}>
+              Proximos vencimientos
+            </TableCell>
+            <TableCell align="right">
+              <Typography
+                variant="body2"
+                color="textSecondary"
+              >
+                {currencyFormat(upcomingPayment, 'USD')}
               </Typography>
             </TableCell>
           </TableRow>
@@ -118,32 +232,6 @@ const BorrowerInfo = ({
           </TableRow>
           <TableRow>
             <TableCell className={classes.fontWeightMedium}>
-              Monto vencido
-            </TableCell>
-            <TableCell align="right">
-              <Typography
-                variant="body2"
-                color="textSecondary"
-              >
-                12000
-              </Typography>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell className={classes.fontWeightMedium}>
-              Proximos vencimientos
-            </TableCell>
-            <TableCell align="right">
-              <Typography
-                variant="body2"
-                color="textSecondary"
-              >
-                6000
-              </Typography>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell className={classes.fontWeightMedium}>
               Intereses
             </TableCell>
             <TableCell align="right">
@@ -151,7 +239,7 @@ const BorrowerInfo = ({
                 variant="body2"
                 color="textSecondary"
               >
-                20000
+                {currencyFormat(interestData,'USD')}
               </Typography>
             </TableCell>
           </TableRow>
@@ -164,7 +252,7 @@ const BorrowerInfo = ({
                 variant="body2"
                 color="textSecondary"
               >
-                5000
+                0
               </Typography>
             </TableCell>
           </TableRow>
@@ -177,7 +265,7 @@ const BorrowerInfo = ({
                 variant="body2"
                 color="textSecondary"
               >
-                {data.interestRate} / {data.IRR}
+                {Math.round(data.interestRate)*100/100 } / {Math.round(data.IRR)*100/100}
               </Typography>
             </TableCell>
           </TableRow>
@@ -190,7 +278,7 @@ const BorrowerInfo = ({
                 variant="body2"
                 color="textSecondary"
               >
-                {data.duration} meses
+                {Math.round(data.duration)*100/100} meses
               </Typography>
             </TableCell>
           </TableRow>

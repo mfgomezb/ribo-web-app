@@ -44,22 +44,27 @@ import NavItem from './NavItem';
 
 const sections = [
   {
-    subheader: 'Reports',
+    subheader: 'Reportes',
     items: [
       {
-        title: 'Dashboard',
+        title: 'Cartera',
         icon: PieChartIcon,
         href: '/app/reports/dashboard'
       },
       {
-        title: 'Dashboard Alternative',
+        title: 'Cobranza',
+        icon: ReceiptIcon,
+        href: '/app/reports/dashboard-alternative'
+      },
+      {
+        title: 'Banco',
         icon: BarChartIcon,
         href: '/app/reports/dashboard-alternative'
       }
     ]
   },
   {
-    subheader: 'Management',
+    subheader: 'Administración',
     items: [
       {
         title: 'Clientes',
@@ -91,36 +96,36 @@ const sections = [
           },
         ]
       },
-      {
-        title: 'Orders',
-        icon: FolderIcon,
-        href: '/app/management/orders',
-        items: [
-          {
-            title: 'List Orders',
-            href: '/app/management/orders'
-          },
-          {
-            title: 'View Order',
-            href: '/app/management/orders/1'
-          }
-        ]
-      },
-      {
-        title: 'Invoices',
-        icon: ReceiptIcon,
-        href: '/app/management/invoices',
-        items: [
-          {
-            title: 'List Invoices',
-            href: '/app/management/invoices'
-          },
-          {
-            title: 'View Invoice',
-            href: '/app/management/invoices/1'
-          }
-        ]
-      }
+      // {
+      //   title: 'Orders',
+      //   icon: FolderIcon,
+      //   href: '/app/management/orders',
+      //   items: [
+      //     {
+      //       title: 'List Orders',
+      //       href: '/app/management/orders'
+      //     },
+      //     {
+      //       title: 'View Order',
+      //       href: '/app/management/orders/1'
+      //     }
+      //   ]
+      // },
+      // {
+      //   title: 'Invoices',
+      //   icon: ReceiptIcon,
+      //   href: '/app/management/invoices',
+      //   items: [
+      //     {
+      //       title: 'List Invoices',
+      //       href: '/app/management/invoices'
+      //     },
+      //     {
+      //       title: 'View Invoice',
+      //       href: '/app/management/invoices/1'
+      //     }
+      //   ]
+      // }
     ]
   },
   {
@@ -375,13 +380,10 @@ const NavBar = ({ onMobileClose, openMobile }) => {
               color="textPrimary"
               underline="none"
             >
-              {user.name}
+              {user.firstName}
             </Link>
             <Typography variant="body2" color="textSecondary">
-              Your tier:{' '}
-              <Link component={RouterLink} to="/pricing">
-                {user.role}
-              </Link>
+                {user.admin ? `${user.location} ADMIN` : ""}
             </Typography>
           </Box>
         </Box>

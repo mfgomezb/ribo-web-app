@@ -21,11 +21,29 @@ export const useBorrowerUnpaidSchedule = (borrowerId) => {
   );
 };
 
+export const useBorrowerInterestGenerated = (borrowerId) => {
+  return useQuery(['interestGenerated', borrowerId], () =>
+      axios
+        .get(`api/loan/interest-generated/${borrowerId}`)
+        .then(res => res.data),
+    { staleTime: Infinity }
+  );
+};
+
 
 export const useBorrowerCreditDetails = (borrowerId) => {
   return useQuery(['creditDetails', borrowerId], () =>
       axios
         .get(`api/loan/credit-details/borrower/${borrowerId}`)
+        .then(res => res.data),
+    { staleTime: Infinity }
+  );
+};
+
+export const useBorrowerOwedStatus = (borrowerId) => {
+  return useQuery(['owedStatus', borrowerId], () =>
+      axios
+        .get(`api/loan/credit-details/owed-status/${borrowerId}`)
         .then(res => res.data),
     { staleTime: Infinity }
   );

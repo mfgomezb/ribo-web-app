@@ -6,12 +6,8 @@ import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
   Box,
-  Button,
   Card,
-  Checkbox,
   InputAdornment,
-  FormControlLabel,
-  IconButton,
   Link,
   SvgIcon,
   Table,
@@ -23,11 +19,7 @@ import {
   TextField,
   makeStyles
 } from '@material-ui/core';
-import {Pending as PendingIcon} from '@material-ui/icons'
 import {
-  Image as ImageIcon,
-  Edit as EditIcon,
-  ArrowRight as ArrowRightIcon,
   Search as SearchIcon
 } from 'react-feather';
 import Label from 'src/components/Label';
