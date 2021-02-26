@@ -24,9 +24,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const LateCollection = ({ className, ...rest }) => {
+const LateCollection = ({ className, country, ...rest }) => {
   const classes = useStyles();
-  const queryPayments = useGetTodayStatus('PERU');
+  const queryPayments = useGetTodayStatus(country);
 
   return (
     <Card className={clsx(classes.root, className)} {...rest}>

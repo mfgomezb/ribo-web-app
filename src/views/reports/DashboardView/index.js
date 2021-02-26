@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Container,
   Grid,
@@ -17,6 +17,8 @@ import EarningsSegmentation from './EarningsSegmentation';
 import LateCollection from './LateCollection';
 import TodayCollection from './TodayCollection';
 import UpcomingCollection from './UpcomingCollection';
+import useLocationOptions from '../../../hooks/useUserLocation';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,6 +31,8 @@ const useStyles = makeStyles((theme) => ({
 
 const DashboardView = () => {
   const classes = useStyles();
+  const countries = useLocationOptions()
+  const [country, setCountry] = useState(countries[0].id)
 
   return (
     <Page
@@ -36,7 +40,7 @@ const DashboardView = () => {
       title="Ribo | Dashboard"
     >
       <Container maxWidth={false}>
-        <Header />
+        <Header countries={countries} country={country} setCountry={setCountry} />
         <Grid
           container
           spacing={3}
@@ -47,7 +51,7 @@ const DashboardView = () => {
             sm={6}
             xs={12}
           >
-            <LateCollection />
+            <LateCollection country={country}/>
           </Grid>
           <Grid
             item
@@ -55,7 +59,7 @@ const DashboardView = () => {
             sm={6}
             xs={12}
           >
-            <TodayCollection />
+            <TodayCollection country={country}/>
           </Grid>
           <Grid
             item
@@ -63,7 +67,7 @@ const DashboardView = () => {
             sm={6}
             xs={12}
           >
-            <UpcomingCollection />
+            <UpcomingCollection country={country}/>
           </Grid>
           <Grid
             item
@@ -71,7 +75,7 @@ const DashboardView = () => {
             sm={6}
             xs={12}
           >
-            <RoiPerCustomer />
+            <RoiPerCustomer country={country}/>
           </Grid>
           <Grid
             item
@@ -85,7 +89,7 @@ const DashboardView = () => {
             lg={9}
             xs={12}
           >
-            <PerformanceOverTime />
+            <PerformanceOverTime country={country}/>
           </Grid>
           <Grid
             item
@@ -93,7 +97,7 @@ const DashboardView = () => {
             xl={8}
             xs={12}
           >
-            <LatestProjects />
+            <LatestProjects country={country}/>
           </Grid>
         </Grid>
       </Container>

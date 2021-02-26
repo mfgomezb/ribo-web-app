@@ -21,9 +21,9 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const PaymentsReceived = ({ className, ...rest }) => {
+const PaymentsReceived = ({ className, country,...rest }) => {
   const classes = useStyles();
-  const periodPayments = useGetPayments('PERU', 'month')
+  const periodPayments = useGetPayments(country, 'month')
 
 
   const dataTotals = !periodPayments.isLoading ? periodPayments.data.periodCollections.reduce((acc, e) => {

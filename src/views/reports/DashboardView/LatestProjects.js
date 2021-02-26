@@ -57,11 +57,10 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const LatestProjects = ({ className, ...rest }) => {
+const LatestProjects = ({ className, country,...rest }) => {
   const classes = useStyles();
   const isMountedRef = useIsMountedRef();
-  const payments = useGetPayments('PERU', 'month')
-  console.log(payments)
+  const payments = useGetPayments(country, 'month')
 
   return (
     <Card

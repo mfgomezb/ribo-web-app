@@ -14,7 +14,9 @@ import {
   makeStyles
 } from '@material-ui/core';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import { Calendar as CalendarIcon } from 'react-feather';
+import { Calendar as CalendarIcon, Globe as GlobeIcon } from 'react-feather';
+
+
 
 const timeRanges = [
   {
@@ -51,10 +53,12 @@ const useStyles = makeStyles(() => ({
   root: {}
 }));
 
-const Header = ({ className, ...rest }) => {
+const Header = ({ className, country, countries, setCountry, ...rest }) => {
   const classes = useStyles();
   const actionRef = useRef(null);
+  const actionCountryRef = useRef(null);
   const [isMenuOpen, setMenuOpen] = useState(false);
+  const [isCountryMenuOpen, setCountryMenuOpen] = useState(false);
   const [timeRange, setTimeRange] = useState(timeRanges[2].text);
 
   return (
@@ -87,6 +91,40 @@ const Header = ({ className, ...rest }) => {
         </Typography>
       </Grid>
       <Grid item>
+        <Button
+          ref={actionCountryRef}
+          onClick={() => setCountryMenuOpen(true)}
+          startIcon={
+            <SvgIcon fontSize="small">
+              <GlobeIcon />
+            </SvgIcon>
+          }
+        >
+          {countries.find(e => country === e.id).name}
+        </Button>
+        <Menu
+          anchorEl={actionCountryRef.current}
+          onClose={() => setCountryMenuOpen(false)}
+          open={isCountryMenuOpen}
+          getContentAnchorEl={null}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center'
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'center'
+          }}
+        >
+          {countries.map(_country => (
+            <MenuItem
+              key={_country.id}
+              onClick={() => setCountry(_country.id)}
+            >
+              {_country.name}
+            </MenuItem>
+          ))}
+        </Menu>
         <Button
           ref={actionRef}
           onClick={() => setMenuOpen(true)}
@@ -121,6 +159,7 @@ const Header = ({ className, ...rest }) => {
             </MenuItem>
           ))}
         </Menu>
+
       </Grid>
     </Grid>
   );

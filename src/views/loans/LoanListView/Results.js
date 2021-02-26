@@ -24,6 +24,7 @@ import {
 } from 'react-feather';
 import Label from 'src/components/Label';
 import {useGetLoanList} from '../../../hooks/useLoans';
+import useLocationOptions from '../../../hooks/useUserLocation';
 import qs from 'qs';
 import { useOfFunds as useOfFundsOptions } from 'src/views/loans/LoanListView/FormConstants'
 
@@ -209,6 +210,7 @@ const percentageFormat = (number) => {
   return numeral(number).format(`0.00%`)
 }
 const Results = ({ className, products, ...rest }) => {
+  const countries = useLocationOptions()
   const classes = useStyles();
   const { pathname, search } = useLocation()
   const history = useHistory()
@@ -225,6 +227,8 @@ const Results = ({ className, products, ...rest }) => {
   });
   const [params, setParams] = useState({ page, limit, query, filters })
   const {isLoading, data, error} = useGetLoanList(params)
+
+
 
   React.useEffect(() => {
 
@@ -248,6 +252,7 @@ const Results = ({ className, products, ...rest }) => {
       setPaginatedProducts(paginated);
     }
   }, [data])
+
   //
   // React.useEffect(() => {
   //   const listener = event => {
@@ -439,7 +444,7 @@ const Results = ({ className, products, ...rest }) => {
             value={filters.country || 'ALL'}
             variant="outlined"
           >
-            {countryOptions.map((countryOption) => (
+            {countries.map((countryOption) => (
               <option
                 key={countryOption.id}
                 value={countryOption.id}
