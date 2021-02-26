@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   Container,
   Grid,
+  Box,
   makeStyles
 } from '@material-ui/core';
 import Page from 'src/components/Page';
@@ -39,8 +40,9 @@ const DashboardView = () => {
       className={classes.root}
       title="Ribo | Dashboard"
     >
-      <Container maxWidth={false}>
+      <Container maxWidth="lg">
         <Header countries={countries} country={country} setCountry={setCountry} />
+        <Box mt={3}>
         <Grid
           container
           spacing={3}
@@ -79,13 +81,6 @@ const DashboardView = () => {
           </Grid>
           <Grid
             item
-            lg={3}
-            xs={12}
-          >
-            <RealTime />
-          </Grid>
-          <Grid
-            item
             lg={9}
             xs={12}
           >
@@ -93,13 +88,27 @@ const DashboardView = () => {
           </Grid>
           <Grid
             item
-            lg={7}
-            xl={8}
+            lg={3}
+            xs={12}
+          >
+            <RealTime country={country}/>
+          </Grid>
+          <Grid
+            item
+            lg={9}
             xs={12}
           >
             <LatestProjects country={country}/>
           </Grid>
+          <Grid
+            item
+            lg={3}
+            xs={12}
+          >
+            <RealTime country={country}/>
+          </Grid>
         </Grid>
+        </Box>
       </Container>
     </Page>
   );

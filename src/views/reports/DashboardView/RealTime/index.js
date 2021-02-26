@@ -27,9 +27,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const RealTime = ({ className, ...rest }) => {
+const RealTime = ({ className, country, ...rest }) => {
   const classes = useStyles();
-  const queryPayments = useGetTodayStatus('PERU');
+  const queryPayments = useGetTodayStatus(country);
   // const isMountedRef = useIsMountedRef();
 
   const labels = queryPayments.data !== undefined ? queryPayments.data.disbursed.sort((a, b) =>  new Date(a.date) - new Date(b.date)).map((value, i) => value.date) : [];
@@ -57,12 +57,8 @@ const RealTime = ({ className, ...rest }) => {
         title="Préstamos"
         titleTypographyProps={{ color: 'textPrimary' }}
       />
-      <Chart
-        data={data}
-        labels={labels}
-        label={'monto'}
-      />
-      <List>
+      <Box height={350}>
+      <List >
         {queryPayments.data !== undefined && queryPayments.data.disbursedDetails.map((loan) => (
           <ListItem
             divider
@@ -78,6 +74,7 @@ const RealTime = ({ className, ...rest }) => {
           </ListItem>
         ))}
       </List>
+      </Box>
       <Box
         p={2}
         display="flex"

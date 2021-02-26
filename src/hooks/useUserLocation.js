@@ -5,10 +5,6 @@ const useLocationOptions = () => {
   const { user } = useAuth();
   const [countries, setCountries] = useState([
     {
-      id: 'ALL',
-      name: 'Todos'
-    },
-    {
       id: 'PERU',
       name: 'Perú'
     },

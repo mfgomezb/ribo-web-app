@@ -73,7 +73,7 @@ const LatestProjects = ({ className, country,...rest }) => {
       />
       <Divider />
       <PerfectScrollbar>
-        <Box maxHeight={400}>
+        <Box height={375} minWidth={500}>
           <Table>
             <TableHead>
               <TableRow>
