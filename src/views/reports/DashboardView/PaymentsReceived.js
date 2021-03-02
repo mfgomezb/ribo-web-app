@@ -3,7 +3,9 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { Avatar, Box, Card, Typography, makeStyles } from '@material-ui/core';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
-import { useConceptTotals, useInterestEarned } from '../../../hooks/useDashboard';
+import Label from 'src/components/Label';
+import { useGetPayments, useGetTodayStatus, useReceivedPayments } from '../../../hooks/useDashboard';
+import numeral from 'numeral';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -22,10 +24,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const RoiPerCustomer = ({ className, country, timeRange, ...rest }) => {
+const PaymentsReceived = ({ className, country, timeRange, ...rest }) => {
   const classes = useStyles();
-  let {isLoading, data, error } = useConceptTotals('INTEREST',country, timeRange)
+  const periodPayments = useGetPayments(country, timeRange)
 
+  const data = !periodPayments.isLoading ?
+                  Object.values(periodPayments.data.periodCollections).reduce((acc,e) => { return acc + e.monto}, 0) : 0
 
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
@@ -36,12 +40,11 @@ const RoiPerCustomer = ({ className, country, timeRange, ...rest }) => {
           gutterBottom
           variant="overline"
         >
-          Ingreso por Intereses
+          Pagos Recibidos
         </Typography>
         <Box display="flex" alignItems="center" flexWrap="wrap">
           <Typography color="inherit" variant="h3">
-            $
-            {data}
+            {numeral(data).format(`$0,0.00`)}
           </Typography>
         </Box>
       </Box>
@@ -52,8 +55,8 @@ const RoiPerCustomer = ({ className, country, timeRange, ...rest }) => {
   );
 };
 
-RoiPerCustomer.propTypes = {
+PaymentsReceived.propTypes = {
   className: PropTypes.string
 };
 
-export default RoiPerCustomer;
+export default PaymentsReceived;

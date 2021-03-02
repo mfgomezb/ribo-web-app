@@ -23,8 +23,9 @@ const Details = ({
   return (
     <Grid
       className={clsx(classes.root, className)}
+      direction='row' spacing={2} alignItems="stretch"
       container
-      spacing={3}
+      // spacing={3}
       {...rest}
     >
       <Grid

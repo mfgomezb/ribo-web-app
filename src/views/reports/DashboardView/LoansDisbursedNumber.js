@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const NewProjects = ({ className, ...rest }) => {
+const LoansDisbursedNumber = ({ className, ...rest }) => {
   const queryLoansDisbursed = useLoansDisbursed('peru', 'week');
 
   const classes = useStyles();
@@ -66,8 +66,8 @@ const NewProjects = ({ className, ...rest }) => {
   );
 };
 
-NewProjects.propTypes = {
+LoansDisbursedNumber.propTypes = {
   className: PropTypes.string
 };
 
-export default NewProjects;
+export default LoansDisbursedNumber;

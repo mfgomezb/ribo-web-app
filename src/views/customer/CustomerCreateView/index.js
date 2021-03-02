@@ -27,7 +27,7 @@ const CustomerCreateView = () => {
       className={classes.root}
       title="Nuevo cliente"
     >
-      <Container maxWidth={false}>
+      <Container maxWidth={'lg'}>
         <Header />
       </Container>
       <Box mt={3}>

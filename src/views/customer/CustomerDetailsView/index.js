@@ -56,7 +56,7 @@ const CustomerDetailsView = () => {
       className={classes.root}
       title="Ribo | Detalles de cliente"
     >
-      <Container maxWidth={false}>
+      <Container maxWidth={'lg'}>
         <Header customer={data} />
           <Box mt={3}>
             <Tabs
@@ -73,7 +73,7 @@ const CustomerDetailsView = () => {
                   component={Link}
                   value={tab.value}
                   to={`/app/management/customers/${customerId}/${tab.value}`}
-                />
+                 />
               ))}
             </Tabs>
           </Box>

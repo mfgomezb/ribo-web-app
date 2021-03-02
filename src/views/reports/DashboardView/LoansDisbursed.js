@@ -3,7 +3,9 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { Avatar, Box, Card, Typography, makeStyles } from '@material-ui/core';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
-import { useConceptTotals, useInterestEarned } from '../../../hooks/useDashboard';
+import Label from 'src/components/Label';
+import { useGetPayments, useGetTodayStatus, useReceivedPayments } from '../../../hooks/useDashboard';
+import numeral from 'numeral';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -22,11 +24,20 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const RoiPerCustomer = ({ className, country, timeRange, ...rest }) => {
+const LoansDisbursed = ({ className, country, timeRange, ...rest }) => {
   const classes = useStyles();
-  let {isLoading, data, error } = useConceptTotals('INTEREST',country, timeRange)
+  const queryPayments = useGetTodayStatus(country, timeRange);
+  // const isMountedRef = useIsMountedRef();
 
+  const totalAmount = queryPayments.data !== undefined ? queryPayments.data.disbursedDetails.reduce((acc, e) =>  {return acc + e.capital}, 0) : 0;
 
+  {/*<Label*/}
+  {/*  className={classes.label}*/}
+  {/*  color={data.difference > 0 ? 'success' : 'error'}*/}
+  {/*>*/}
+  {/*  {data.difference > 0 ? '+' : ''}*/}
+  {/*  {data.difference}%*/}
+  {/*</Label>*/}
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
       <Box flexGrow={1}>
@@ -36,12 +47,11 @@ const RoiPerCustomer = ({ className, country, timeRange, ...rest }) => {
           gutterBottom
           variant="overline"
         >
-          Ingreso por Intereses
+          Desembolsos
         </Typography>
         <Box display="flex" alignItems="center" flexWrap="wrap">
           <Typography color="inherit" variant="h3">
-            $
-            {data}
+            {numeral(totalAmount).format(`$0,0.00`)}
           </Typography>
         </Box>
       </Box>
@@ -52,8 +62,8 @@ const RoiPerCustomer = ({ className, country, timeRange, ...rest }) => {
   );
 };
 
-RoiPerCustomer.propTypes = {
+LoansDisbursed.propTypes = {
   className: PropTypes.string
 };
 
-export default RoiPerCustomer;
+export default LoansDisbursed;

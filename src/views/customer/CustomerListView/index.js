@@ -49,7 +49,7 @@ const CustomerListView = () => {
       className={classes.root}
       title="Listado de clientes"
     >
-      <Container maxWidth={false}>
+      <Container maxWidth={'lg'}>
         <Header />
         <Box mt={3}>
           <Results  />

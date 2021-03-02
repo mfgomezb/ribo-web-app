@@ -22,6 +22,7 @@ import {
   Briefcase as BriefcaseIcon,
   Calendar as CalendarIcon,
   ShoppingCart as ShoppingCartIcon,
+  TrendingUp as TrendingUpIcon,
   Folder as FolderIcon,
   BarChart as BarChartIcon,
   Lock as LockIcon,
@@ -47,7 +48,7 @@ const sections = [
     subheader: 'Reportes',
     items: [
       {
-        title: 'Cartera',
+        title: 'Resumen',
         icon: PieChartIcon,
         href: '/app/reports/dashboard'
       },
@@ -57,8 +58,13 @@ const sections = [
         href: '/app/reports/dashboard-alternative'
       },
       {
-        title: 'Banco',
+        title: 'Finanzas',
         icon: BarChartIcon,
+        href: '/app/reports/dashboard-alternative'
+      },
+      {
+        title: 'Cartera',
+        icon: TrendingUpIcon,
         href: '/app/reports/dashboard-alternative'
       }
     ]

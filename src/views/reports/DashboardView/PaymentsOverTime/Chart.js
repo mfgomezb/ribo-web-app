@@ -108,10 +108,10 @@ const Chart = ({
       callbacks: {
         title: () => {},
         label: (tooltipItem) => {
-          let label = `Pagos: ${tooltipItem.yLabel > 1000 ? tooltipItem.yLabel /1000 : tooltipItem.yLabel}`;
+          let label = `Pagos: ${Math.round(tooltipItem.yLabel*100) / 100}`;
 
           if (tooltipItem.yLabel > 1000) {
-            label += 'K';
+            label += 'k';
           }
 
           return label;

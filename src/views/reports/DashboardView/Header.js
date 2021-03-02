@@ -16,35 +16,33 @@ import {
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import { Calendar as CalendarIcon, Globe as GlobeIcon } from 'react-feather';
 
-
-
 const timeRanges = [
   {
-    value: 'today',
+    id: 'today',
     text: 'Hoy'
   },
   {
-    value: 'week',
+    id: 'week',
     text: 'Semana'
   },
   {
-    value: 'month',
+    id: 'month',
     text: 'Mes'
   },
   {
-    value: 'year',
+    id: 'year',
     text: 'Año'
   },
   {
-    value: 'last_7_days',
+    id: 'last_7_days',
     text: '7 días'
   },
   {
-    value: 'last_30_days',
+    id: 'last_30_days',
     text: '30 días'
   },
   {
-    value: 'last_year',
+    id: 'last_year',
     text: '360 días'
   }
 ];
@@ -53,13 +51,20 @@ const useStyles = makeStyles(() => ({
   root: {}
 }));
 
-const Header = ({ className, country, countries, setCountry, ...rest }) => {
+const Header = ({ className,
+                  country,
+                  countries,
+                  setCountry,
+                  timeRange,
+                  timeRanges,
+                  setTimeRange,
+                  ...rest }) => {
   const classes = useStyles();
   const actionRef = useRef(null);
   const actionCountryRef = useRef(null);
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [isCountryMenuOpen, setCountryMenuOpen] = useState(false);
-  const [timeRange, setTimeRange] = useState(timeRanges[2].text);
+
 
   return (
     <Grid
@@ -134,7 +139,7 @@ const Header = ({ className, country, countries, setCountry, ...rest }) => {
             </SvgIcon>
           }
         >
-          {timeRange}
+          {timeRanges.find(e => timeRange === e.id).text}
         </Button>
         <Menu
           anchorEl={actionRef.current}
@@ -152,8 +157,8 @@ const Header = ({ className, country, countries, setCountry, ...rest }) => {
         >
           {timeRanges.map(_timeRange => (
             <MenuItem
-              key={_timeRange.value}
-              onClick={() => setTimeRange(_timeRange.text)}
+              key={_timeRange.id}
+              onClick={() => setTimeRange(_timeRange.id)}
             >
               {_timeRange.text}
             </MenuItem>

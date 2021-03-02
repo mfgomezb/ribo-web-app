@@ -21,24 +21,12 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const PaymentsReceived = ({ className, country,...rest }) => {
+const PaymentsOverTime = ({ className, country,timeRange, ...rest }) => {
   const classes = useStyles();
-  const periodPayments = useGetPayments(country, 'month')
+  const periodPayments = useGetPayments(country, timeRange)
 
-
-  const dataTotals = !periodPayments.isLoading ? periodPayments.data.periodCollections.reduce((acc, e) => {
-    const found = acc.find(j => e.date === j.date)
-    if (!found) {
-      acc.push(e)
-    } else {
-      found.numero += e.numero
-      found.monto += e.monto
-    }
-    return acc
-  }, []) : 0
-
-  const dataLabels = !periodPayments.isLoading ? dataTotals.map(e => e.date) : []
-  const data = !periodPayments.isLoading ? dataTotals.map(e => e.monto) : []
+  const dataLabels = !periodPayments.isLoading ? Object.keys(periodPayments.data.periodCollections) : []
+  const data = !periodPayments.isLoading ? Object.values(periodPayments.data.periodCollections).map(e => e.monto) : []
 
 
   return (
@@ -63,8 +51,8 @@ const PaymentsReceived = ({ className, country,...rest }) => {
   );
 };
 
-PaymentsReceived.propTypes = {
+PaymentsOverTime.propTypes = {
   className: PropTypes.string
 };
 
-export default PaymentsReceived;
+export default PaymentsOverTime;

@@ -57,10 +57,11 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const LatestProjects = ({ className, country,...rest }) => {
+const PaymentsReceivedList = ({ className, country, timeRange, ...rest }) => {
   const classes = useStyles();
   const isMountedRef = useIsMountedRef();
-  const payments = useGetPayments(country, 'month')
+  const payments = useGetPayments(country, timeRange)
+
 
   return (
     <Card
@@ -152,8 +153,8 @@ const LatestProjects = ({ className, country,...rest }) => {
   );
 };
 
-LatestProjects.propTypes = {
+PaymentsReceivedList.propTypes = {
   className: PropTypes.string
 };
 
-export default LatestProjects;
+export default PaymentsReceivedList;
