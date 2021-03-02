@@ -7,6 +7,7 @@ import { AttachMoneyIcon,
 } from '@material-ui/icons';
 import Label from 'src/components/Label';
 import { useGetTodayStatus } from '../../../hooks/useDashboard';
+import numeral from 'numeral';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -44,10 +45,9 @@ const LateCollection = ({ className, country, timeRange, ...rest }) => {
         </Typography>
         <Box display="flex" alignItems="left" flexDirection="column" flexWrap="wrap">
           <Typography variant="h3" color="textPrimary">
-            $
             {queryPayments.isLoading
               ? '...' : queryPayments.data === undefined ? 0
-              : (queryPayments.data.overdue.interest + queryPayments.data.overdue.principal).toFixed(2)}
+              : numeral(queryPayments.data.overdue.interest + queryPayments.data.overdue.principal).format(`$0,0.00`)}
           </Typography>
           {/*<Label*/}
           {/*  className={classes.label}*/}

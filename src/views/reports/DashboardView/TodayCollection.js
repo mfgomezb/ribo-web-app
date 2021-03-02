@@ -5,6 +5,7 @@ import { Avatar, Box, Card, Typography, makeStyles } from '@material-ui/core';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import Label from 'src/components/Label';
 import { useGetTodayStatus, useReceivedPayments } from '../../../hooks/useDashboard';
+import numeral from 'numeral';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -41,10 +42,9 @@ const LateCollection = ({ className, country, ...rest }) => {
         </Typography>
         <Box display="flex" alignItems="left" flexDirection="column" flexWrap="wrap">
           <Typography variant="h3" color="textPrimary">
-            $
             {queryPayments.isLoading
               ? '...' : queryPayments.data === undefined ? 0
-              : (queryPayments.data.today.interest + queryPayments.data.today.principal).toFixed(2)}
+              : numeral(queryPayments.data.today.interest + queryPayments.data.today.principal).format(`$0,0.00`)}
           </Typography>
           {/*<Label*/}
           {/*  className={classes.label}*/}

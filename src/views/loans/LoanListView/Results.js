@@ -244,7 +244,12 @@ const Results = ({ className, products, ...rest }) => {
       document.removeEventListener("keydown", listener);
     };
 
-  }, [page, limit, query, filters])
+  }, [query, filters])
+
+  React.useEffect(() => {
+        setParams({page, limit, query, filters})
+        history.push(pathname+ "?" + qs.stringify({page: page, limit: limit, query: query, ...filters}))
+  }, [page, limit])
 
   React.useEffect(() => {
     if (data) {
