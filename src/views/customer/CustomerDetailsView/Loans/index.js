@@ -59,8 +59,8 @@ const Details = ({
         item
         // container
         lg={9}
-        md={6}
-        xl={3}
+        md={12}
+        xl={9}
         xs={12}
         spacing={3}
       >

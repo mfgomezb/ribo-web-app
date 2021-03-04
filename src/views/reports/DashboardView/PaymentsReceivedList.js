@@ -70,7 +70,7 @@ const PaymentsReceivedList = ({ className, country, timeRange, ...rest }) => {
     >
       <CardHeader
         action={<GenericMoreButton />}
-        title="Últimos pagos recibidos"
+        title={`Últimos pagos recibidos - # de pagos: ${!payments.isLoading && payments.data.collectionsDetail.length}`}
       />
       <Divider />
       <PerfectScrollbar>

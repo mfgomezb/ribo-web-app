@@ -209,7 +209,7 @@ const currencyFormat = (number, currency) => {
 const percentageFormat = (number) => {
   return numeral(number).format(`0.00%`)
 }
-const Results = ({ className, products, ...rest }) => {
+const Results = ({ className, ...rest }) => {
   const countries = useLocationOptions()
   const classes = useStyles();
   const { pathname, search } = useLocation()
@@ -218,7 +218,6 @@ const Results = ({ className, products, ...rest }) => {
   const [limit, setLimit] = useState(qs.parse(search).limit || 10);
   const [query, setQuery] = useState(qs.parse(search).query || '');
   const [sort, setSort] = useState(sortOptions[0].value)
-  const [paginatedProducts, setPaginatedProducts] = useState([])
   const [filters, setFilters] = useState({
     country: null,
     status: 'OPEN',
@@ -251,12 +250,6 @@ const Results = ({ className, products, ...rest }) => {
         history.push(pathname+ "?" + qs.stringify({page: page, limit: limit, query: query, ...filters}))
   }, [page, limit])
 
-  React.useEffect(() => {
-    if (data) {
-      let paginated = applyPagination(data.results, page, limit)
-      setPaginatedProducts(paginated);
-    }
-  }, [data])
 
   //
   // React.useEffect(() => {
@@ -662,11 +655,6 @@ const Results = ({ className, products, ...rest }) => {
 
 Results.propTypes = {
   className: PropTypes.string,
-  products: PropTypes.array.isRequired
-};
-
-Results.defaultProps = {
-  products: []
 };
 
 export default Results;

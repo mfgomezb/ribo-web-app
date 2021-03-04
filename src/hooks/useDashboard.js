@@ -14,6 +14,10 @@ const dateRangeSelection = (period) => {
       gtDate = DateTime.local().startOf('month').toString().slice(0,10)
       ltDate = DateTime.local().endOf('day').toString().slice(0,10)
       break;
+    case 'past_month':
+      gtDate = DateTime.local().minus({ month: 1 }).startOf('month').toString().slice(0,10)
+      ltDate = DateTime.local().minus({ month: 1 }).endOf('month').toString().slice(0,10)
+      break;
     case 'week':
       gtDate = DateTime.local().startOf('week').toString().slice(0,10)
       ltDate = DateTime.local().endOf('day').toString().slice(0,10)
@@ -28,6 +32,10 @@ const dateRangeSelection = (period) => {
       break;
     case 'last_30_days':
       gtDate = DateTime.local().minus({ days: 30 }).toString().slice(0,10)
+      ltDate = DateTime.local().endOf('day').toString().slice(0,10)
+      break;
+    case 'last_60_days':
+      gtDate = DateTime.local().minus({ days: 60 }).toString().slice(0,10)
       ltDate = DateTime.local().endOf('day').toString().slice(0,10)
       break;
     case 'last_year':

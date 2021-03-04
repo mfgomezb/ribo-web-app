@@ -5,14 +5,8 @@ import {
   makeStyles
 } from '@material-ui/core';
 import Page from 'src/components/Page';
-import CustomerActivity from './CustomerActivity';
-import EarningsSegmentation from './EarningsSegmentation';
-import FinancialStats from './FinancialStats';
 import Header from './Header';
-import LatestOrders from './LatestOrders';
-import MostProfitableProducts from './MostProfitableProducts';
-import Overview from './Overview';
-import TopReferrals from './TopReferrals';
+import Results from './Results';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,9 +23,9 @@ const DashboardAlternativeView = () => {
   return (
     <Page
       className={classes.root}
-      title="Dashboard Alternative"
+      title="Ribo | Cobranza"
     >
-      <Container maxWidth={false}>
+      <Container maxWidth={'xl'}>
         <Header />
         <Grid
           container
@@ -41,51 +35,7 @@ const DashboardAlternativeView = () => {
             item
             xs={12}
           >
-            <Overview />
-          </Grid>
-          <Grid
-            item
-            lg={8}
-            xl={9}
-            xs={12}
-          >
-            <FinancialStats />
-          </Grid>
-          <Grid
-            item
-            lg={4}
-            xl={3}
-            xs={12}
-          >
-            <EarningsSegmentation />
-          </Grid>
-          <Grid
-            item
-            lg={8}
-            xs={12}
-          >
-            <LatestOrders />
-          </Grid>
-          <Grid
-            item
-            lg={4}
-            xs={12}
-          >
-            <CustomerActivity />
-          </Grid>
-          <Grid
-            item
-            lg={8}
-            xs={12}
-          >
-            <MostProfitableProducts />
-          </Grid>
-          <Grid
-            item
-            lg={4}
-            xs={12}
-          >
-            <TopReferrals />
+            <Results />
           </Grid>
         </Grid>
       </Container>

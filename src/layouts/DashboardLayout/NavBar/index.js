@@ -55,7 +55,7 @@ const sections = [
       {
         title: 'Cobranza',
         icon: ReceiptIcon,
-        href: '/app/reports/dashboard-alternative'
+        href: '/app/reports/collections'
       },
       {
         title: 'Finanzas',

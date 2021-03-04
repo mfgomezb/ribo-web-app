@@ -15,11 +15,11 @@ const useStyles = makeStyles(() => ({
 }));
 
 const Chart = ({
-                 className,
-                 data: dataProp,
-                 labels,
-                 ...rest
-               }) => {
+  className,
+  data: dataProp,
+  labels,
+  ...rest
+}) => {
   const classes = useStyles();
   const theme = useTheme();
 

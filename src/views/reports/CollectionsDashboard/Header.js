@@ -44,9 +44,6 @@ const useStyles = makeStyles(() => ({
 
 const Header = ({ className, ...rest }) => {
   const classes = useStyles();
-  const actionRef = useRef(null);
-  const [isMenuOpen, setMenuOpen] = useState(false);
-  const [timeRange, setTimeRange] = useState(timeRanges[2].text);
 
   return (
     <Grid
@@ -73,51 +70,15 @@ const Header = ({ className, ...rest }) => {
             variant="body1"
             color="textPrimary"
           >
-            Reports
+            Cobranza
           </Typography>
         </Breadcrumbs>
         <Typography
           variant="h3"
           color="textPrimary"
         >
-          Finance Overview
+          Cobranza
         </Typography>
-      </Grid>
-      <Grid item>
-        <Button
-          ref={actionRef}
-          onClick={() => setMenuOpen(true)}
-          startIcon={
-            <SvgIcon fontSize="small">
-              <CalendarIcon />
-            </SvgIcon>
-          }
-        >
-          {timeRange}
-        </Button>
-        <Menu
-          anchorEl={actionRef.current}
-          onClose={() => setMenuOpen(false)}
-          open={isMenuOpen}
-          getContentAnchorEl={null}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'center'
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'center'
-          }}
-        >
-          {timeRanges.map((_timeRange) => (
-            <MenuItem
-              key={_timeRange.value}
-              onClick={() => setTimeRange(_timeRange.text)}
-            >
-              {_timeRange.text}
-            </MenuItem>
-          ))}
-        </Menu>
       </Grid>
     </Grid>
   );

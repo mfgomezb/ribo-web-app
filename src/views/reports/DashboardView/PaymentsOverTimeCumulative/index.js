@@ -21,14 +21,18 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const PaymentsOverTime = ({ className, country,timeRange, ...rest }) => {
+const PaymentsOverTimeCumulative = ({ className, country,timeRange, ...rest }) => {
   const classes = useStyles();
   const periodPayments = useGetPayments(country, timeRange)
 
   const dataLabels = !periodPayments.isLoading ? Object.keys(periodPayments.data.periodCollections) : []
 
   const data = !periodPayments.isLoading ? Object.values(periodPayments.data.periodCollections)
-    .map(e => e.monto): []
+    .map(e => e.monto)
+    .reduce((r, a) => { r.push((r.length && r[r.length - 1] || 0) + a);
+      return r;
+    }, []): []
+
 
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
@@ -52,8 +56,8 @@ const PaymentsOverTime = ({ className, country,timeRange, ...rest }) => {
   );
 };
 
-PaymentsOverTime.propTypes = {
+PaymentsOverTimeCumulative.propTypes = {
   className: PropTypes.string
 };
 
-export default PaymentsOverTime;
+export default PaymentsOverTimeCumulative;

@@ -9,6 +9,7 @@ import Page from 'src/components/Page';
 import Header from './Header';
 import PaymentsReceived from './PaymentsReceived';
 import PaymentsReceivedList from './PaymentsReceivedList';
+import PaymentsOverTimeCumulative from './PaymentsOverTimeCumulative';
 import PaymentsOverTime from './PaymentsOverTime';
 import LoanDisbursedList from './LoansDisbursedList/index';
 import RoiPerCustomer from './RoiPerCustomer';
@@ -35,6 +36,10 @@ const timeRanges = [
     text: 'Mes'
   },
   {
+    id: 'past_month',
+    text: 'Mes Anterior'
+  },
+  {
     id: 'year',
     text: 'Año'
   },
@@ -45,6 +50,10 @@ const timeRanges = [
   {
     id: 'last_30_days',
     text: '30 días'
+  },
+  {
+    id: 'last_60_days',
+    text: '60 días'
   },
   {
     id: 'last_year',
@@ -130,6 +139,11 @@ const DashboardView = () => {
                   country={country}
                   timeRange={timeRange}/>
               </Box>
+            <Box mt={3}>
+              <PaymentsOverTimeCumulative
+                country={country}
+                timeRange={timeRange}/>
+            </Box>
               <Box mt={3}>
                 <PaymentsReceivedList
                   country={country}

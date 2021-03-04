@@ -247,6 +247,11 @@ const routes = [
       },
       {
         exact: true,
+        path: '/app/reports/collections',
+        component: lazy(() => import('src/views/reports/CollectionsDashboard'))
+      },
+      {
+        exact: true,
         path: '/app/reports/dashboard-alternative',
         component: lazy(() =>
           import('src/views/reports/DashboardAlternativeView')
