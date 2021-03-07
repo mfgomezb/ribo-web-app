@@ -1,4 +1,4 @@
-
+import React from 'react';
 // actions
 import {
   deleteInstallmentPayment,
@@ -157,6 +157,7 @@ export function handleLoanInvestorsPosition(loanId) {
       })
   }
 }
+
 
 
 export function handlePaymentRemoval(payment) {

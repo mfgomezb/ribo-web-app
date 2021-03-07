@@ -1,4 +1,5 @@
 import React from 'react';
+import {useSelector, useDispatch} from 'react-redux';
 import { QueryCache, ReactQueryCacheProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query-devtools';
 import { Router } from 'react-router-dom';
@@ -6,6 +7,8 @@ import { createBrowserHistory } from 'history';
 import { create } from 'jss';
 import rtl from 'jss-rtl';
 import MomentUtils from '@date-io/moment';
+import Backdrop from '../src/components/Backdrop'
+import ConfirmationModal from '../src/components/Modal'
 import { SnackbarProvider } from 'notistack';
 import { jssPreset, StylesProvider, ThemeProvider } from '@material-ui/core';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
@@ -34,6 +37,7 @@ const queryConfig = {
 
 const App = () => {
   const { settings } = useSettings();
+  const dispatch = useDispatch();
 
   const theme = createTheme({
     direction: settings.direction,

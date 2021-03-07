@@ -27,9 +27,11 @@ import {
 // } from 'react-feather';
 import Label from 'src/components/Label';
 import GenericMoreButton from 'src/components/GenericMoreButton';
-import {handlePaymentRemoval} from 'src/actions/loans';
+import { handlePaymentRemoval, REMOVE_INSTALLMENT_PAYMENT } from 'src/actions/loans';
 import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 import { useSelector, useDispatch } from 'react-redux';
+import { useConfirmationModalContext } from '../../../contexts/modalConfirmationContext';
+import ConfirmationModalContextProvider from "../../../contexts/modalConfirmationContext";
 
 
 
@@ -119,6 +121,24 @@ const statusSetter = (data) => {
 }
 
 
+const DeletePaymentButton = (props) => {
+  const modalContext = useConfirmationModalContext();
+
+  const handleOnClick = async () => {
+    const result = await modalContext.showConfirmation();
+    result && props.onClick();
+  };
+
+  return (
+    <Button
+      disabled={props.loading}
+      startIcon={<DeleteIcon />}
+      onClick={handleOnClick}>
+      {props.children}
+    </Button>
+  )
+};
+
 const useStyles = makeStyles(() => ({
   root: {}
 }));
@@ -129,6 +149,8 @@ const PaymentTab = ({ className, loanId, ...rest }) => {
   const { enqueueSnackbar } = useSnackbar();
   const loanPayments = useSelector((state) => state.loan.loanPayments)
   const loading = useSelector((state) => state.loan.loading)
+
+
 
   const handleDelete = async payment => {
     try {
@@ -154,19 +176,21 @@ const PaymentTab = ({ className, loanId, ...rest }) => {
       {...rest}
     >
       <Card>
+        <ConfirmationModalContextProvider>
         <CardHeader
           action={
             <Box >
-              <Button
+              <DeletePaymentButton
                 onClick={() => handleDelete(loanPayments[0])}
-                disabled={loading}
-                startIcon={<DeleteIcon />}>
+                loading={loading}
+              >
                 Eliminar último pago
-              </Button>
+              </DeletePaymentButton>
               <GenericMoreButton />
             </Box>}
           title="Pagos recibidos"
         />
+        </ConfirmationModalContextProvider>
         <Divider />
         <PerfectScrollbar>
           <Box >

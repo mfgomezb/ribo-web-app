@@ -219,7 +219,7 @@ const Results = ({ className, ...rest }) => {
   const [query, setQuery] = useState(qs.parse(search).query || '');
   const [sort, setSort] = useState(sortOptions[0].value)
   const [filters, setFilters] = useState({
-    country: null,
+    country: countries[0].id,
     status: 'OPEN',
     useOfFunds: null,
     // isRestructured: false,

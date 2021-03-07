@@ -25,24 +25,24 @@ const useStyles = makeStyles((theme) => ({
 
 const ProductListView = () => {
   const classes = useStyles();
-  const isMountedRef = useIsMountedRef();
-  const [products, setProducts] = useState([]);
+  // const isMountedRef = useIsMountedRef();
+  // const [products, setProducts] = useState([]);
 
-  const getProducts = useCallback(async () => {
-    try {
-      const response = await axios.get('/api/products');
-
-      if (isMountedRef.current) {
-        setProducts(response.data.products);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }, [isMountedRef]);
-
-  useEffect(() => {
-    getProducts();
-  }, [getProducts]);
+  // const getProducts = useCallback(async () => {
+  //   try {
+  //     const response = await axios.get('/api/products');
+  //
+  //     if (isMountedRef.current) {
+  //       setProducts(response.data.products);
+  //     }
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // }, [isMountedRef]);
+  //
+  // useEffect(() => {
+  //   getProducts();
+  // }, [getProducts]);
 
   return (
     <Page
@@ -51,11 +51,9 @@ const ProductListView = () => {
     >
       <Container maxWidth={false}>
         <Header />
-        {products && (
           <Box mt={3}>
-            <Results products={products} />
+            <Results />
           </Box>
-        )}
       </Container>
     </Page>
   );

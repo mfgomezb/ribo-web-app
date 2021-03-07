@@ -35,6 +35,7 @@ import {useGetScheduleList} from '../../../hooks/useLoans';
 import qs from 'qs';
 import { useOfFunds as useOfFundsOptions } from 'src/views/loans/LoanListView/FormConstants'
 import { DateTime } from 'luxon';
+import useLocationOptions from '../../../hooks/useUserLocation';
 
 
 const getStatusLabel = (status) => {
@@ -242,15 +243,16 @@ const percentageFormat = (number) => {
 }
 const Results = ({ className, products, ...rest }) => {
   const classes = useStyles();
-  const { pathname, search } = useLocation()
   const history = useHistory()
+  const { pathname, search } = useLocation()
+  const countries = useLocationOptions()
   const [page, setPage] = useState(qs.parse(search).page || 0);
   const [limit, setLimit] = useState(qs.parse(search).limit || 10);
   const [query, setQuery] = useState(qs.parse(search).query || '');
   const [sort, setSort] = useState(sortOptions[0].value)
   const [paginatedProducts, setPaginatedProducts] = useState([])
   const [filters, setFilters] = useState({
-    country: null,
+    country: countries[0].id,
     status: null,
     useOfFunds: null,
     // isRestructured: false,
@@ -437,10 +439,10 @@ const Results = ({ className, products, ...rest }) => {
             onChange={handleCountryChange}
             select
             SelectProps={{ native: true }}
-            value={filters.country || 'ALL'}
+            value={filters.country || countries[0].id}
             variant="outlined"
           >
-            {countryOptions.map((countryOption) => (
+            {countries.map((countryOption) => (
               <option
                 key={countryOption.id}
                 value={countryOption.id}
