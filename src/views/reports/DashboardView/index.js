@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   Container,
   Grid,
@@ -21,6 +21,8 @@ import TodayCollection from './TodayCollection';
 import UpcomingCollection from './UpcomingCollection';
 import useLocationOptions from '../../../hooks/useUserLocation';
 import LoansDisbursed from './LoansDisbursed';
+import useIsMountedRef from '../../../hooks/useIsMountedRef';
+import axios from '../../../utils/axios';
 
 const timeRanges = [
   {
@@ -76,8 +78,27 @@ const useStyles = makeStyles((theme) => ({
 const DashboardView = () => {
   const classes = useStyles();
   const countries = useLocationOptions()
-  const [country, setCountry] = useState(countries[0].id)
   const [timeRange, setTimeRange] = useState(timeRanges[2].id);
+  const isMountedRef = useIsMountedRef();
+  const [country, setCountry] = useState(null)
+
+  const getCountry = useCallback(async () => {
+    try {
+      if (isMountedRef.current && countries) {
+        setCountry(countries[0].id);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }, [isMountedRef]);
+
+  useEffect(() => {
+    getCountry();
+  }, [getCountry]);
+
+  if (!country) {
+    return null;
+  }
 
   return (
     <Page

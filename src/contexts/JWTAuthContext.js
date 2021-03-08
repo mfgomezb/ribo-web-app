@@ -2,6 +2,7 @@ import React, { createContext, useEffect, useReducer } from 'react';
 import jwt from 'jsonwebtoken';
 import SplashScreen from 'src/components/SplashScreen';
 import axios from 'src/utils/axios';
+import useUserLocation from '../hooks/useUserLocation';
 
 const initialAuthState = {
   isAuthenticated: false,
@@ -104,6 +105,7 @@ const AuthContext = createContext({
   login: () => Promise.resolve(),
   verify: () => Promise.resolve(),
   logout: () => {},
+  changePassword: () => Promise.resolve(),
   register: () => Promise.resolve()
 });
 
@@ -123,6 +125,7 @@ export const AuthProvider = ({ children }) => {
         user
       }
     });
+
   };
 
   const logout = () => {
@@ -148,10 +151,17 @@ export const AuthProvider = ({ children }) => {
         user
       }
     });
+
   };
 
   const updateUser = async (userDetails) => {
-    const response = await axios.patch(`api/users/{id}`, userDetails);
+    const response = await axios.patch(`api/users/${userDetails.id}`, userDetails);
+    console.log(response);
+  };
+
+  const changePassword = async (userDetails) => {
+    let { _id } = state.user
+    const response = await axios.patch(`api/customers/${_id}/update-password`, userDetails);
     console.log(response);
   };
 
@@ -234,7 +244,8 @@ export const AuthProvider = ({ children }) => {
         logout,
         register,
         verify,
-        updateUser
+        updateUser,
+        changePassword
       }}
     >
       {children}

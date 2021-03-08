@@ -14,7 +14,7 @@ import {
   makeStyles
 } from '@material-ui/core';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import { Calendar as CalendarIcon, Globe as GlobeIcon } from 'react-feather';
+import { Calendar as CalendarIcon, Globe as GlobeIcon, Loader } from 'react-feather';
 
 const timeRanges = [
   {
@@ -65,7 +65,6 @@ const Header = ({ className,
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [isCountryMenuOpen, setCountryMenuOpen] = useState(false);
 
-
   return (
     <Grid
       container
@@ -105,7 +104,8 @@ const Header = ({ className,
             </SvgIcon>
           }
         >
-          {countries.find(e => country === e.id).name}
+
+          {countries.find(e => country === e.id)?.name}
         </Button>
         <Menu
           anchorEl={actionCountryRef.current}
