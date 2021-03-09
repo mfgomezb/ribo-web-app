@@ -17,16 +17,12 @@ import {
   FormControlLabel,
   FormHelperText,
   Grid,
-  Paper,
   TextField,
   InputAdornment,
-  Typography,
   makeStyles, InputLabel, Select, FormControl
 } from '@material-ui/core';
 import ScheduleTable from './ScheduleTable'
 import { postCreateLoan} from '../../../utils/API';
-import QuillEditor from 'src/components/QuillEditor';
-import FilesDropzone from 'src/components/FilesDropzone';
 import { paymentFrequency as paymentFrequencyConstants,
           useOfFunds as useOfFundsConstants,
           currencies as currenciesConstants,
@@ -37,20 +33,6 @@ import { paymentFrequency as paymentFrequencyConstants,
 
 
 
-const categories = [
-  {
-    id: 'shirts',
-    name: 'Shirts'
-  },
-  {
-    id: 'phones',
-    name: 'Phones'
-  },
-  {
-    id: 'cars',
-    name: 'Cars'
-  }
-];
 
 const useStyles = makeStyles(() => ({
   root: {},

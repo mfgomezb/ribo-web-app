@@ -7,19 +7,15 @@ import {
   Button,
   Card,
   CardHeader,
-  List,
-  ListItem,
-  ListItemText,
   Typography,
   makeStyles, TableHead, TableRow, TableCell, Tooltip, TableSortLabel, TableBody, Table, Divider
 } from '@material-ui/core';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-// import useIsMountedRef from 'src/hooks/useIsMountedRef';
-import Chart from './Chart';
 import { useGetTodayStatus } from '../../../../hooks/useDashboard';
 import numeral from 'numeral';
 import moment from 'moment';
 import PerfectScrollbar from 'react-perfect-scrollbar';
+// import useIsMountedRef from 'src/hooks/useIsMountedRef';
 
 const useStyles = makeStyles((theme) => ({
   root: {},

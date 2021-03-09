@@ -22,7 +22,6 @@ import {
 import {
   Search as SearchIcon
 } from 'react-feather';
-import Label from 'src/components/Label';
 import {useGetCollection} from '../../../hooks/useGetCollection';
 import useLocationOptions from '../../../hooks/useUserLocation';
 import {
@@ -53,41 +52,39 @@ const sortOptions = [
   }
 ];
 
-
-
-const applyFilters = (products, query, filters) => {
-  return products.filter((product) => {
-    let matches = true;
-
-    if (query && !product.name.toLowerCase().includes(query.toLowerCase())) {
-      matches = false;
-    }
-
-    if (filters.category && product.category !== filters.category) {
-      matches = false;
-    }
-
-    if (filters.availability) {
-      if (filters.availability === 'available' && !product.isAvailable) {
-        matches = false;
-      }
-
-      if (filters.availability === 'unavailable' && product.isAvailable) {
-        matches = false;
-      }
-    }
-
-    if (filters.inStock && !['in_stock', 'limited'].includes(product.inventoryType)) {
-      matches = false;
-    }
-
-    if (filters.isShippable && !product.isShippable) {
-      matches = false;
-    }
-
-    return matches;
-  });
-};
+// const applyFilters = (products, query, filters) => {
+//   return products.filter((product) => {
+//     let matches = true;
+//
+//     if (query && !product.name.toLowerCase().includes(query.toLowerCase())) {
+//       matches = false;
+//     }
+//
+//     if (filters.category && product.category !== filters.category) {
+//       matches = false;
+//     }
+//
+//     if (filters.availability) {
+//       if (filters.availability === 'available' && !product.isAvailable) {
+//         matches = false;
+//       }
+//
+//       if (filters.availability === 'unavailable' && product.isAvailable) {
+//         matches = false;
+//       }
+//     }
+//
+//     if (filters.inStock && !['in_stock', 'limited'].includes(product.inventoryType)) {
+//       matches = false;
+//     }
+//
+//     if (filters.isShippable && !product.isShippable) {
+//       matches = false;
+//     }
+//
+//     return matches;
+//   });
+// };
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -142,9 +139,9 @@ const currencyFormat = (number, currency) => {
   return numeral(number).format(`${currency}0,0.00`)
 }
 
-const percentageFormat = (number) => {
-  return numeral(number).format(`0.00%`)
-};
+// const percentageFormat = (number) => {
+//   return numeral(number).format(`0.00%`)
+// };
 
 const Results = ({ className, ...rest }) => {
   const dispatch = useDispatch()
@@ -164,7 +161,7 @@ const Results = ({ className, ...rest }) => {
   const {
     isLoading,
     data,
-    error,
+    // error,
   } = useGetCollection(params);
   const [isOpened, setOpened] = useState(false);
   const [selectedSchedule, setSelectedSchedule] = useState(null)

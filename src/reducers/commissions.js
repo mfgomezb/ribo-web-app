@@ -1,4 +1,3 @@
-
 import  {
   RECEIVE_COMMISSIONS,
   REMOVE_COMMISSION,
@@ -18,19 +17,19 @@ export default function commissions(state=initialState, action) {
       const {commissions} = action
       return {
         ...state,
-        ['commissions']: commissions
+        'commissions': commissions
       }
     case REMOVE_COMMISSION:
       const { removedCommission } = action
       return {
         ...state,
-        ['commissions']: state.commissions.filter(com => com._id !== removedCommission._id)
+        'commissions': state.commissions.filter(com => com._id !== removedCommission._id)
       }
     case ADD_COMMISSION:
       const { newCommission } = action
       return{
         ...state,
-        ['commissions']: state.commissions.concat(newCommission)
+        'commissions': state.commissions.concat(newCommission)
       }
     case START_ASYNC_OPERATION:
       return {

@@ -22,7 +22,7 @@ export default function loans(state={}, action) {
 
       return {
         ...state,
-        ['loanDetails']: {
+        'loanDetails': {
           ...loanDetails
         }
     }
@@ -31,14 +31,14 @@ export default function loans(state={}, action) {
 
       return {
         ...state,
-        ['loanSchedule']: loanSchedule
+        'loanSchedule': loanSchedule
       }
     case RECEIVE_LOAN_PAYMENT:
       const {loanPayments} = action
 
       return {
         ...state,
-        ['loanPayments']: loanPayments
+        'loanPayments': loanPayments
 
       }
     case RECEIVE_LOAN_INVESTORS:
@@ -46,7 +46,7 @@ export default function loans(state={}, action) {
 
       return {
         ...state,
-        ['loanInvestors']: loanInvestors
+        'loanInvestors': loanInvestors
 
       }
     case RECEIVE_INSTALLMENT_DETAILS:
@@ -54,7 +54,7 @@ export default function loans(state={}, action) {
 
       return {
         ...state,
-        ['installmentDetails']: {
+        'installmentDetails': {
           ...installmentDetails
         }
       }
@@ -63,22 +63,22 @@ export default function loans(state={}, action) {
 
       return {
         ...state,
-        ['loanTransactions']: loanTransactions
+        'loanTransactions': loanTransactions
       }
     case REMOVE_LOAN_SCHEDULE:
-      let {['loanSchedule']: scheduleDetails, ...detailsWithoutSchedule} = state
+      let {'loanSchedule': scheduleDetails, ...detailsWithoutSchedule} = state
 
       return {
         ...detailsWithoutSchedule,
       }
     case REMOVE_INSTALLMENT_DETAILS:
-      let {['installmentDetails']: iDetails, ...rest} = state
+      let {'installmentDetails': iDetails, ...rest} = state
 
       return {
         ...rest,
         }
     case REMOVE_LOAN_DETAILS:
-      let {['loanDetails']: lDetails, ...detailsWithoutLoanDetails} = state
+      let {'loanDetails': lDetails, ...detailsWithoutLoanDetails} = state
 
       return {
         ...detailsWithoutLoanDetails,

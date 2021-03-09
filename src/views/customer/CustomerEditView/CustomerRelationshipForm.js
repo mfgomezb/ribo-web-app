@@ -1,6 +1,6 @@
+import React from 'react';
 import { Card, CardContent, CardHeader, Divider, Grid, TextField } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import React from 'react';
 
 function CustomerRelationshipForm(props) {
   return <Card className={props.classes.card}>

@@ -8,17 +8,12 @@ import {
   Typography,
   makeStyles,
   IconButton,
-  SvgIcon, Container
+  SvgIcon,
 } from '@material-ui/core';
 import {
   XCircle as CloseIcon,
 } from 'react-feather';
-
-import { useDispatch, useSelector } from 'react-redux';
-import { useProcessPayment } from '../../../../hooks/usePayments';
-import { handleInstallmentInitialData, handleLoanInitialData } from 'src/actions/loans';
 import LoanRefactorForm from './LoanRefactorForm'
-import Payments from '../LoanPaymentModal/Payments';
 
 const useStyles = makeStyles((theme) => ({
   root: {

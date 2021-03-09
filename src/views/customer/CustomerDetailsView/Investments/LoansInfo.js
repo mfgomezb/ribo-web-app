@@ -19,10 +19,6 @@ import {
   Typography,
   makeStyles, Link
 } from '@material-ui/core';
-import {
-  Edit as EditIcon,
-  ArrowRight as ArrowRightIcon
-} from 'react-feather';
 import Label from 'src/components/Label';
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import { useBorrowerLoans } from '../../../../hooks/useLoans';
@@ -67,7 +63,7 @@ const useStyles = makeStyles(() => ({
 
 const LoansInfo = ({ className, ...rest }) => {
   const {customerId} = useParams()
-  const { isLoading, data, error } = useBorrowerLoans(customerId)
+  const { isLoading, data } = useBorrowerLoans(customerId)
   const [paginatedLoans, setPaginatedLoans] = useState([])
   const classes = useStyles();
   const [page, setPage] = useState(0);

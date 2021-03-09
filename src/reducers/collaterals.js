@@ -18,19 +18,19 @@ export default function collaterals(state=initialState, action) {
       const {collaterals} = action
       return {
         ...state,
-        ['collaterals']: collaterals
+        'collaterals': collaterals
       }
     case REMOVE_COLLATERAL:
       const { removedCollateral } = action
       return {
         ...state,
-        ['collaterals']: state.collaterals.filter(com => com._id !== removedCollateral._id)
+        'collaterals': state.collaterals.filter(com => com._id !== removedCollateral._id)
       }
     case ADD_COLLATERAL:
       const { newCollateral } = action
       return{
         ...state,
-        ['collaterals']: state.collaterals.concat(newCollateral)
+        'collaterals': state.collaterals.concat(newCollateral)
       }
     case START_ASYNC_OPERATION:
       return {

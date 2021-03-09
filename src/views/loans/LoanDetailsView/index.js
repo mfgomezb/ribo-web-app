@@ -11,7 +11,6 @@ import {
 } from '@material-ui/core';
 import Page from 'src/components/Page';
 import { useParams, Link } from 'react-router-dom'
-import { useLoanDetailsView } from 'src/hooks/useLoans'
 import { useDispatch, useSelector } from 'react-redux'
 import Header from './Header';
 import LoanInfo from 'src/views/loans/LoanDetailsView/LoanInfo'

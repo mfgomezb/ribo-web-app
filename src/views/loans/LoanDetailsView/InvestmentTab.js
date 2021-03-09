@@ -1,7 +1,5 @@
-import React, { useState } from 'react';
-import { Link as RouterLink, useParams } from 'react-router-dom';
+import React, { } from 'react';
 import clsx from 'clsx';
-import { DateTime } from 'luxon';
 import numeral from 'numeral';
 import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -14,21 +12,12 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  TablePagination,
   TableRow,
-  Typography,
   makeStyles,
-  Link
 } from '@material-ui/core';
-import {
-  Edit as EditIcon,
-  ArrowRight as ArrowRightIcon
-} from 'react-feather';
-import Label from 'src/components/Label';
 import GenericMoreButton from 'src/components/GenericMoreButton';
-import { useLoanScheduleLoanView } from 'src/hooks/useLoans';
 import { useDispatch, useSelector } from 'react-redux';
-import { handleLoanInitialData, handleLoanInvestorsPosition } from '../../../actions/loans';
+import { handleLoanInvestorsPosition } from '../../../actions/loans';
 
 
 

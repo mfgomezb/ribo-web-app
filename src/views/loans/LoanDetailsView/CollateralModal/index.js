@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { } from 'react';
 import PropTypes from 'prop-types';
-import { useSnackbar } from 'notistack';
 import {useParams} from 'react-router-dom'
 import {
   Box,
@@ -14,15 +13,7 @@ import {
 import {
   XCircle as CloseIcon,
 } from 'react-feather';
-import { useDispatch, useSelector } from 'react-redux';
-import { useGetLoanInstallment } from '../../../../hooks/useLoans';
-import { useProcessPayment } from '../../../../hooks/usePayments';
-import { handleInstallmentInitialData } from 'src/actions/loans';
-import useIsMountedRef from '../../../../hooks/useIsMountedRef';
 import CollateralForm from 'src/views/loans/LoanDetailsView/CollateralModal/CollateralForm'
-import CollateralList from './CollateralList';
-import axios from '../../../../utils/axios';
-import { useNewCollateral } from '../../../../hooks/useCollateral';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,13 +36,7 @@ const CollateralModal = ({
   ...rest
 }) => {
   const classes = useStyles();
-  const dispatch = useDispatch();
   const {loanId} = useParams()
-  const isMountedRef = useIsMountedRef();
-  const { enqueueSnackbar } = useSnackbar();
-  // const [commissionProfiles, setCollateralProfiles] = React.useState([])
-
-
 
   return (
     <Dialog

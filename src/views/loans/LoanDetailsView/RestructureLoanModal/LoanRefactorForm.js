@@ -13,29 +13,18 @@ import {
   Card,
   CardContent,
   CardHeader,
-  Checkbox,
   Divider,
-  FormControlLabel,
   FormHelperText,
   Grid,
-  Paper,
   TextField,
   InputAdornment,
-  Typography,
   makeStyles, InputLabel, Select, FormControl
 } from '@material-ui/core';
 import { postRestructureLoan } from '../../../../utils/API';
 import ScheduleTable from '../../LoanCreateView/ScheduleTable';
-import QuillEditor from 'src/components/QuillEditor';
-import FilesDropzone from 'src/components/FilesDropzone';
 import { paymentFrequency as paymentFrequencyConstants,
-  useOfFunds as useOfFundsConstants,
-  currencies as currenciesConstants,
   amortizationMethod as amortizationMethodConstants,
-  lateFees as lateFeesConstants,
-  insuranceRequiredLoans,
 } from '../../LoanCreateView/FormConstants';
-import numeral from 'numeral';
 import { handleLoanInitialData } from '../../../../actions/loans';
 import { useDispatch } from 'react-redux';
 
@@ -53,7 +42,6 @@ const LoanCreateForm = ({ className, isRestructure, capitalToRestructure, ...res
   const {loanId} = useParams()
   const dispatch = useDispatch();
   const classes = useStyles();
-  const history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
   return (
     <Formik

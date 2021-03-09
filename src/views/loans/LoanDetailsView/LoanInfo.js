@@ -23,7 +23,6 @@ import numeral from 'numeral';
 import { DateTime } from 'luxon';
 import { deleteLoan } from '../../../utils/API'
 import RestructureModal from './RestructureLoanModal';
-import { removeLoanInstallment } from '../../../actions/loans';
 
 const currencyFormat = (number, currency) => {
   return numeral(number).format(`${currency}0,0.00`)
