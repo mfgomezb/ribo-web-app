@@ -2,10 +2,9 @@ import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { Avatar, Box, Card, Typography, makeStyles, Link } from '@material-ui/core';
-import { AttachMoneyIcon,
+import {
           Warning
 } from '@material-ui/icons';
-import Label from 'src/components/Label';
 import { useGetTodayStatus } from '../../../hooks/useDashboard';
 import numeral from 'numeral';
 import { Link as RouterLink } from 'react-router-dom';

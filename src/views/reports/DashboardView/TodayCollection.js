@@ -1,11 +1,12 @@
 import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { Avatar, Box, Card, Typography, makeStyles } from '@material-ui/core';
+import { Avatar, Box, Card, Typography, makeStyles, Link } from '@material-ui/core';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
-import Label from 'src/components/Label';
-import { useGetTodayStatus, useReceivedPayments } from '../../../hooks/useDashboard';
+import { useGetTodayStatus, } from '../../../hooks/useDashboard';
 import numeral from 'numeral';
+import { Link as RouterLink } from 'react-router-dom';
+import moment from 'moment';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -30,6 +31,11 @@ const LateCollection = ({ className, country, ...rest }) => {
   const queryPayments = useGetTodayStatus(country);
 
   return (
+    <Link
+      component={RouterLink}
+      to={`/app/reports/collections?page=3&limit=10&query=&minDays=0&maxDays=1&selectedDate=${moment().format('YYYY-MM-DD')}&country=${country}`}
+      underline="none"
+    >
     <Card className={clsx(classes.root, className)} {...rest}>
       <Box flexGrow={1}>
         <Typography
@@ -60,6 +66,7 @@ const LateCollection = ({ className, country, ...rest }) => {
         <AttachMoneyIcon />
       </Avatar>
     </Card>
+    </Link>
   );
 };
 
