@@ -17,9 +17,10 @@ import {
   TablePagination,
   TableRow,
   TextField,
-  makeStyles
+  makeStyles, Button
 } from '@material-ui/core';
 import {
+  Download as DownloadIcon,
   Search as SearchIcon
 } from 'react-feather';
 import Label from 'src/components/Label';
@@ -27,6 +28,7 @@ import {useGetLoanList} from '../../../hooks/useLoans';
 import useLocationOptions from '../../../hooks/useUserLocation';
 import qs from 'qs';
 import { useOfFunds as useOfFundsOptions } from 'src/views/loans/LoanListView/FormConstants'
+import { getLoansFile } from '../../../utils/API';
 
 
 const categoryOptions = [
@@ -355,10 +357,27 @@ const Results = ({ className, ...rest }) => {
     setLimit(parseInt(event.target.value));
   };
 
+  const downloadFile = (params) => {
+    return getLoansFile(params)
+  }
   // UsuALLy query is done on backend with indexing solutions
   // const filteredProducts = applyFilters(products, query, filters);
 
   return (
+    <React.Fragment>
+      <Box mb={2}>
+        <Button
+          className={classes.action}
+          onClick={ (e) => downloadFile(params)}
+          startIcon={
+            <SvgIcon fontSize="small">
+              <DownloadIcon />
+            </SvgIcon>
+          }
+        >
+          Exportar
+        </Button>
+      </Box>
     <Card
       className={clsx(classes.root, className)}
       {...rest}
@@ -650,6 +669,7 @@ const Results = ({ className, ...rest }) => {
         </Box>
       </PerfectScrollbar>
     </Card>
+    </React.Fragment>
   );
 };
 

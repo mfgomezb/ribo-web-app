@@ -14,10 +14,10 @@ import {
   MenuItem,
   SvgIcon,
   Typography,
-  makeStyles
+  makeStyles, Box
 } from '@material-ui/core';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import { Calendar as CalendarIcon } from 'react-feather';
+import { Calendar as CalendarIcon, Download as DownloadIcon } from 'react-feather';
 
 const timeRanges = [
   {

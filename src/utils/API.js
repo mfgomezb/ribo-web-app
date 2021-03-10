@@ -1,6 +1,6 @@
 import axios from './axios';
-
-
+import Qs from 'qs';
+import FileSaver from 'file-saver';
 // Loan/schedule/installment related api calls
 
 export function fetchLoanDetails (loanId) {
@@ -79,7 +79,6 @@ export function fetchCommissionProfiles (loanId) {
 }
 
 export function postLoanCommission (values) {
-  console.log('API', values)
   return axios
     .post(`api/commissions/${values._loan}`, values)
     .then(res => {
@@ -138,6 +137,7 @@ export function removeLoanCollateral (collateralId, loanId) {
 }
 
 
+
 export function postCreateLoan (values) {
   return axios
     .post(`api/loan/v2/create`, values)
@@ -161,3 +161,32 @@ export function deleteLoan (id) {
       return res.data;
     })
 }
+
+export function getCollectionFile (params)  {
+  let queryParams = Qs.stringify({ ...params, fields: 'fullName,email,businessName' }, {encode: false})
+  return axios.get(`api/reporting/download/collector?${queryParams}`, {
+    responseType: 'blob'
+  }).then((response) => {
+    return  FileSaver.saveAs(response.data, 'cobranza.csv')
+  });
+}
+
+export function getLoansFile (params)  {
+  let queryParams = Qs.stringify({ ...params, fields: 'fullName,email,businessName' }, {encode: false})
+  return axios.get(`/api/loan/download/loans-search?${queryParams}`, {
+    responseType: 'blob'
+  }).then((response) => {
+    return  FileSaver.saveAs(response.data, 'prestamos.csv')
+  });
+}
+
+export function getLoansScheduleFile (params)  {
+  let queryParams = Qs.stringify({ ...params, filter: params.query, fields: 'fullName,email,businessName' }, {encode: false})
+  return axios.get(`/api/loan/download/schedule-search?${queryParams}`, {
+    responseType: 'blob'
+  }).then((response) => {
+    return  FileSaver.saveAs(response.data, 'cronograma.csv')
+  });
+}
+
+

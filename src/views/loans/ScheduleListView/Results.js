@@ -28,7 +28,7 @@ import {
   Image as ImageIcon,
   Edit as EditIcon,
   ArrowRight as ArrowRightIcon,
-  Search as SearchIcon
+  Search as SearchIcon, Download as DownloadIcon
 } from 'react-feather';
 import Label from 'src/components/Label';
 import {useGetScheduleList} from '../../../hooks/useLoans';
@@ -36,6 +36,7 @@ import qs from 'qs';
 import { useOfFunds as useOfFundsOptions } from 'src/views/loans/LoanListView/FormConstants'
 import { DateTime } from 'luxon';
 import useLocationOptions from '../../../hooks/useUserLocation';
+import { getLoansScheduleFile } from '../../../utils/API';
 
 
 const getStatusLabel = (status) => {
@@ -356,10 +357,27 @@ const Results = ({ className, products, ...rest }) => {
     setLimit(parseInt(event.target.value));
   };
 
+  const downloadFile = (params) => {
+    return getLoansScheduleFile(params)
+  }
   // UsuALLy query is done on backend with indexing solutions
   // const filteredProducts = applyFilters(products, query, filters);
 
   return (
+    <React.Fragment>
+      <Box mb={2}>
+        <Button
+          className={classes.action}
+          onClick={ (e) => downloadFile(params)}
+          startIcon={
+            <SvgIcon fontSize="small">
+              <DownloadIcon />
+            </SvgIcon>
+          }
+        >
+          Exportar
+        </Button>
+      </Box>
     <Card
       className={clsx(classes.root, className)}
       {...rest}
@@ -615,6 +633,7 @@ const Results = ({ className, products, ...rest }) => {
         </Box>
       </PerfectScrollbar>
     </Card>
+    </React.Fragment>
   );
 };
 

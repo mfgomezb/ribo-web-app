@@ -72,28 +72,28 @@ const Header = ({ className, ...rest }) => {
         >
           Todos los cronogramas de pagos
         </Typography>
-        <Box mt={2}>
-          {/*<Button*/}
-          {/*  className={classes.action}*/}
-          {/*  startIcon={*/}
-          {/*    <SvgIcon fontSize="small">*/}
-          {/*      <UploadIcon />*/}
-          {/*    </SvgIcon>*/}
-          {/*  }*/}
-          {/*>*/}
-          {/*  Import*/}
-          {/*</Button>*/}
-          <Button
-            className={classes.action}
-            startIcon={
-              <SvgIcon fontSize="small">
-                <DownloadIcon />
-              </SvgIcon>
-            }
-          >
-            Exportar
-          </Button>
-        </Box>
+        {/*<Box mt={2}>*/}
+        {/*  <Button*/}
+        {/*    className={classes.action}*/}
+        {/*    startIcon={*/}
+        {/*      <SvgIcon fontSize="small">*/}
+        {/*        <UploadIcon />*/}
+        {/*      </SvgIcon>*/}
+        {/*    }*/}
+        {/*  >*/}
+        {/*    Import*/}
+        {/*  </Button>*/}
+        {/*  <Button*/}
+        {/*    className={classes.action}*/}
+        {/*    startIcon={*/}
+        {/*      <SvgIcon fontSize="small">*/}
+        {/*        <DownloadIcon />*/}
+        {/*      </SvgIcon>*/}
+        {/*    }*/}
+        {/*  >*/}
+        {/*    Exportar*/}
+        {/*  </Button>*/}
+        {/*</Box>*/}
       </Grid>
       <Grid item>
         <Button

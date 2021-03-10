@@ -17,9 +17,10 @@ import {
   TablePagination,
   TableRow,
   TextField,
-  makeStyles, Link, Button
+  makeStyles, Link, Button, Grid
 } from '@material-ui/core';
 import {
+  Download as DownloadIcon,
   Search as SearchIcon
 } from 'react-feather';
 import {useGetCollection} from '../../../hooks/useGetCollection';
@@ -32,6 +33,7 @@ import { DateTime } from 'luxon';
 import { removeLoanInstallment } from '../../../actions/loans';
 import LoanEditModal from '../../loans/LoanDetailsView/LoanPaymentModal';
 import { useDispatch } from 'react-redux';
+import {getCollectionFile} from '../../../utils/API'
 
 const sortOptions = [
   {
@@ -268,8 +270,25 @@ const Results = ({ className, ...rest }) => {
     setLimit(parseInt(event.target.value));
   };
 
+  const downloadFile = (params) => {
+    return getCollectionFile(params)
+  }
 
   return (
+    <React.Fragment>
+    <Box mb={2}>
+      <Button
+        className={classes.action}
+        onClick={ (e) => downloadFile(params)}
+        startIcon={
+          <SvgIcon fontSize="small">
+            <DownloadIcon />
+          </SvgIcon>
+        }
+      >
+        Exportar
+      </Button>
+    </Box>
     <Card
       className={clsx(classes.root, className)}
       {...rest}
@@ -508,7 +527,7 @@ const Results = ({ className, ...rest }) => {
         scheduleData={selectedSchedule}
       />}
     </Card>
-
+    </React.Fragment>
   );
 };
 
