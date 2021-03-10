@@ -19,11 +19,8 @@ import {
 } from '@material-ui/core';
 import ReceiptIcon from '@material-ui/icons/ReceiptOutlined';
 import {
-  Briefcase as BriefcaseIcon,
-  Calendar as CalendarIcon,
   ShoppingCart as ShoppingCartIcon,
   TrendingUp as TrendingUpIcon,
-  Folder as FolderIcon,
   BarChart as BarChartIcon,
   Lock as LockIcon,
   UserPlus as UserPlusIcon,
