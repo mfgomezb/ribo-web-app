@@ -112,10 +112,9 @@ const LoanCreateForm = ({ className, ...rest }) => {
       }) => {
         try {
           // NOTE: Make API request
-          console.log(values)
-          setStatus({ success: true });
-          setSubmitting(false);
           let newLoan = await postCreateLoan(values)
+          setSubmitting(false);
+          setStatus({ success: true });
 
           enqueueSnackbar('Prestamo creado', {
             variant: 'success'
