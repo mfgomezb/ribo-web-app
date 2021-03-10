@@ -68,10 +68,7 @@ const Hero = ({ className, ...rest }) => {
               </Typography>
               <Box mt={3}>
                 <Typography variant="body1" color="textSecondary">
-                  A professional kit that comes with ready-to-use Material-UI©
-                  components developed with one common goal in mind, help you
-                  build faster &amp; beautiful applications. Each component is
-                  fully customizable, responsive and easy to integrate.
+                  El crédito que necesitas, rápido y fácil.
                 </Typography>
               </Box>
               <Box mt={3}>

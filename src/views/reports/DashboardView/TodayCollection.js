@@ -33,7 +33,7 @@ const LateCollection = ({ className, country, ...rest }) => {
   return (
     <Link
       component={RouterLink}
-      to={`/app/reports/collections?page=3&limit=10&query=&minDays=0&maxDays=1&selectedDate=${moment().format('YYYY-MM-DD')}&country=${country}`}
+      to={`/app/reports/collections?page=3&limit=10&query=&minDays=-1&maxDays=1&selectedDate=${moment().add(1,'days').format('YYYY-MM-DD')}&country=${country}`}
       underline="none"
     >
     <Card className={clsx(classes.root, className)} {...rest}>

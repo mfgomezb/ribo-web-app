@@ -19,6 +19,7 @@ import {
 import ReceiptIcon from '@material-ui/icons/ReceiptOutlined';
 import {
   ShoppingCart as ShoppingCartIcon,
+  FileText as FileTextIcon,
   TrendingUp as TrendingUpIcon,
   BarChart as BarChartIcon,
   User as UserIcon,
@@ -200,6 +201,26 @@ const sections = [
   //     }
   //   ]
   // },
+  {
+    subheader: 'Herramientas',
+    items: [
+      {
+        title: 'Cotización',
+        href: '/app/quote',
+        icon: FileTextIcon
+      },
+      // {
+      //   title: 'Error',
+      //   href: '/404',
+      //   icon: AlertCircleIcon
+      // },
+      // {
+      //   title: 'Pricing',
+      //   href: '/pricing',
+      //   icon: DollarSignIcon
+      // }
+    ]
+  },
   {
     subheader: 'Usuario',
     items: [
