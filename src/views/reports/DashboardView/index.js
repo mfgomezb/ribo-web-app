@@ -12,17 +12,12 @@ import PaymentsReceivedList from './PaymentsReceivedList';
 import PaymentsOverTimeCumulative from './PaymentsOverTimeCumulative';
 import PaymentsOverTime from './PaymentsOverTime';
 import LoanDisbursedList from './LoansDisbursedList/index';
-import RoiPerCustomer from './RoiPerCustomer';
-import SystemHealth from './SystemHealth';
-import TeamTasks from './TeamTasks';
-import EarningsSegmentation from './EarningsSegmentation';
 import LateCollection from './LateCollection';
 import TodayCollection from './TodayCollection';
 import UpcomingCollection from './UpcomingCollection';
 import useLocationOptions from '../../../hooks/useUserLocation';
 import LoansDisbursed from './LoansDisbursed';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
-import axios from '../../../utils/axios';
 
 const timeRanges = [
   {

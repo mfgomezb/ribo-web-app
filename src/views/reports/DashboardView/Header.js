@@ -14,38 +14,8 @@ import {
   makeStyles
 } from '@material-ui/core';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import { Calendar as CalendarIcon, Globe as GlobeIcon, Loader } from 'react-feather';
+import { Calendar as CalendarIcon, Globe as GlobeIcon } from 'react-feather';
 
-const timeRanges = [
-  {
-    id: 'today',
-    text: 'Hoy'
-  },
-  {
-    id: 'week',
-    text: 'Semana'
-  },
-  {
-    id: 'month',
-    text: 'Mes'
-  },
-  {
-    id: 'year',
-    text: 'Año'
-  },
-  {
-    id: 'last_7_days',
-    text: '7 días'
-  },
-  {
-    id: 'last_30_days',
-    text: '30 días'
-  },
-  {
-    id: 'last_year',
-    text: '360 días'
-  }
-];
 
 const useStyles = makeStyles(() => ({
   root: {}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {  } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import * as Yup from 'yup';
@@ -6,17 +6,11 @@ import { Formik } from 'formik';
 import {
   Box,
   Button,
-  Chip,
-  FormHelperText,
-  IconButton,
-  SvgIcon,
   TextField,
   Typography,
   makeStyles, Grid, FormControl, InputLabel, Select
 } from '@material-ui/core';
-import { KeyboardDatePicker } from '@material-ui/pickers';
-import { Plus as PlusIcon } from 'react-feather';
-import { civilStatus, documentType } from './FormConstants';
+import { civilStatus } from './FormConstants';
 
 const useStyles = makeStyles((theme) => ({
   root: {},

@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {  } from 'react';
 import PropTypes from 'prop-types';
-import { useSnackbar } from 'notistack';
 import {useParams} from 'react-router-dom'
 import {
   Box,
@@ -14,15 +13,10 @@ import {
 import {
   XCircle as CloseIcon,
 } from 'react-feather';
-import { useDispatch, useSelector } from 'react-redux';
 import {fetchCommissionProfiles} from 'src/utils/API'
-import { useGetLoanInstallment } from '../../../../hooks/useLoans';
-import { useProcessPayment } from '../../../../hooks/usePayments';
-import { handleInstallmentInitialData } from 'src/actions/loans';
 import useIsMountedRef from '../../../../hooks/useIsMountedRef';
 import CommissionForm from 'src/views/loans/LoanDetailsView/CommissionModal/CommissionForm'
 import CommissionList from './CommissionList';
-import axios from '../../../../utils/axios';
 import { useNewCommission } from '../../../../hooks/useCommission';
 
 const useStyles = makeStyles((theme) => ({
@@ -46,12 +40,12 @@ const CommissionModal = ({
   ...rest
 }) => {
   const classes = useStyles();
-  const dispatch = useDispatch();
+
   const {loanId} = useParams()
   const isMountedRef = useIsMountedRef();
-  const { enqueueSnackbar } = useSnackbar();
+
   const [commissionProfiles, setCommissionProfiles] = React.useState([])
-  const [newCommission, newCommissionInfo] = useNewCommission()
+  const [ newCommissionInfo] = useNewCommission()
 
 
   const getCommissionProfiles = React.useCallback(async () => {

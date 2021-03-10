@@ -15,7 +15,6 @@ import {
   makeStyles
 } from '@material-ui/core';
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWalletOutlined';
-import PersonIcon from '@material-ui/icons/PersonOutline';
 import Label from 'src/components/Label';
 import numeral from 'numeral';
 

@@ -13,9 +13,7 @@ import {
   makeStyles
 } from '@material-ui/core';
 import {
-  PlusCircle as PlusCircleIcon,
   Download as DownloadIcon,
-  Upload as UploadIcon
 } from 'react-feather';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 

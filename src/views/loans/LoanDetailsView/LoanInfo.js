@@ -23,7 +23,27 @@ import numeral from 'numeral';
 import { DateTime } from 'luxon';
 import { deleteLoan } from '../../../utils/API'
 import RestructureModal from './RestructureLoanModal';
-import { removeLoanInstallment } from '../../../actions/loans';
+import ConfirmationModalContextProvider, { useConfirmationModalContext } from '../../../contexts/modalConfirmationContext';
+import { handlePaymentRemoval } from '../../../actions/loans';
+
+
+const DeletePaymentButton = (props) => {
+  const modalContext = useConfirmationModalContext();
+
+  const handleOnClick = async () => {
+    const result = await modalContext.showConfirmation();
+    result && props.onClick();
+  };
+
+  return (
+    <Button
+      disabled={props.loading}
+      startIcon={<DeleteIcon />}
+      onClick={handleOnClick}>
+      {props.children}
+    </Button>
+  )
+};
 
 const currencyFormat = (number, currency) => {
   return numeral(number).format(`${currency}0,0.00`)
@@ -115,6 +135,7 @@ const BorrowerInfo = ({
   }
 
   return (
+    <ConfirmationModalContextProvider>
     <Card
       className={clsx(classes.root, className)}
       {...rest}
@@ -326,11 +347,11 @@ const BorrowerInfo = ({
           >
           Reestructurar
         </Button>
-        <Button
+        <DeletePaymentButton
           onClick={() => onDelete()}
-          startIcon={<DeleteIcon />}>
-          Eliminar
-        </Button>
+        >
+          Eliminar préstamo
+        </DeletePaymentButton>
       </Box>
       {isOpened && <RestructureModal
         open={isOpened}
@@ -338,6 +359,7 @@ const BorrowerInfo = ({
         capitalToRestructure={details?.unpaidPrincipal}
       />}
     </Card>
+    </ConfirmationModalContextProvider>
   );
 };
 

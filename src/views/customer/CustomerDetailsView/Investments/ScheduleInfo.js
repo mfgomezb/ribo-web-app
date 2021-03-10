@@ -20,10 +20,6 @@ import {
   makeStyles,
   Link
 } from '@material-ui/core';
-import {
-  Edit as EditIcon,
-  ArrowRight as ArrowRightIcon
-} from 'react-feather';
 import Label from 'src/components/Label';
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import { useBorrowerUnpaidSchedule } from '../../../../hooks/useLoans';

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import * as Yup from 'yup';
@@ -6,10 +6,6 @@ import { Formik } from 'formik';
 import {
   Box,
   Button,
-  Chip,
-  FormHelperText,
-  IconButton,
-  SvgIcon,
   FormControl,
   InputLabel,
   Select,
@@ -17,9 +13,7 @@ import {
   Typography,
   makeStyles, Grid
 } from '@material-ui/core';
-import { KeyboardDatePicker } from '@material-ui/pickers';
-import { Plus as PlusIcon } from 'react-feather';
-import { location, referenceRelationship } from './FormConstants';
+import { referenceRelationship } from './FormConstants';
 import { checkEmail } from '../../../hooks/useUser';
 import { country } from './FormConstants'
 
