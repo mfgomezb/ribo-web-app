@@ -12,6 +12,7 @@ import {
 } from '@material-ui/core';
 import useAuth from 'src/hooks/useAuth';
 import useIsMountedRef from 'src/hooks/useIsMountedRef';
+import useGlobal from '../../../hooks/useGlobal';
 
 
 const useStyles = makeStyles(() => ({
@@ -21,6 +22,7 @@ const useStyles = makeStyles(() => ({
 const JWTLogin = ({ className, ...rest }) => {
   const classes = useStyles();
   const { login } = useAuth();
+
   const isMountedRef = useIsMountedRef();
 
 
@@ -43,7 +45,6 @@ const JWTLogin = ({ className, ...rest }) => {
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         try {
           await login(values.email, values.password);
-
           if (isMountedRef.current) {
             setStatus({ success: true });
             setSubmitting(false);

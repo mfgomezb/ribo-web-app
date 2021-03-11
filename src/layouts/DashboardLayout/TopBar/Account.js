@@ -13,6 +13,7 @@ import {
   makeStyles
 } from '@material-ui/core';
 import useAuth from 'src/hooks/useAuth';
+import useGlobal from '../../../hooks/useGlobal';
 
 const useStyles = makeStyles(theme => ({
   avatar: {
@@ -30,6 +31,7 @@ const Account = () => {
   const history = useHistory();
   const ref = useRef(null);
   const { user, logout } = useAuth();
+  const { removeGlobals } = useGlobal()
   const { enqueueSnackbar } = useSnackbar();
   const [isOpen, setOpen] = useState(false);
 
@@ -45,6 +47,7 @@ const Account = () => {
     try {
       handleClose();
       await logout();
+      await removeGlobals()
       history.push('/');
     } catch (err) {
       console.error(err);

@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 const DashboardLayout = ({ children }) => {
   const classes = useStyles();
   const [isMobileNavOpen, setMobileNavOpen] = useState(false);
-  useLocationOptions()
+  // useLocationOptions()
 
   return (
     <div className={classes.root}>

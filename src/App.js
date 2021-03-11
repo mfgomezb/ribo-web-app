@@ -21,6 +21,7 @@ import { AuthProvider } from 'src/contexts/JWTAuthContext';
 import useSettings from 'src/hooks/useSettings';
 import { createTheme } from 'src/theme';
 import routes, { renderRoutes } from 'src/routes';
+import { GlobalProvider } from './contexts/GlobalContext';
 
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 const history = createBrowserHistory();
@@ -37,7 +38,6 @@ const queryConfig = {
 
 const App = () => {
   const { settings } = useSettings();
-  const dispatch = useDispatch();
 
   const theme = createTheme({
     direction: settings.direction,
@@ -54,12 +54,14 @@ const App = () => {
             <SnackbarProvider dense maxSnack={3}>
               <Router history={history}>
                 <AuthProvider>
-                  <GlobalStyles />
-                  <ScrollReset />
-                  <GoogleAnalytics />
-                  <CookiesNotification />
-                  <SettingsNotification />
-                  {renderRoutes(routes)}
+                  <GlobalProvider>
+                    <GlobalStyles />
+                    <ScrollReset />
+                    <GoogleAnalytics />
+                    <CookiesNotification />
+                    <SettingsNotification />
+                    {renderRoutes(routes)}
+                  </GlobalProvider>
                 </AuthProvider>
               </Router>
             </SnackbarProvider>

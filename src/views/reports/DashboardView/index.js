@@ -18,6 +18,7 @@ import UpcomingCollection from './UpcomingCollection';
 import useLocationOptions from '../../../hooks/useUserLocation';
 import LoansDisbursed from './LoansDisbursed';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
+import useGlobal from '../../../hooks/useGlobal';
 
 const timeRanges = [
   {
@@ -72,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
 
 const DashboardView = () => {
   const classes = useStyles();
-  const countries = useLocationOptions()
+  const { countries } = useGlobal()
   const [timeRange, setTimeRange] = useState(timeRanges[2].id);
   const isMountedRef = useIsMountedRef();
   const [country, setCountry] = useState(null)

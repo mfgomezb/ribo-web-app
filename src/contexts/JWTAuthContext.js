@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import SplashScreen from 'src/components/SplashScreen';
 import axios from 'src/utils/axios';
 import useUserLocation from '../hooks/useUserLocation';
+import useGlobal from '../hooks/useGlobal';
 
 const initialAuthState = {
   isAuthenticated: false,
@@ -111,6 +112,7 @@ const AuthContext = createContext({
 
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialAuthState);
+  const { setGlobals, removeGlobals } = useGlobal()
 
   const login = async (email, password) => {
     const response = await axios.post(`api/account/login`, {
@@ -118,6 +120,7 @@ export const AuthProvider = ({ children }) => {
       password
     });
     const { token, user } = response.data;
+    const { location } = user
     setSession(token);
     dispatch({
       type: 'LOGIN',
@@ -125,12 +128,13 @@ export const AuthProvider = ({ children }) => {
         user
       }
     });
-
+    setGlobals(location)
   };
 
   const logout = () => {
     setSession(null);
     dispatch({ type: 'LOGOUT' });
+    removeGlobals()
   };
 
   const register = async (email, firstName, lastName, password) => {
@@ -193,6 +197,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const initialise = async () => {
       try {
+        console.log('aca adenrto')
         const accessToken = window.localStorage.getItem('accessToken');
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
