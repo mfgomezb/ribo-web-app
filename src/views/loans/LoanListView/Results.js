@@ -29,6 +29,7 @@ import useLocationOptions from '../../../hooks/useUserLocation';
 import qs from 'qs';
 import { useOfFunds as useOfFundsOptions } from 'src/views/loans/LoanListView/FormConstants'
 import { getLoansFile } from '../../../utils/API';
+import useGlobal from '../../../hooks/useGlobal';
 
 
 const categoryOptions = [
@@ -212,7 +213,7 @@ const percentageFormat = (number) => {
   return numeral(number).format(`0.00%`)
 }
 const Results = ({ className, ...rest }) => {
-  const countries = useLocationOptions()
+  const { countries } = useGlobal()
   const classes = useStyles();
   const { pathname, search } = useLocation()
   const history = useHistory()

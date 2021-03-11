@@ -37,6 +37,7 @@ import { useOfFunds as useOfFundsOptions } from 'src/views/loans/LoanListView/Fo
 import { DateTime } from 'luxon';
 import useLocationOptions from '../../../hooks/useUserLocation';
 import { getLoansScheduleFile } from '../../../utils/API';
+import useGlobal from '../../../hooks/useGlobal';
 
 
 const getStatusLabel = (status) => {
@@ -246,7 +247,7 @@ const Results = ({ className, products, ...rest }) => {
   const classes = useStyles();
   const history = useHistory()
   const { pathname, search } = useLocation()
-  const countries = useLocationOptions()
+  const { countries } = useGlobal()
   const [page, setPage] = useState(qs.parse(search).page || 0);
   const [limit, setLimit] = useState(qs.parse(search).limit || 10);
   const [query, setQuery] = useState(qs.parse(search).query || '');

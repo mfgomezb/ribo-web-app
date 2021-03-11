@@ -34,6 +34,7 @@ import { removeLoanInstallment } from '../../../actions/loans';
 import LoanEditModal from '../../loans/LoanDetailsView/LoanPaymentModal';
 import { useDispatch } from 'react-redux';
 import {getCollectionFile} from '../../../utils/API'
+import useGlobal from '../../../hooks/useGlobal';
 
 const sortOptions = [
   {
@@ -147,10 +148,10 @@ const currencyFormat = (number, currency) => {
 
 const Results = ({ className, ...rest }) => {
   const dispatch = useDispatch()
-  const countries = useLocationOptions();
   const classes = useStyles();
   const { pathname, search } = useLocation();
   const history = useHistory();
+  const { countries } = useGlobal()
   const [page, setPage] = useState(qs.parse(search).page || 0);
   const [limit, setLimit] = useState(qs.parse(search).limit || 10);
   const [query, setQuery] = useState(qs.parse(search).query || '');

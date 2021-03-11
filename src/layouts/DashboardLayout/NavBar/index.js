@@ -396,7 +396,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
               {user.firstName}
             </Link>
             <Typography variant="body2" color="textSecondary">
-                {user.admin ? `${user.location} ADMIN` : ""}
+                {user.role === 'admin' ? `${user.location} ADMIN` : ""}
             </Typography>
           </Box>
         </Box>
