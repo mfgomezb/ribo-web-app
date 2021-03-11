@@ -52,7 +52,7 @@ const sections = [
       {
         title: 'Cartera',
         icon: TrendingUpIcon,
-        href: '/app/reports/dashboard-alternative'
+        href: '/app/reports/portfolio'
       }
     ]
   },

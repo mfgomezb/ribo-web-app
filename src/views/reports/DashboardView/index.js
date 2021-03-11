@@ -15,7 +15,6 @@ import LoanDisbursedList from './LoansDisbursedList/index';
 import LateCollection from './LateCollection';
 import TodayCollection from './TodayCollection';
 import UpcomingCollection from './UpcomingCollection';
-import useLocationOptions from '../../../hooks/useUserLocation';
 import LoansDisbursed from './LoansDisbursed';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import useGlobal from '../../../hooks/useGlobal';

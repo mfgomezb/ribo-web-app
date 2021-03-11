@@ -248,6 +248,11 @@ const routes = [
       },
       {
         exact: true,
+        path: '/app/reports/portfolio',
+        component: lazy(() => import('src/views/reports/DashboardPortfolioView'))
+      },
+      {
+        exact: true,
         path: '/app/reports/collections',
         component: lazy(() => import('src/views/reports/CollectionsDashboard'))
       },
