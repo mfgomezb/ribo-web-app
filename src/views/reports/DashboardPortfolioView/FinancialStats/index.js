@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import Chart from './Chart';
+import { useGetHistoricAllocation } from '../../../../hooks/useDashboard';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -19,26 +20,20 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const FinancialStats = ({ className, ...rest }) => {
+const FinancialStats = ({ className, country, ...rest }) => {
   const classes = useStyles();
+
+  const allocation = useGetHistoricAllocation(country)
+
+  const dataLabels = !allocation.isLoading ? allocation.data.map( e => e.date).slice(allocation.data.length-12,allocation.data.length ) : []
+  const interest = !allocation.isLoading ? allocation.data.map(e => e.interest).slice(allocation.data.length-12,allocation.data.length ): []
+  const capital = !allocation.isLoading ? allocation.data.map(e => e.capital).slice(allocation.data.length-12,allocation.data.length ): []
+
   const stats = {
-    thisYear: [18, 16, 5, 8, 3, 14, 14, 16, 17, 19, 18, 20],
-    lastYear: [12, 11, 4, 6, 2, 9, 9, 10, 11, 12, 13, 13]
+    interest: interest,
+    capital: capital
   };
-  const labels = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec'
-  ];
+
 
   return (
     <Card
@@ -47,7 +42,7 @@ const FinancialStats = ({ className, ...rest }) => {
     >
       <CardHeader
         action={<GenericMoreButton />}
-        title="Financial Stats"
+        title="Evolución Interéses y Capital"
       />
       <Divider />
       <PerfectScrollbar>
@@ -60,7 +55,7 @@ const FinancialStats = ({ className, ...rest }) => {
           <Chart
             className={classes.chart}
             data={stats}
-            labels={labels}
+            labels={dataLabels}
           />
         </Box>
       </PerfectScrollbar>

@@ -26,22 +26,22 @@ const Chart = ({
   const data = {
     datasets: [
       {
-        label: 'This year',
+        label: 'Interes',
         backgroundColor: theme.palette.secondary.main,
-        data: dataProp.thisYear,
-        barThickness: 12,
-        maxBarThickness: 10,
+        data: dataProp.interest,
+        barThickness: 17,
+        maxBarThickness: 20,
         barPercentage: 0.5,
-        categoryPercentage: 0.5
+        categoryPercentage: 0.5,
       },
       {
-        label: 'Last year',
+        label: 'Capital',
         backgroundColor: fade(theme.palette.secondary.main, 0.25),
-        data: dataProp.lastYear,
-        barThickness: 12,
-        maxBarThickness: 10,
+        data: dataProp.capital,
+        barThickness: 17,
+        maxBarThickness: 20,
         barPercentage: 0.5,
-        categoryPercentage: 0.5
+        categoryPercentage: 0.5,
       }
     ],
     labels
@@ -88,7 +88,7 @@ const Chart = ({
             beginAtZero: true,
             min: 0,
             maxTicksLimit: 5,
-            callback: (value) => (value > 0 ? `${value}K` : value)
+            callback: (value) => (value > 0 ? `${(value*1000)/1000}K` : value)
           }
         }
       ]
@@ -108,15 +108,19 @@ const Chart = ({
       footerFontColor: theme.palette.text.secondary,
       callbacks: {
         title: () => {},
-        label: (tooltipItem) => {
-          let label = `Sales: ${tooltipItem.yLabel}`;
+        label: (tooltipItem, data) => {
+          let dataset = data.datasets[tooltipItem.datasetIndex]
+          let index = tooltipItem.index
+          return dataset.label + ": " + dataset.data[index];
+          // let label = `Sales: ${tooltipItem.yLabel}`;
+          //
+          // if (tooltipItem.yLabel > 0) {
+          //   label += 'K';
+          // }
+          //
+          // return label;
+        },
 
-          if (tooltipItem.yLabel > 0) {
-            label += 'K';
-          }
-
-          return label;
-        }
       }
     }
   };

@@ -95,7 +95,7 @@ const DashboardPortfolioView = () => {
       className={classes.root}
       title="Dashboard Alternative"
     >
-      <Container maxWidth={false}>
+      <Container maxWidth={'lg'}>
         <Header countries={countries}
                 country={country}
                 setCountry={setCountry}
@@ -111,7 +111,7 @@ const DashboardPortfolioView = () => {
             item
             xs={12}
           >
-            <Overview />
+            {/*<Overview />*/}
           </Grid>
           <Grid
             item
@@ -119,7 +119,7 @@ const DashboardPortfolioView = () => {
             xl={9}
             xs={12}
           >
-            <FinancialStats />
+            <FinancialStats country={country} />
           </Grid>
           <Grid
             item
