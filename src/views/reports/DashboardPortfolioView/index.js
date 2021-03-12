@@ -17,6 +17,7 @@ import TopReferrals from './TopReferrals';
 import useGlobal from '../../../hooks/useGlobal';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import AllocationOverTime from './AllocationOverTime';
+import PortfolioSummary from './PortfolioSummary';
 
 const timeRanges = [
   {
@@ -144,6 +145,14 @@ const DashboardPortfolioView = () => {
             xs={12}
           >
             <FinancialStats country={country} />
+          </Grid>
+          <Grid
+            item
+            lg={12}
+            xl={12}
+            xs={12}
+          >
+            <PortfolioSummary country={country} />
           </Grid>
           {/*<Grid*/}
           {/*  item*/}

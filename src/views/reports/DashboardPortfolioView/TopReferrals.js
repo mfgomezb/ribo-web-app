@@ -69,7 +69,7 @@ const TopReferrals = ({ className, country, ...rest }) => {
                 className={classes.avatar}
                 style={{ backgroundColor: product.color }}
               >
-                {useOfFunds[product.product].slice(0,1)}
+                {i+1}
               </Avatar>
             </ListItemAvatar>
             <ListItemText
