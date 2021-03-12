@@ -45,7 +45,7 @@ const TopReferrals = ({ className, country, ...rest }) => {
   const isMountedRef = useIsMountedRef();
   const { isLoading, data, error } = useGetPortfolioSummary(country)
 
-  const productsData = !isLoading && data.sort( (a,b) =>  b.returnsGenerated - a.returnsGenerated )
+  const productsData = !isLoading && data.portfolioSummary.sort( (a,b) =>  b.returnsGenerated - a.returnsGenerated )
 
 
   return (

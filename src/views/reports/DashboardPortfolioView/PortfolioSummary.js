@@ -23,7 +23,7 @@ import {
   TableRow,
   TableSortLabel,
   Tooltip,
-  makeStyles
+  makeStyles, TableFooter
 } from '@material-ui/core';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import axios from 'src/utils/axios';
@@ -83,33 +83,32 @@ const PaymentsReceivedList = ({ className, country, ...rest }) => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell  >
+                <TableCell>
                   Producto
                 </TableCell>
-                <TableCell align="right" >
+                <TableCell align="right">
                   # de prestamos
                 </TableCell>
-                <TableCell align="right" >
+                <TableCell align="right">
                   Monto
                 </TableCell>
-                <TableCell align="right" >
+                <TableCell align="right">
                   Monto Promedio
                 </TableCell>
-                <TableCell align="right" >
+                <TableCell align="right">
                   Capital Restante
                 </TableCell>
-                <TableCell align="right" >
+                <TableCell align="right">
                   Restante promedio
                 </TableCell>
-
-                <TableCell align="right" >
-                  Ingreso generado
+                <TableCell align="right">
+                  Ingresos
                 </TableCell>
-                <TableCell align="right" >
+                <TableCell align="right">
                   Ingreso promedio
                 </TableCell>
-                <TableCell align="right" >
-                  # de reestructuraciones
+                <TableCell align="right">
+                  R
                 </TableCell>
                 {/*<TableCell*/}
                 {/*  align="right"*/}
@@ -130,7 +129,38 @@ const PaymentsReceivedList = ({ className, country, ...rest }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {!isLoading && data.map((product) => (
+              {!isLoading && <TableRow
+                hover
+              >
+                <TableCell>
+                  Cartera
+                </TableCell>
+                <TableCell align="right">
+                  {data.portfolioTotals[0].countOpenLoans}
+                </TableCell>
+                <TableCell align="right">
+                  {currencyFormat(data.portfolioTotals[0].capital, '$')}
+                </TableCell>
+                <TableCell align="right">
+                  {currencyFormat(data.portfolioTotals[0].capital / data.portfolioTotals[0].countOpenLoans, '$')}
+                </TableCell>
+                <TableCell align="right">
+                  {currencyFormat(data.portfolioTotals[0].capitalRemaining, '$')}
+                </TableCell>
+                <TableCell align="right">
+                  {currencyFormat(data.portfolioTotals[0].avgCapitalRemaining, '$')}
+                </TableCell>
+                <TableCell align="right">
+                  {currencyFormat(data.portfolioTotals[0].interestEarned, '$')}
+                </TableCell>
+                <TableCell align="right">
+                  {currencyFormat(data.portfolioTotals[0].avgInterestEarned, '$')}
+                </TableCell>
+                <TableCell align="right">
+                  {data.portfolioTotals[0].isRestructured}
+                </TableCell>
+              </TableRow>}
+              {!isLoading && data.portfolioSummary.map((product) => (
 
                 <TableRow
                   hover

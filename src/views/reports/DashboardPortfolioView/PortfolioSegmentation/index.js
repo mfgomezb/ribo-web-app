@@ -45,9 +45,9 @@ const EarningsSegmentation = ({ className, country, ...rest }) => {
   const { isLoading, data, error } = useGetPortfolioSummary(country)
 
 
-  const topThreeCat = !isLoading && data.slice(0, 3)
-  const labels = !isLoading && data.map( e =>  e.product)
-  const productsData = !isLoading && data.map( e =>  e.capitalRemaining)
+  const topThreeCat = !isLoading && data.portfolioSummary.slice(0, 3)
+  const labels = !isLoading && data.portfolioSummary.map( e =>  e.product)
+  const productsData = !isLoading && data.portfolioSummary.map( e =>  e.capitalRemaining)
 
   const products = {
     datasets: [{
