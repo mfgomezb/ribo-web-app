@@ -21,6 +21,8 @@ import {
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import axios from 'src/utils/axios';
 import useIsMountedRef from 'src/hooks/useIsMountedRef';
+import { useGetPortfolioSummary } from '../../../hooks/useDashboard';
+import { useOfFunds } from '../../../utils/constants';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,26 +36,17 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const TopReferrals = ({ className, ...rest }) => {
+const currencyFormat = (number, currency) => {
+  return numeral(number).format(`${currency}0,0.0000`)
+}
+
+const TopReferrals = ({ className, country, ...rest }) => {
   const classes = useStyles();
   const isMountedRef = useIsMountedRef();
-  const [referrals, setReferrals] = useState([]);
+  const { isLoading, data, error } = useGetPortfolioSummary(country)
 
-  const getReferrals = useCallback(async () => {
-    try {
-      const response = await axios.get('/api/reports/top-referrals');
+  const productsData = !isLoading && data.sort( (a,b) =>  b.returnsGenerated - a.returnsGenerated )
 
-      if (isMountedRef.current) {
-        setReferrals(response.data.referrals);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }, [isMountedRef]);
-
-  useEffect(() => {
-    getReferrals();
-  }, [getReferrals]);
 
   return (
     <Card
@@ -62,32 +55,32 @@ const TopReferrals = ({ className, ...rest }) => {
     >
       <CardHeader
         action={<GenericMoreButton />}
-        title="Top Referrals"
+        title="Productos más rentables"
       />
       <Divider />
       <List disablePadding>
-        {referrals.map((referral, i) => (
+        {!isLoading && productsData.map((product, i) => (
           <ListItem
-            divider={i < referrals.length - 1}
-            key={referral.name}
+            divider={i < productsData.length - 1}
+            key={product.product}
           >
             <ListItemAvatar>
               <Avatar
                 className={classes.avatar}
-                style={{ backgroundColor: referral.color }}
+                style={{ backgroundColor: product.color }}
               >
-                {referral.initials}
+                {useOfFunds[product.product].slice(0,1)}
               </Avatar>
             </ListItemAvatar>
             <ListItemText
-              primary={referral.name}
+              primary={useOfFunds[product.product]}
               primaryTypographyProps={{ variant: 'h6' }}
             />
             <Typography
               variant="body2"
               color="textSecondary"
             >
-              {numeral(referral.value).format('0,0')}
+              {currencyFormat(product.returnsGenerated, '$')} por $
             </Typography>
           </ListItem>
         ))}

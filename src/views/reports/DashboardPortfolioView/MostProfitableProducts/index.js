@@ -27,6 +27,8 @@ import axios from 'src/utils/axios';
 import useIsMountedRef from 'src/hooks/useIsMountedRef';
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import CircularProgress from './CircularProgress';
+import { useGetPortfolioSummary } from '../../../../hooks/useDashboard';
+import { useOfFunds } from '../../../../utils/constants';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -44,26 +46,13 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const MostProfitableProducts = ({ className, ...rest }) => {
+const MostProfitableProducts = ({ className, country, ...rest }) => {
   const classes = useStyles();
   const isMountedRef = useIsMountedRef();
-  const [products, setProducts] = useState([]);
+  const { isLoading, data, error } = useGetPortfolioSummary(country)
 
-  const getProducts = useCallback(async () => {
-    try {
-      const response = await axios.get('/api/reports/profitable-products');
+  const productsData = !isLoading && data.sort( (a,b) =>  b.returnsGenerated - a.returnsGenerated )
 
-      if (isMountedRef.current) {
-        setProducts(response.data.products);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }, [isMountedRef]);
-
-  useEffect(() => {
-    getProducts();
-  }, [getProducts]);
 
   return (
     <Card
@@ -72,14 +61,14 @@ const MostProfitableProducts = ({ className, ...rest }) => {
     >
       <CardHeader
         action={<GenericMoreButton />}
-        title="Most Profitable Products"
+        title="Productos más rentables"
       />
       <Divider />
       <PerfectScrollbar>
         <Box minWidth={700}>
           <Table>
             <TableBody>
-              {products.map((product) => (
+              {!isLoading && productsData.map((product) => (
                 <TableRow
                   hover
                   key={product.id}
@@ -89,27 +78,26 @@ const MostProfitableProducts = ({ className, ...rest }) => {
                       display="flex"
                       alignItems="center"
                     >
-                      <img
-                        alt="Product"
-                        className={classes.image}
-                        src={product.image}
-                      />
+                      {/*<img*/}
+                      {/*  alt="Product"*/}
+                      {/*  className={classes.image}*/}
+                      {/*  src={product.image}*/}
+                      {/*/>*/}
                       <Box ml={2}>
                         <Typography
                           variant="h6"
                           color="textPrimary"
                         >
-                          {product.name}
+                          {useOfFunds[product.product]}
                         </Typography>
                         <Typography
                           variant="body2"
                           color="textSecondary"
                         >
                           <span className={classes.subscriptions}>
-                            {numeral(product.subscriptions).format('0,0')}
+                            {numeral(product.returnsGenerated).format('0,0')}
                           </span>
-                          {' '}
-                          Active
+                          {' '} por $
                         </Typography>
                       </Box>
                     </Box>

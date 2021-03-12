@@ -132,40 +132,41 @@ const DashboardPortfolioView = () => {
           </Grid>
           <Grid
             item
+            lg={4}
+            xs={12}
+          >
+            <TopReferrals country={country}/>
+          </Grid>
+          <Grid
+            item
             lg={8}
             xl={9}
             xs={12}
           >
             <FinancialStats country={country} />
           </Grid>
-          <Grid
-            item
-            lg={8}
-            xs={12}
-          >
-            <LatestOrders />
-          </Grid>
-          <Grid
-            item
-            lg={4}
-            xs={12}
-          >
-            <CustomerActivity />
-          </Grid>
-          <Grid
-            item
-            lg={8}
-            xs={12}
-          >
-            <MostProfitableProducts />
-          </Grid>
-          <Grid
-            item
-            lg={4}
-            xs={12}
-          >
-            <TopReferrals />
-          </Grid>
+          {/*<Grid*/}
+          {/*  item*/}
+          {/*  lg={8}*/}
+          {/*  xs={12}*/}
+          {/*>*/}
+          {/*  <LatestOrders />*/}
+          {/*</Grid>*/}
+          {/*<Grid*/}
+          {/*  item*/}
+          {/*  lg={4}*/}
+          {/*  xs={12}*/}
+          {/*>*/}
+          {/*  <CustomerActivity />*/}
+          {/*</Grid>*/}
+          {/*<Grid*/}
+          {/*  item*/}
+          {/*  lg={8}*/}
+          {/*  xs={12}*/}
+          {/*>*/}
+          {/*  <MostProfitableProducts country={country}/>*/}
+          {/*</Grid>*/}
+
         </Grid>
       </Container>
     </Page>
