@@ -88,7 +88,7 @@ const Chart = ({
             beginAtZero: true,
             min: 0,
             maxTicksLimit: 5,
-            callback: (value) => (value > 0 ? `${(value*1000)/1000}K` : value)
+            callback: (value) => (value > 0 ? `${(value)/1000}K` : value)
           }
         }
       ]
