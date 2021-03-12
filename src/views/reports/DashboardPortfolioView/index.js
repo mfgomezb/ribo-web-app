@@ -7,6 +7,7 @@ import {
 import Page from 'src/components/Page';
 import CustomerActivity from './CustomerActivity';
 import EarningsSegmentation from './EarningsSegmentation';
+import PortfolioSegmentation from './PortfolioSegmentation';
 import FinancialStats from './FinancialStats';
 import Header from './Header';
 import LatestOrders from './LatestOrders';
@@ -119,14 +120,6 @@ const DashboardPortfolioView = () => {
             xl={9}
             xs={12}
           >
-            <FinancialStats country={country} />
-          </Grid>
-          <Grid
-            item
-            lg={8}
-            xl={9}
-            xs={12}
-          >
             <AllocationOverTime country={country}/>
           </Grid>
           <Grid
@@ -135,7 +128,15 @@ const DashboardPortfolioView = () => {
             xl={3}
             xs={12}
           >
-            <EarningsSegmentation />
+            <PortfolioSegmentation country={country}/>
+          </Grid>
+          <Grid
+            item
+            lg={8}
+            xl={9}
+            xs={12}
+          >
+            <FinancialStats country={country} />
           </Grid>
           <Grid
             item

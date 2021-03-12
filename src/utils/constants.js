@@ -43,8 +43,29 @@ exports.collateralTypes = {
   employmentBenefit: 'Beneficios/Sueldo',
 }
 
+
+exports.useOfFunds = {
+ consumer: "Consumo",
+ creditLine: "Linea de Crédito",
+ healthcare: "Salud",
+ vehicle: "Vehículo",
+ motorcycle: "Moto",
+ personal: "Personal",
+ payroll: "Nómina",
+ workingCapital: "Capital Trabajo",
+ capitalGoods: "Bienes de capital",
+ refinancing: "Refinanciamiento",
+ debtConsolidation: "Consolidación de deuda",
+ factoring: "Factoring",
+ vehicleWithInsurance: "Vehículo con seguro",
+ motorcycleWithInsurance: "Moto con seguro",
+ personalWithInsurance: "Personal con seguro",
+ insurance: "Seguro",
+ capitalGoodsWithInsurance: "Bienes de capital (S)",
+}
+
 exports.collateralTypesFormConstants = [
-  { value: 'automobile', label: 'Automovil' },
+  {  value: 'automobile', label: 'Automovil' },
   { value: 'motorcycle', label: 'Motocicleta' },
   { value: 'receivables', label: 'Cuentas por cobrar' },
   { value: 'investments', label: 'Inversiones' },

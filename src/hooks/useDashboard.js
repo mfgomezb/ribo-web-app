@@ -68,6 +68,16 @@ export const useGetHistoricAllocation = (country) => {
   )
 }
 
+export const useGetPortfolioSummary = (country) => {
+  return useQuery(['portfolioSummary', country], () =>
+      axios.get(`api/reporting/portfolio/summary/${country}`)
+        .then(res => {
+          return res.data
+        }),
+    { staleTime: Infinity }
+  )
+}
+
 
 export const useGetPayments = (country, period) => {
   let {gtDate, ltDate} = dateRangeSelection(period)
