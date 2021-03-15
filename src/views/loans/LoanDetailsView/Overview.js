@@ -8,9 +8,8 @@ import {
   makeStyles, TableCell
 } from '@material-ui/core';
 import Label from 'src/components/Label';
-import CircularProgress from './CircularProgress';
-import numeral from 'numeral';
 import { DateTime } from 'luxon';
+import { currencyFormat, percentageFormat } from '../../../utils/numbers'
 
 const getDaysBehind = (date, startDate = DateTime.local().toString()) => {
   let end = DateTime.fromISO(date);
@@ -58,12 +57,6 @@ const getStatusLabel = (date) => {
 
 
 
-const percentageFormat = (number) => {
-  return numeral(number).format(`0.00%`)
-}
-const currencyFormat = (number, currency) => {
-  return numeral(number).format(`${currency}0,0.00`)
-}
 
 const useStyles = makeStyles((theme) => ({
   root: {},

@@ -9,13 +9,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import { loanScheduleCalculator } from '../../../utils/calculator'
-import numeral from 'numeral';
-
-
-const currencyFormat = (number, currency) => {
-  return numeral(number).format(`${currency}0,0.00`)
-}
-
+import { currencyFormat } from '../../../utils/numbers'
 
 const columns = [
   { id: 'number', label: '#', maxWidth: 20, paddingLeft: 5, paddingRight: 5},

@@ -16,9 +16,10 @@ import {
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import useIsMountedRef from 'src/hooks/useIsMountedRef';
 import Chart from './Chart';
-import { useGetPortfolioSummary } from '../../../../hooks/useDashboard';
+import { useGetHistoricAllocation, useGetPortfolioSummary } from '../../../../hooks/useDashboard';
 import {useOfFunds} from '../../../../utils/constants'
 import { percentageFormat} from '../../../../utils/numbers';
+import { useGetCollectionHistogram } from '../../../../hooks/useGetCollection';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -36,16 +37,19 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const EarningsSegmentation = ({ className, country, ...rest }) => {
+const LateCollectionSegmentation = ({ className, country, ...rest }) => {
   const classes = useStyles();
   const isMountedRef = useIsMountedRef();
-  const { isLoading, data, error } = useGetPortfolioSummary(country)
+  const { isLoading: collectionIsLoading, data: collection, error: collectionError } = useGetCollectionHistogram(country)
+  const { isLoading: portfolioIsLoading, data: portfolio, error: portfolioError } = useGetHistoricAllocation(country)
 
 
-  const topThreeCat = !isLoading && data.portfolioSummary.slice(0, 3)
-  const labels = !isLoading && data.portfolioSummary.map( e =>  e.product)
-  const productsData = !isLoading && data.portfolioSummary.map( e =>  e.capitalRemaining)
-
+  // const topThreeCat = !isLoading && data.portfolioSummary.slice(0, 3)
+  const labels = !collectionIsLoading && Object.keys(collection)
+  const productsData = !collectionIsLoading && Object.keys(collection).map( e =>  collection[e].amount)
+  const portfolioTotal = !portfolioIsLoading ? portfolio[portfolio.length-1].valueAccumulated : 0
+  // console.log(portfolio.length)
+  console.log(portfolioTotal)
   const products = {
     datasets: [{
       backgroundColor: ['#3d72eb', '#4b9e86', '#b658f5', '#3d72eb', '#4b9e86', '#b658f5', '#3d72eb', '#4b9e86', '#b658f5'],
@@ -53,8 +57,6 @@ const EarningsSegmentation = ({ className, country, ...rest }) => {
     }],
     labels
   }
-
-  console.log(products)
   // const getEarnings = useCallback(async () => {
   //   try  {
   //     const response = await axios.get('/api/reports/earnings');
@@ -71,7 +73,9 @@ const EarningsSegmentation = ({ className, country, ...rest }) => {
   //   getEarnings();
   // }, [getEarnings]);
 
-  if (isLoading) {
+  console.log(products)
+
+  if (collectionIsLoading) {
     return null;
   }
 
@@ -82,7 +86,7 @@ const EarningsSegmentation = ({ className, country, ...rest }) => {
     >
       <CardHeader
         action={<GenericMoreButton />}
-        title="Distribución de Productos"
+        title="Distribución de cobranza vencida"
       />
       <Divider />
       <Box
@@ -94,7 +98,7 @@ const EarningsSegmentation = ({ className, country, ...rest }) => {
       </Box>
       <Divider />
       <Box display="flex">
-        {topThreeCat.map((item, i) => (
+        {labels.map((item, i) => (
           <div
             key={i}
             className={classes.item}
@@ -103,13 +107,13 @@ const EarningsSegmentation = ({ className, country, ...rest }) => {
               variant="h4"
               color="textPrimary"
             >
-              {percentageFormat(item.capitalRemainingPct)}
+              {!portfolioIsLoading && percentageFormat(collection[item].amount/portfolioTotal)}
             </Typography>
             <Typography
               variant="overline"
               color="textSecondary"
             >
-              {useOfFunds[item.product]}
+              {item}
             </Typography>
           </div>
         ))}
@@ -118,8 +122,8 @@ const EarningsSegmentation = ({ className, country, ...rest }) => {
   );
 };
 
-EarningsSegmentation.propTypes = {
+LateCollectionSegmentation.propTypes = {
   className: PropTypes.string
 };
 
-export default EarningsSegmentation;
+export default LateCollectionSegmentation;

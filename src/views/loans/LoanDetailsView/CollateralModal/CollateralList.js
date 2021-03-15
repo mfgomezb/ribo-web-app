@@ -7,7 +7,6 @@ import {
   TableBody,
   makeStyles, Table, TableHead, TableRow, TableCell, IconButton, SvgIcon
 } from '@material-ui/core';
-import numeral from 'numeral';
 import { useSelector, useDispatch } from 'react-redux';
 import { Trash2 as DeleteIcon } from 'react-feather';
 import {handleRemoveCommission} from '../../../../actions/commissions';
@@ -19,9 +18,6 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const currencyFormat = (number, currency) => {
-  return numeral(number).format(`${currency}0,0.00`)
-}
 
 const CollateralList = ({
                         className,

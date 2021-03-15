@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import numeral from 'numeral';
 import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
+import { currencyFormat } from '../../../utils/numbers'
 import {
   Box,
   Button,
@@ -236,13 +237,6 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const currencyFormat = (number, currency) => {
-  return numeral(number).format(`${currency}0,0.00`)
-}
-
-const percentageFormat = (number) => {
-  return numeral(number).format(`0.00%`)
-}
 const Results = ({ className, products, ...rest }) => {
   const classes = useStyles();
   const history = useHistory()

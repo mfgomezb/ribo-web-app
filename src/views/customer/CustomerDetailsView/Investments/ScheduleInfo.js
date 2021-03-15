@@ -23,12 +23,7 @@ import {
 import Label from 'src/components/Label';
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import { useBorrowerUnpaidSchedule } from '../../../../hooks/useLoans';
-
-
-
-const currencyFormat = (number, currency) => {
-  return numeral(number).format(`${currency}0,0.00`)
-}
+import { currencyFormat } from '../../../../utils/numbers'
 
 const scheduleStatus = dayDiff => {
   if (dayDiff >= 0) {

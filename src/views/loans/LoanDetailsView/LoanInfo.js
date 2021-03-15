@@ -25,7 +25,7 @@ import { deleteLoan } from '../../../utils/API'
 import RestructureModal from './RestructureLoanModal';
 import ConfirmationModalContextProvider, { useConfirmationModalContext } from '../../../contexts/modalConfirmationContext';
 import { handlePaymentRemoval } from '../../../actions/loans';
-
+import { currencyFormat,percentageFormat } from '../../../utils/numbers'
 
 const DeletePaymentButton = (props) => {
   const modalContext = useConfirmationModalContext();
@@ -44,14 +44,6 @@ const DeletePaymentButton = (props) => {
     </Button>
   )
 };
-
-const currencyFormat = (number, currency) => {
-  return numeral(number).format(`${currency}0,0.00`)
-}
-
-const percentageFormat = (number) => {
-  return numeral(number).format(`0.00%`)
-}
 
 const useStyles = makeStyles((theme) => ({
   root: {},

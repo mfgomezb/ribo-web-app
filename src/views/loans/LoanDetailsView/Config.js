@@ -34,15 +34,7 @@ import CommissionModal from 'src/views/loans/LoanDetailsView/CommissionModal'
 import CollateralModal from 'src/views/loans/LoanDetailsView/CollateralModal'
 import { handleLoanCommissionsInitialData } from '../../../actions/commissions';
 import { handleLoanCollateralsInitialData } from '../../../actions/collaterals';
-
-
-const percentageFormat = (number) => {
-  return numeral(number).format(`0.00%`)
-}
-
-const currencyFormat = (number, currency) => {
-  return numeral(number).format(`${currency}0,0.00`)
-}
+import { currencyFormat,  percentageFormat} from '../../../utils/numbers'
 
 const scheduleStatus = dayDiff => {
   if (dayDiff >= 0) {

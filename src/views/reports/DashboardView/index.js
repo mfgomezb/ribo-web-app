@@ -149,6 +149,8 @@ const DashboardView = () => {
           <Grid
             item
             lg={9}
+            sm={6}
+            xs={12}
             >
               <Box>
                 <PaymentsOverTime

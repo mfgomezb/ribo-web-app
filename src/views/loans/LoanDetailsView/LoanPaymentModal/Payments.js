@@ -1,5 +1,3 @@
-
-
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -9,8 +7,8 @@ import {
   makeStyles, Table, TableHead, TableRow, TableCell
 } from '@material-ui/core';
 import { DateTime } from 'luxon';
-import numeral from 'numeral';
 import { useSelector } from 'react-redux';
+import { currencyFormat } from '../../../../utils/numbers'
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -19,9 +17,6 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const currencyFormat = (number, currency) => {
-  return numeral(number).format(`${currency}0,0.00`)
-}
 
 const PaymentsList = ({
                         className,

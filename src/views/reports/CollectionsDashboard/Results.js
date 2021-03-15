@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link as RouterLink, useHistory, useLocation} from 'react-router-dom';
 import clsx from 'clsx';
-import numeral from 'numeral';
 import moment from 'moment'
 import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -24,7 +23,6 @@ import {
   Search as SearchIcon
 } from 'react-feather';
 import {useGetCollection} from '../../../hooks/useGetCollection';
-import useLocationOptions from '../../../hooks/useUserLocation';
 import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
@@ -35,6 +33,8 @@ import LoanEditModal from '../../loans/LoanDetailsView/LoanPaymentModal';
 import { useDispatch } from 'react-redux';
 import {getCollectionFile} from '../../../utils/API'
 import useGlobal from '../../../hooks/useGlobal';
+import { currencyFormat } from '../../../utils/numbers'
+
 
 const sortOptions = [
   {
@@ -138,13 +138,6 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const currencyFormat = (number, currency) => {
-  return numeral(number).format(`${currency}0,0.00`)
-}
-
-// const percentageFormat = (number) => {
-//   return numeral(number).format(`0.00%`)
-// };
 
 const Results = ({ className, ...rest }) => {
   const dispatch = useDispatch()

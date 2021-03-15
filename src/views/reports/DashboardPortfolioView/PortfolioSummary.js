@@ -32,19 +32,8 @@ import useIsMountedRef from 'src/hooks/useIsMountedRef';
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import { useGetPayments, useGetPortfolioSummary } from '../../../hooks/useDashboard';
 import { useOfFunds } from '../../../utils/constants';
+import { currencyFormat } from '../../../utils/numbers'
 
-
-const currencyFormat = (number, currency) => {
-  return numeral(number).format(`${currency}0,0.00`)
-}
-const technologyMap = {
-  'html-css': '/static/images/technologies/html.svg',
-  'react-js': '/static/images/technologies/react-js.svg',
-  'vue-js': '/static/images/technologies/vue-js.svg',
-  angular: '/static/images/technologies/angular.svg',
-  figma: '/static/images/technologies/figma.svg',
-  sketch: '/static/images/technologies/sketch.svg'
-};
 
 const useStyles = makeStyles((theme) => ({
   root: {},

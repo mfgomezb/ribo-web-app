@@ -18,6 +18,7 @@ import useGlobal from '../../../hooks/useGlobal';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import AllocationOverTime from './AllocationOverTime';
 import PortfolioSummary from './PortfolioSummary';
+import LateCollectionSegmentation from './LateCollectionSegmentation';
 
 const timeRanges = [
   {
@@ -133,6 +134,23 @@ const DashboardPortfolioView = () => {
           </Grid>
           <Grid
             item
+            lg={5}
+            xl={12}
+            xs={12}
+          >
+            <LateCollectionSegmentation country={country}/>
+          </Grid>
+
+          <Grid
+            item
+            lg={7}
+            xl={9}
+            xs={12}
+          >
+            <FinancialStats country={country} />
+          </Grid>
+          <Grid
+            item
             lg={4}
             xs={12}
           >
@@ -141,14 +159,6 @@ const DashboardPortfolioView = () => {
           <Grid
             item
             lg={8}
-            xl={9}
-            xs={12}
-          >
-            <FinancialStats country={country} />
-          </Grid>
-          <Grid
-            item
-            lg={12}
             xl={12}
             xs={12}
           >

@@ -30,7 +30,7 @@ import qs from 'qs';
 import { useOfFunds as useOfFundsOptions } from 'src/views/loans/LoanListView/FormConstants'
 import { getLoansFile } from '../../../utils/API';
 import useGlobal from '../../../hooks/useGlobal';
-
+import { currencyFormat } from '../../../utils/numbers'
 
 const categoryOptions = [
   {
@@ -205,13 +205,6 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const currencyFormat = (number, currency) => {
-  return numeral(number).format(`${currency}0,0.00`)
-}
-
-const percentageFormat = (number) => {
-  return numeral(number).format(`0.00%`)
-}
 const Results = ({ className, ...rest }) => {
   const { countries } = useGlobal()
   const classes = useStyles();

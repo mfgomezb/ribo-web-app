@@ -1,3 +1,16 @@
+import numeral from 'numeral';
+
+export const percentageFormat = (number) => {
+  return numeral(number).format(`0.00%`)
+}
+
+export const currencyFormat = (number, currency, decimals = 2) => {
+  if (decimals === 2) {
+    return numeral(number).format(`${currency}0,0.00`)
+  } else {
+    return numeral(number).format(`${currency}0,0.0000`)
+  }
+}
 
 
 /**

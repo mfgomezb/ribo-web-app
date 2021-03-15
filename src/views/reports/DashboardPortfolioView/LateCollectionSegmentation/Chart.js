@@ -44,7 +44,7 @@ const Chart = ({ data: dataProp, ...rest }) => {
       footerFontColor: theme.palette.text.secondary,
       callbacks: {
         label(tooltipItem, _data) {
-          const label = useOfFunds[_data.labels[tooltipItem.index]];
+          const label = _data.labels[tooltipItem.index];
           const value = _data.datasets[0].data[tooltipItem.index];
 
           return `${label}: ${currencyFormat(value, '$')}`;

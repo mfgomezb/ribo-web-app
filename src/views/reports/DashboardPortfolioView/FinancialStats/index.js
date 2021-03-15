@@ -12,6 +12,7 @@ import {
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import Chart from './Chart';
 import { useGetHistoricAllocation } from '../../../../hooks/useDashboard';
+import { useGetCollectionHistogram } from '../../../../hooks/useGetCollection';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -24,6 +25,7 @@ const FinancialStats = ({ className, country, ...rest }) => {
   const classes = useStyles();
 
   const allocation = useGetHistoricAllocation(country)
+  const histogram = useGetCollectionHistogram(country)
 
   const dataLabels = !allocation.isLoading ? allocation.data.map( e => e.date).slice(allocation.data.length-12,allocation.data.length ) : []
   const interest = !allocation.isLoading ? allocation.data.map(e => e.interest).slice(allocation.data.length-12,allocation.data.length ): []

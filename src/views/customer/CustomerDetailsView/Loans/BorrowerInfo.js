@@ -24,9 +24,9 @@ import { useBorrowerCreditDetails,
   useBorrowerInterestGenerated,
   useBorrowerOwedStatus
 } from '../../../../hooks/useLoans';
-import numeral from 'numeral';
 import { DateTime } from 'luxon';
 import Skeleton from '@material-ui/lab/Skeleton';
+import { currencyFormat } from '../../../../utils/numbers'
 
 const variants = ['h1', 'h3', 'body1', 'caption'];
 
@@ -87,9 +87,7 @@ const getStatusLabel = (dayDiff) => {
   );
 };
 
-const currencyFormat = (number, currency) => {
-  return numeral(number).format(`${currency}0,0.00`)
-}
+
 
 const useStyles = makeStyles((theme) => ({
   root: {},

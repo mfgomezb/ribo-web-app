@@ -20,10 +20,8 @@ import {
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import { useSelector, useDispatch } from 'react-redux';
 import { handleLoanTransactionInitialData } from 'src/actions/loans';
+import { currencyFormat } from '../../../utils/numbers'
 
-const currencyFormat = (number, currency) => {
-  return numeral(number).format(`${currency}0,0.00`)
-}
 
 const useStyles = makeStyles(() => ({
   root: {}

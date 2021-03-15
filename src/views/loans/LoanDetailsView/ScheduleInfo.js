@@ -30,11 +30,8 @@ import {removeLoanInstallment} from 'src/actions/loans';
 import Label from 'src/components/Label';
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import LoanEditModal from 'src/views/loans/LoanDetailsView/LoanPaymentModal';
+import { currencyFormat } from '../../../utils/numbers'
 
-
-const currencyFormat = (number, currency) => {
-  return numeral(number).format(`${currency}0,0.00`)
-}
 
 const scheduleStatus = dayDiff => {
   if (dayDiff >= 0) {

@@ -7,6 +7,7 @@ import {
   makeStyles,
   useTheme
 } from '@material-ui/core';
+import { currencyFormat } from '../../../../utils/numbers';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -29,17 +30,17 @@ const Chart = ({
         label: 'Interes',
         backgroundColor: theme.palette.secondary.main,
         data: dataProp.interest,
-        barThickness: 17,
-        maxBarThickness: 20,
+        barThickness: 15,
+        maxBarThickness: 17,
         barPercentage: 0.5,
         categoryPercentage: 0.5,
       },
       {
         label: 'Capital',
-        backgroundColor: fade(theme.palette.secondary.main, 0.25),
+        backgroundColor: fade(theme.palette.secondary.main, 0.35),
         data: dataProp.capital,
-        barThickness: 17,
-        maxBarThickness: 20,
+        barThickness: 15,
+        maxBarThickness: 17,
         barPercentage: 0.5,
         categoryPercentage: 0.5,
       }
@@ -111,7 +112,7 @@ const Chart = ({
         label: (tooltipItem, data) => {
           let dataset = data.datasets[tooltipItem.datasetIndex]
           let index = tooltipItem.index
-          return dataset.label + ": " + dataset.data[index];
+          return dataset.label + ": " + `${dataset.data[index] > 1000 ? currencyFormat(dataset.data[index]/1000, '$', 4)+'K' : currencyFormat(dataset.data[index]/1000, '$', 4)}`;
           // let label = `Sales: ${tooltipItem.yLabel}`;
           //
           // if (tooltipItem.yLabel > 0) {

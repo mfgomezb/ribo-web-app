@@ -18,13 +18,7 @@ import {
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { handleLoanInvestorsPosition } from '../../../actions/loans';
-
-
-
-const currencyFormat = (number, currency) => {
-  return numeral(number).format(`${currency}0,0.00`)
-}
-
+import { currencyFormat } from '../../../utils/numbers'
 
 const tableContent = investor => {
 

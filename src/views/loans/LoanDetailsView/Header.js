@@ -13,7 +13,8 @@ import {
 } from '@material-ui/core';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import { Edit as EditIcon } from 'react-feather';
-import numeral from 'numeral';
+import { currencyFormat } from '../../../utils/numbers'
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,9 +22,6 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const currencyFormat = (number, currency) => {
-  return numeral(number).format(`${currency}0,0.00`)
-}
 
 const Header = ({ className, details, ...rest }) => {
   const classes = useStyles();

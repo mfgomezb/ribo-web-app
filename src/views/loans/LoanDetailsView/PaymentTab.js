@@ -24,12 +24,8 @@ import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 import { useSelector, useDispatch } from 'react-redux';
 import { useConfirmationModalContext } from '../../../contexts/modalConfirmationContext';
 import ConfirmationModalContextProvider from "../../../contexts/modalConfirmationContext";
+import { currencyFormat } from '../../../utils/numbers'
 
-
-
-const currencyFormat = (number, currency) => {
-  return numeral(number).format(`${currency}0,0.00`)
-}
 
 // const scheduleStatus = dayDiff => {
 //   if (dayDiff >= 0) {

@@ -16,14 +16,7 @@ import {
 } from '@material-ui/core';
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWalletOutlined';
 import Label from 'src/components/Label';
-import numeral from 'numeral';
-
-
-
-const currencyFormat = (number, currency) => {
-  return numeral(number).format(`${currency}0,0.00`)
-}
-
+import { currencyFormat } from '../../../../utils/numbers'
 
 const useStyles = makeStyles((theme) => ({
   root: {},

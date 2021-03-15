@@ -23,6 +23,7 @@ import axios from 'src/utils/axios';
 import useIsMountedRef from 'src/hooks/useIsMountedRef';
 import { useGetPortfolioSummary } from '../../../hooks/useDashboard';
 import { useOfFunds } from '../../../utils/constants';
+import { currencyFormat } from '../../../utils/numbers'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,9 +37,6 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const currencyFormat = (number, currency) => {
-  return numeral(number).format(`${currency}0,0.0000`)
-}
 
 const TopReferrals = ({ className, country, ...rest }) => {
   const classes = useStyles();
