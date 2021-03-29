@@ -1,125 +1,32 @@
 import React, { useState } from 'react';
-import { Link as RouterLink, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import clsx from 'clsx';
 import { DateTime } from 'luxon';
-import numeral from 'numeral';
 import PropTypes from 'prop-types';
-import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
-  Box,
+  Avatar,
+  Button,
   Card,
+  CardActions,
+  CardContent,
   CardHeader,
   Divider,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TablePagination,
-  TableRow,
-  Typography,
-  makeStyles,
-  Link,
-  Button, Grid, CardContent, List, ListItem, ListItemAvatar, Avatar, ListItemText, CardActions
+  Grid,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  makeStyles
 } from '@material-ui/core';
-import {
-  Edit as EditIcon,
-  ArrowRight as ArrowRightIcon
-} from 'react-feather';
-import { useSelector, useDispatch } from 'react-redux'
-import {removeLoanInstallment} from 'src/actions/loans';
-import Label from 'src/components/Label';
-import { currentStatus, collateralTypes } from 'src/utils/constants'
+import { useDispatch, useSelector } from 'react-redux';
+import { collateralTypes, currentStatus } from 'src/utils/constants';
 import getInitials from '../../../utils/getInitials';
-import CommissionModal from 'src/views/loans/LoanDetailsView/CommissionModal'
-import CollateralModal from 'src/views/loans/LoanDetailsView/CollateralModal'
+import CommissionModal from 'src/views/loans/LoanDetailsView/CommissionModal';
+import CollateralModal from 'src/views/loans/LoanDetailsView/CollateralModal';
 import { handleLoanCommissionsInitialData } from '../../../actions/commissions';
 import { handleLoanCollateralsInitialData } from '../../../actions/collaterals';
-import { currencyFormat,  percentageFormat} from '../../../utils/numbers'
+import { currencyFormat, percentageFormat } from '../../../utils/numbers';
 
-const scheduleStatus = dayDiff => {
-  if (dayDiff >= 0) {
-    return 'PENDING'
-  } else if (dayDiff < 0 && dayDiff >= -5) {
-    return 'GRACE'
-  } else {
-    return 'OVERDUE'
-  }
-}
-const getStatusLabel = (status) => {
-  // let status = scheduleStatus(dayDiff)
-
-  const map = {
-    PAID: {
-      text: 'PAGO',
-      color: 'success'
-    },
-    PAID_LATE: {
-      text: 'PAGO TARDE',
-      color: 'warning'
-    },
-    OVERDUE: {
-      text: 'VENCIDO',
-      color: 'error'
-    },
-    PENDING: {
-      text: 'PENDIENTE',
-      color: 'primary'
-    },
-    GRACE: {
-      text: 'GRACIA',
-      color: 'warning'
-    },
-  };
-
-  const { text, color } = map[status];
-
-  return (
-    <Label color={color}>
-      {text}
-    </Label>
-  );
-};
-
-const getDaysBehind = (date, startDate = DateTime.local().toString()) => {
-  let end = DateTime.fromISO(date);
-  let start = DateTime.fromISO(startDate)  ;
-  return Math.round(end.diff(start, 'days').days);
-}
-
-const isPaymentFulfilled = (data) => {
-  let {interest, interest_pmt, principal, principal_pmt} = data
-  let installment = interest + principal
-  let installmentPayment = interest_pmt + principal_pmt
-  return installmentPayment >= installment*0.99
-}
-
-const isPastDate = daysBehind => {
-  return daysBehind <= 0;
-}
-
-const statusSetter = (data) => {
-  let isDue = isPastDate(getDaysBehind(data.date))
-  let isFulfilled = isPaymentFulfilled(data)
-  if (isDue && isFulfilled) {
-    let paymentDate = data.lastPayment || data.date_pmt
-    let days = getDaysBehind(data.date, paymentDate)
-    let isPaidLate = isPastDate(days+1)
-    if (isPaidLate) {
-      return 'PAID_LATE'
-    }
-    return 'PAID'
-  } else if (isDue && !isFulfilled) {
-    return 'OVERDUE'
-  } else if (!isDue && isFulfilled){
-    return 'PAID'
-  } else {
-    return 'PENDING'
-  }
-}
-
-const applyPagination = (data, page, limit) => {
-  return (data) ? data.slice(page * limit, page * limit + limit) : []
-};
 
 const useStyles = makeStyles(() => ({
   root: {}

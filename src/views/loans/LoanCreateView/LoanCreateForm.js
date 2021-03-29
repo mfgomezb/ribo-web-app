@@ -43,6 +43,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
+
 const LoanCreateForm = ({ className, ...rest }) => {
   const {customerId} = useParams()
   const classes = useStyles();
@@ -123,7 +124,6 @@ const LoanCreateForm = ({ className, ...rest }) => {
           history.push(`/app/management/loan/${newLoan._id}`);
 
         } catch (err) {
-          console.error(err);
           setStatus({ success: false });
           setErrors({ submit: err.message });
           setSubmitting(false);
@@ -309,7 +309,7 @@ const LoanCreateForm = ({ className, ...rest }) => {
                             : <ul>
                                 <li> El método flat mantiene el interés constante.</li>
                                 <li> El método lineal incrementa los pagos de capital y disminuye el interés.</li>
-                                <li> El método bullet amortiza la totalidad del capital en la última cuota.</li>
+                                {/*<li> El método bullet amortiza la totalidad del capital en la última cuota.</li>*/}
                               </ul>
                               }</FormHelperText>
                         </FormControl>

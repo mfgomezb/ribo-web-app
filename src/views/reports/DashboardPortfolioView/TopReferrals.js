@@ -1,11 +1,6 @@
-import React, {
-  useState,
-  useEffect,
-  useCallback
-} from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import numeral from 'numeral';
 import {
   Avatar,
   Card,
@@ -15,15 +10,13 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
-  Typography,
-  makeStyles
+  makeStyles,
+  Typography
 } from '@material-ui/core';
 import GenericMoreButton from 'src/components/GenericMoreButton';
-import axios from 'src/utils/axios';
-import useIsMountedRef from 'src/hooks/useIsMountedRef';
 import { useGetPortfolioSummary } from '../../../hooks/useDashboard';
 import { useOfFunds } from '../../../utils/constants';
-import { currencyFormat } from '../../../utils/numbers'
+import { currencyFormat } from '../../../utils/numbers';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,8 +33,7 @@ const useStyles = makeStyles((theme) => ({
 
 const TopReferrals = ({ className, country, ...rest }) => {
   const classes = useStyles();
-  const isMountedRef = useIsMountedRef();
-  const { isLoading, data, error } = useGetPortfolioSummary(country)
+  const { isLoading, data, } = useGetPortfolioSummary(country)
 
   const productsData = !isLoading && data.portfolioSummary.sort( (a,b) =>  b.returnsGenerated - a.returnsGenerated )
 

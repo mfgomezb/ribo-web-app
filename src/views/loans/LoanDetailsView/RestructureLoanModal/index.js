@@ -1,19 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useSnackbar } from 'notistack';
-import {
-  Box,
-  Dialog,
-  Grid,
-  Typography,
-  makeStyles,
-  IconButton,
-  SvgIcon,
-} from '@material-ui/core';
-import {
-  XCircle as CloseIcon,
-} from 'react-feather';
-import LoanRefactorForm from './LoanRefactorForm'
+import { Box, Dialog, Grid, IconButton, makeStyles, SvgIcon, Typography } from '@material-ui/core';
+import { XCircle as CloseIcon } from 'react-feather';
+import LoanRefactorForm from './LoanRefactorForm';
 
 const useStyles = makeStyles((theme) => ({
   root: {

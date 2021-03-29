@@ -1,6 +1,5 @@
-import React, { } from 'react';
+import React from 'react';
 import clsx from 'clsx';
-import numeral from 'numeral';
 import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
@@ -8,17 +7,17 @@ import {
   Card,
   CardHeader,
   Divider,
+  makeStyles,
   Table,
   TableBody,
   TableCell,
   TableHead,
-  TableRow,
-  makeStyles,
+  TableRow
 } from '@material-ui/core';
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { handleLoanInvestorsPosition } from '../../../actions/loans';
-import { currencyFormat } from '../../../utils/numbers'
+import { currencyFormat } from '../../../utils/numbers';
 
 const tableContent = investor => {
 

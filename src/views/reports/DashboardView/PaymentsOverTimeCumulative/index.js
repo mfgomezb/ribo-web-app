@@ -29,7 +29,8 @@ const PaymentsOverTimeCumulative = ({ className, country,timeRange, ...rest }) =
 
   const data = !periodPayments.isLoading ? Object.values(periodPayments.data.periodCollections)
     .map(e => e.monto)
-    .reduce((r, a) => { r.push((r.length && r[r.length - 1] || 0) + a);
+    .reduce((r, a) => {
+      r.push(((r.length && r[r.length - 1]) || 0) + a);
       return r;
     }, []): []
 

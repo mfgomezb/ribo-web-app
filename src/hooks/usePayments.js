@@ -1,5 +1,5 @@
 import axios from '../utils/axios';
-import { useMutation, queryCache, useQueryCache } from 'react-query'
+import { useMutation, useQueryCache } from 'react-query';
 
 export const useProcessPayment = () => {
   return useMutation(

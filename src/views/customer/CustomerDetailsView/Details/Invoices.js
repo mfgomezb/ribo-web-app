@@ -2,20 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
-  Box,
-  Button,
   Card,
   CardHeader,
   Divider,
+  makeStyles,
   Table,
   TableBody,
   TableCell,
   TableRow,
-  Typography,
-  makeStyles
+  Typography
 } from '@material-ui/core';
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
-import ReceiptIcon from '@material-ui/icons/ReceiptOutlined';
 
 const useStyles = makeStyles((theme) => ({
   root: {},

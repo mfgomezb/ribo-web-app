@@ -1,15 +1,20 @@
-
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
   Box,
+  IconButton,
+  makeStyles,
+  SvgIcon,
+  Table,
   TableBody,
-  makeStyles, Table, TableHead, TableRow, TableCell, IconButton, SvgIcon
+  TableCell,
+  TableHead,
+  TableRow
 } from '@material-ui/core';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Trash2 as DeleteIcon } from 'react-feather';
-import {handleRemoveCommission} from '../../../../actions/commissions';
+import { handleRemoveCommission } from '../../../../actions/commissions';
 
 const useStyles = makeStyles((theme) => ({
   root: {},

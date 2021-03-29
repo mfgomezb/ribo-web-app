@@ -1,13 +1,11 @@
-import React, { Suspense, Fragment, lazy } from 'react';
-import { Switch, Redirect, Route } from 'react-router-dom';
+import React, { Fragment, lazy, Suspense } from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import DashboardLayout from 'src/layouts/DashboardLayout';
 import DocsLayout from 'src/layouts/DocsLayout';
 import MainLayout from 'src/layouts/MainLayout';
-import HomeView from 'src/views/home/HomeView';
 import LoadingScreen from 'src/components/LoadingScreen';
 import AuthGuard from 'src/components/AuthGuard';
 import GuestGuard from 'src/components/GuestGuard';
-import useLocationOptions from './hooks/useUserLocation';
 
 export const renderRoutes = (routes = []) => (
   <Suspense fallback={<LoadingScreen />}>

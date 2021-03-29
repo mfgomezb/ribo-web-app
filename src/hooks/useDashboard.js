@@ -42,6 +42,10 @@ const dateRangeSelection = (period) => {
       gtDate = DateTime.local().minus({ days: 360 }).toString().slice(0,10)
       ltDate = DateTime.local().endOf('day').toString().slice(0,10)
       break;
+    default:
+      gtDate = DateTime.local().startOf('month').toString().slice(0,10)
+      ltDate = DateTime.local().endOf('day').toString().slice(0,10)
+      break;
   }
   return {gtDate, ltDate}
 }
@@ -91,7 +95,7 @@ export const useGetPayments = (country, period) => {
 }
 
 export const useReceivedPayments = (country, period) => {
-  let {gtDate, ltDate} = dateRangeSelection(period)
+  // let {gtDate, ltDate} = dateRangeSelection(period)
   return useQuery(['receivedPayments', country, period], () =>
     axios
       .get(`api/payments/received/country/${country}/period/${period}`)

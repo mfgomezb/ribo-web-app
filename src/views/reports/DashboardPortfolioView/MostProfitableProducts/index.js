@@ -1,8 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useState
-} from 'react';
+import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import clsx from 'clsx';
 import numeral from 'numeral';
@@ -13,18 +9,16 @@ import {
   Button,
   Card,
   CardHeader,
+  colors,
   Divider,
+  makeStyles,
   Table,
   TableBody,
   TableCell,
   TableRow,
-  Typography,
-  colors,
-  makeStyles
+  Typography
 } from '@material-ui/core';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import axios from 'src/utils/axios';
-import useIsMountedRef from 'src/hooks/useIsMountedRef';
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import CircularProgress from './CircularProgress';
 import { useGetPortfolioSummary } from '../../../../hooks/useDashboard';
@@ -48,8 +42,7 @@ const useStyles = makeStyles((theme) => ({
 
 const MostProfitableProducts = ({ className, country, ...rest }) => {
   const classes = useStyles();
-  const isMountedRef = useIsMountedRef();
-  const { isLoading, data, error } = useGetPortfolioSummary(country)
+  const { isLoading, data } = useGetPortfolioSummary(country)
 
   const productsData = !isLoading && data.sort( (a,b) =>  b.returnsGenerated - a.returnsGenerated )
 

@@ -1,19 +1,10 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import {
-  Breadcrumbs,
-  Button,
-  Grid,
-  Link,
-  SvgIcon,
-  Typography,
-  makeStyles
-} from '@material-ui/core';
+import { Breadcrumbs, Button, Grid, Link, makeStyles, SvgIcon, Typography } from '@material-ui/core';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import { Edit as EditIcon } from 'react-feather';
-import { currencyFormat } from '../../../utils/numbers'
+import { currencyFormat } from '../../../utils/numbers';
 
 
 const useStyles = makeStyles((theme) => ({

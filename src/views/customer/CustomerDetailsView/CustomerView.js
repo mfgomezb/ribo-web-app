@@ -1,11 +1,4 @@
-import * as React from 'react'
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  useRouteMatch,
-  useParams
-} from 'react-router-dom'
+import * as React from 'react';
 import Details from './Details';
 import Loans from './Loans';
 import Investments from './Investments';
@@ -13,8 +6,6 @@ import Investments from './Investments';
 function CustomerView ({
                          customer,
                           customerView,
-                         className,
-                         ...rest
                        }) {
 
   switch (customerView) {

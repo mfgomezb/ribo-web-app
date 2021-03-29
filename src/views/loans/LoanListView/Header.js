@@ -2,19 +2,7 @@ import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import {
-  Box,
-  Breadcrumbs,
-  Button,
-  Grid,
-  Link,
-  SvgIcon,
-  Typography,
-  makeStyles
-} from '@material-ui/core';
-import {
-  Download as DownloadIcon,
-} from 'react-feather';
+import { Breadcrumbs, Button, Grid, Link, makeStyles, Typography } from '@material-ui/core';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 
 const useStyles = makeStyles((theme) => ({

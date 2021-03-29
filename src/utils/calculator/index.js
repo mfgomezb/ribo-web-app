@@ -336,6 +336,8 @@ const loanFactory = (schedule, loanDetails) => {
             return bullet(schedule, interestRatePeriodic, capital, firstPeriodInterestValue, interestOnlyPeriods)
         case 'balloon':
             return balloon(schedule, interestRatePeriodic, capital, firstPeriodInterestValue, interestOnlyPeriods)
+        default:
+          return flat(schedule, interestRatePeriodic, capital, firstPeriodInterestValue, interestOnlyPeriods)
     }
 }
 

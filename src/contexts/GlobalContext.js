@@ -1,7 +1,5 @@
-import React, { createContext, useEffect, useReducer, useState } from 'react';
-import jwt from 'jsonwebtoken';
+import React, { createContext, useEffect, useReducer } from 'react';
 import SplashScreen from 'src/components/SplashScreen';
-import axios from 'src/utils/axios';
 import useAuth from '../hooks/useAuth';
 
 

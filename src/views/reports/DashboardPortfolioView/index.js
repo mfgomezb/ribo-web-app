@@ -1,18 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import {
-  Container,
-  Grid,
-  makeStyles
-} from '@material-ui/core';
+import { Container, Grid, makeStyles } from '@material-ui/core';
 import Page from 'src/components/Page';
-import CustomerActivity from './CustomerActivity';
-import EarningsSegmentation from './EarningsSegmentation';
 import PortfolioSegmentation from './PortfolioSegmentation';
 import FinancialStats from './FinancialStats';
 import Header from './Header';
-import LatestOrders from './LatestOrders';
-import MostProfitableProducts from './MostProfitableProducts';
-import Overview from './Overview';
 import TopReferrals from './TopReferrals';
 import useGlobal from '../../../hooks/useGlobal';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
@@ -83,7 +74,7 @@ const DashboardPortfolioView = () => {
     } catch (err) {
       console.error(err);
     }
-  }, [isMountedRef]);
+  }, [isMountedRef, countries]);
 
   useEffect(() => {
     getCountry();

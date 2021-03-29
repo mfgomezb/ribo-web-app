@@ -1,15 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { Box, Button, Grid, SvgIcon, makeStyles} from '@material-ui/core';
+import { Grid, makeStyles } from '@material-ui/core';
 import GlobalPosition from 'src/views/customer/CustomerDetailsView/Investments/GlobalPosition';
 import InvestmentPosition from 'src/views/customer/CustomerDetailsView/Investments/InvestmentPosition';
 import ReturnsSummary from 'src/views/customer/CustomerDetailsView/Investments/ReturnsSummary';
 import PortfolioSummary from 'src/views/customer/CustomerDetailsView/Investments/PortfolioSummary';
-import LoansInfo from './LoansInfo';
-import ScheduleInfo from './ScheduleInfo';
-import { Link as RouterLink } from 'react-router-dom';
-import { Plus as PlusIcon } from 'react-feather';
 
 const useStyles = makeStyles((theme) => ({
   root: {},

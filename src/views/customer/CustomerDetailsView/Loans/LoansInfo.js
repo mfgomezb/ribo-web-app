@@ -10,19 +10,20 @@ import {
   Card,
   CardHeader,
   Divider,
+  Link,
+  makeStyles,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TablePagination,
   TableRow,
-  Typography,
-  makeStyles, Link
+  Typography
 } from '@material-ui/core';
 import Label from 'src/components/Label';
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import { useBorrowerLoans } from '../../../../hooks/useLoans';
-import { paymentFrequency as paymentFrequencyConstants } from 'src/utils/constants'
+import { paymentFrequency as paymentFrequencyConstants } from 'src/utils/constants';
 
 const getStatusLabel = (paymentStatus) => {
   const map = {
@@ -63,7 +64,7 @@ const useStyles = makeStyles(() => ({
 
 const LoansInfo = ({ className, ...rest }) => {
   const {customerId} = useParams()
-  const { isLoading, data, error } = useBorrowerLoans(customerId)
+  const { isLoading, data } = useBorrowerLoans(customerId)
   const [paginatedLoans, setPaginatedLoans] = useState([])
   const classes = useStyles();
   const [page, setPage] = useState(0);

@@ -1,12 +1,12 @@
 import React from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { useSnackbar } from 'notistack';
-import {DateTime} from 'luxon'
-import { rounder } from '../../../../utils/numbers'
+import { DateTime } from 'luxon';
+import { rounder } from '../../../../utils/numbers';
 import {
   Box,
   Button,
@@ -14,16 +14,20 @@ import {
   CardContent,
   CardHeader,
   Divider,
+  FormControl,
   FormHelperText,
   Grid,
-  TextField,
   InputAdornment,
-  makeStyles, InputLabel, Select, FormControl
+  InputLabel,
+  makeStyles,
+  Select,
+  TextField
 } from '@material-ui/core';
 import { postRestructureLoan } from '../../../../utils/API';
 import ScheduleTable from '../../LoanCreateView/ScheduleTable';
-import { paymentFrequency as paymentFrequencyConstants,
+import {
   amortizationMethod as amortizationMethodConstants,
+  paymentFrequency as paymentFrequencyConstants
 } from '../../LoanCreateView/FormConstants';
 import { handleLoanInitialData } from '../../../../actions/loans';
 import { useDispatch } from 'react-redux';

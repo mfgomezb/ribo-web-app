@@ -3,16 +3,9 @@ import clsx from 'clsx';
 import * as Yup from 'yup';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
-import {
-  Box,
-  Button,
-  FormHelperText,
-  TextField,
-  makeStyles
-} from '@material-ui/core';
+import { Box, Button, FormHelperText, makeStyles, TextField } from '@material-ui/core';
 import useAuth from 'src/hooks/useAuth';
 import useIsMountedRef from 'src/hooks/useIsMountedRef';
-import useGlobal from '../../../hooks/useGlobal';
 
 
 const useStyles = makeStyles(() => ({

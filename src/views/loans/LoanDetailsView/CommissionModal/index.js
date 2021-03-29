@@ -61,7 +61,7 @@ const CommissionModal = ({
     } catch (err) {
       console.error(err);
     }
-  }, [isMountedRef, open]);
+  }, [isMountedRef, open, loanId]);
 
   React.useEffect(() => {
     getCommissionProfiles();

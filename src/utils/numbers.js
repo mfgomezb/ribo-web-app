@@ -19,6 +19,7 @@ export const currencyFormat = (number, currency, decimals = 2) => {
  */
 
 function isScientific(number) {
+  //eslint-disable-next-line
   return /\d+\.?\d*e[\+\-]*\d+/i.test(Math.abs(number))
 }
 

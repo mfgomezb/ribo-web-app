@@ -85,7 +85,7 @@ const DashboardView = () => {
     } catch (err) {
       console.error(err);
     }
-  }, [isMountedRef]);
+  }, [isMountedRef, countries]);
 
   useEffect(() => {
     getCountry();

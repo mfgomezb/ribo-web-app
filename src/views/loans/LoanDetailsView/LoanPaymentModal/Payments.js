@@ -1,14 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import {
-  Box,
-  TableBody,
-  makeStyles, Table, TableHead, TableRow, TableCell
-} from '@material-ui/core';
+import { Box, makeStyles, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import { DateTime } from 'luxon';
 import { useSelector } from 'react-redux';
-import { currencyFormat } from '../../../../utils/numbers'
+import { currencyFormat } from '../../../../utils/numbers';
 
 const useStyles = makeStyles((theme) => ({
   root: {},

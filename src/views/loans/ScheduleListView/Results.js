@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
 import { Link as RouterLink, useHistory, useLocation } from 'react-router-dom';
 import clsx from 'clsx';
-import numeral from 'numeral';
 import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import { currencyFormat } from '../../../utils/numbers'
+import { currencyFormat } from '../../../utils/numbers';
 import {
   Box,
   Button,
   Card,
-  Checkbox,
-  InputAdornment,
-  FormControlLabel,
   IconButton,
+  InputAdornment,
   Link,
+  makeStyles,
   SvgIcon,
   Table,
   TableBody,
@@ -21,22 +19,19 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  TextField,
-  makeStyles
+  TextField
 } from '@material-ui/core';
-import {Pending as PendingIcon} from '@material-ui/icons'
 import {
-  Image as ImageIcon,
-  Edit as EditIcon,
   ArrowRight as ArrowRightIcon,
-  Search as SearchIcon, Download as DownloadIcon
+  Download as DownloadIcon,
+  Edit as EditIcon,
+  Search as SearchIcon
 } from 'react-feather';
 import Label from 'src/components/Label';
-import {useGetScheduleList} from '../../../hooks/useLoans';
+import { useGetScheduleList } from '../../../hooks/useLoans';
 import qs from 'qs';
-import { useOfFunds as useOfFundsOptions } from 'src/views/loans/LoanListView/FormConstants'
+import { useOfFunds as useOfFundsOptions } from 'src/views/loans/LoanListView/FormConstants';
 import { DateTime } from 'luxon';
-import useLocationOptions from '../../../hooks/useUserLocation';
 import { getLoansScheduleFile } from '../../../utils/API';
 import useGlobal from '../../../hooks/useGlobal';
 
@@ -86,28 +81,6 @@ const categoryOptions = [
   },
 ];
 
-const countryOptions = [
-  {
-    id: 'ALL',
-    name: 'Todos'
-  },
-  {
-    name: 'Perú',
-    id: 'PERU'
-  },
-  {
-    id: 'DOMINICAN_REPUBLIC',
-    name: 'República Dominicana',
-  },
-  {
-    name: 'USA',
-    id: 'USA'
-  },
-  {
-    name: 'Venezuela',
-    id: 'VENEZUELA'
-  }
-];
 
 const sortOptions = [
   {
@@ -128,64 +101,8 @@ const sortOptions = [
   }
 ];
 
-const getInventoryLabel = (inventoryType) => {
-  const map = {
-    in_stock: {
-      text: 'In Stock',
-      color: 'success'
-    },
-    limited: {
-      text: 'Limited',
-      color: 'warning'
-    },
-    out_of_stock: {
-      text: 'Out of Stock',
-      color: 'error'
-    }
-  };
 
-  const { text, color } = map[inventoryType];
 
-  return (
-    <Label color={color}>
-      {text}
-    </Label>
-  );
-};
-
-const applyFilters = (products, query, filters) => {
-  return products.filter((product) => {
-    let matches = true;
-
-    if (query && !product.name.toLowerCase().includes(query.toLowerCase())) {
-      matches = false;
-    }
-
-    if (filters.category && product.category !== filters.category) {
-      matches = false;
-    }
-
-    if (filters.availability) {
-      if (filters.availability === 'available' && !product.isAvailable) {
-        matches = false;
-      }
-
-      if (filters.availability === 'unavailable' && product.isAvailable) {
-        matches = false;
-      }
-    }
-
-    if (filters.inStock && !['in_stock', 'limited'].includes(product.inventoryType)) {
-      matches = false;
-    }
-
-    if (filters.isShippable && !product.isShippable) {
-      matches = false;
-    }
-
-    return matches;
-  });
-};
 
 const applyPagination = (products, page, limit) => {
     return products.slice(page * limit, page * limit + limit);
@@ -254,7 +171,7 @@ const Results = ({ className, products, ...rest }) => {
     // isRestructured: false,
   });
   const [params, setParams] = useState({ page, limit, query, filters })
-  const {isLoading, data, error} = useGetScheduleList(params)
+  const {isLoading, data } = useGetScheduleList(params)
 
   React.useEffect(() => {
     setParams({page, limit, query, filters})
@@ -321,22 +238,6 @@ const Results = ({ className, products, ...rest }) => {
     }));
   };
 
-  // const handleRestructureChange = (event) => {
-  //   event.persist();
-  //
-  //   let value = null;
-  //
-  //   if (event.target.checked) {
-  //     value = true;
-  //   }
-  //
-  //   setFilters((prevFilters) => ({
-  //     ...prevFilters,
-  //     isRestructured: value
-  //   }));
-  // };
-
-
   const handleSortChange = (event) => {
     event.persist();
     setSort(event.target.value);
@@ -355,8 +256,6 @@ const Results = ({ className, products, ...rest }) => {
   const downloadFile = (params) => {
     return getLoansScheduleFile(params)
   }
-  // UsuALLy query is done on backend with indexing solutions
-  // const filteredProducts = applyFilters(products, query, filters);
 
   return (
     <React.Fragment>
@@ -539,7 +438,6 @@ const Results = ({ className, products, ...rest }) => {
             <TableBody>
               {!isLoading && data?.results.map((product) => {
                 // let UFO = useOfFundsOptions.find( e =>  e.value === product.useOfFunds[0]).label
-                let country = countryOptions.find( e =>  e.id === product.country).name
                 return (
                   <TableRow
                     hover

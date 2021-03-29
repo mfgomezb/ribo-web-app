@@ -112,14 +112,8 @@ const Chart = ({
         label: (tooltipItem, data) => {
           let dataset = data.datasets[tooltipItem.datasetIndex]
           let index = tooltipItem.index
-          return dataset.label + ": " + `${dataset.data[index] > 1000 ? currencyFormat(dataset.data[index]/1000, '$', 4)+'K' : currencyFormat(dataset.data[index]/1000, '$', 4)}`;
-          // let label = `Sales: ${tooltipItem.yLabel}`;
-          //
-          // if (tooltipItem.yLabel > 0) {
-          //   label += 'K';
-          // }
-          //
-          // return label;
+          let labelNumber = dataset.data[index] > 1000 ? currencyFormat(dataset.data[index]/1000, '$', 4)+'K' : currencyFormat(dataset.data[index]/1000, '$', 4)
+          return dataset.label + `: ` + labelNumber
         },
 
       }

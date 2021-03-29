@@ -47,9 +47,9 @@ export async function fetchLoanTransactions(loanId) {
 }
 
 
-export function deleteInstallmentPayment (payment) {
+export function deleteInstallmentPayment (loanId) {
   return axios
-    .delete(`api/payment/installment/${payment._id}`)
+    .delete(`api/payment/installment/${loanId}`)
     .then((res) => res.data);
 }
 

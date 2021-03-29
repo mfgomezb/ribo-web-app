@@ -1,8 +1,8 @@
 import axios from '../utils/axios';
-import { useMutation, usePaginatedQuery, useQuery } from 'react-query';
+import { useMutation, usePaginatedQuery } from 'react-query';
 import { useSnackbar } from 'notistack';
 import useAuth from './useAuth';
-import Qs from 'qs'
+import Qs from 'qs';
 
 export const useUpdatePassword = (id) => {
   const { enqueueSnackbar } = useSnackbar();

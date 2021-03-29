@@ -1,10 +1,9 @@
 import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { Avatar, Box, Card, Typography, makeStyles } from '@material-ui/core';
+import { Avatar, Box, Card, makeStyles, Typography } from '@material-ui/core';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
-import Label from 'src/components/Label';
-import { useGetPayments, useGetTodayStatus, useReceivedPayments } from '../../../hooks/useDashboard';
+import { useGetPayments } from '../../../hooks/useDashboard';
 import numeral from 'numeral';
 
 const useStyles = makeStyles(theme => ({

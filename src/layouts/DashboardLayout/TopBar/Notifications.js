@@ -1,8 +1,4 @@
-import React, {
-  useRef,
-  useState,
-  useEffect
-} from 'react';
+import React, { useRef, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
   Avatar,
@@ -13,20 +9,19 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
+  makeStyles,
   Popover,
   SvgIcon,
   Tooltip,
-  Typography,
-  makeStyles
+  Typography
 } from '@material-ui/core';
 import {
   Bell as BellIcon,
-  Package as PackageIcon,
   MessageCircle as MessageIcon,
+  Package as PackageIcon,
   Truck as TruckIcon
 } from 'react-feather';
-import { useDispatch, useSelector } from 'src/store';
-import { getNotifications } from 'src/slices/notification';
+import { useSelector } from 'src/store';
 
 const iconsMap = {
   order_placed: PackageIcon,
@@ -48,7 +43,7 @@ const Notifications = () => {
   const classes = useStyles();
   const { notifications } = useSelector((state) => state.notifications);
   const ref = useRef(null);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const [isOpen, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -58,10 +53,10 @@ const Notifications = () => {
   const handleClose = () => {
     setOpen(false);
   };
-
-  useEffect(() => {
-    dispatch(getNotifications());
-  }, [dispatch]);
+  //
+  // useEffect(() => {
+  //   dispatch(getNotifications());
+  // }, [dispatch]);
 
   return (
     <>

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Link as RouterLink, useLocation, useHistory } from 'react-router-dom';
+import { Link as RouterLink, useHistory, useLocation } from 'react-router-dom';
 import clsx from 'clsx';
 import qs from 'qs';
-import numeral from 'numeral';
 import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
@@ -12,9 +11,9 @@ import {
   Card,
   Checkbox,
   Divider,
-  IconButton,
   InputAdornment,
   Link,
+  makeStyles,
   SvgIcon,
   Tab,
   Table,
@@ -25,14 +24,9 @@ import {
   TableRow,
   Tabs,
   TextField,
-  Typography,
-  makeStyles
+  Typography
 } from '@material-ui/core';
-import {
-  Edit as EditIcon,
-  ArrowRight as ArrowRightIcon,
-  Search as SearchIcon
-} from 'react-feather';
+import { Search as SearchIcon } from 'react-feather';
 import getInitials from 'src/utils/getInitials';
 import { useGetUsers } from '../../../hooks/useUser';
 
@@ -70,74 +64,6 @@ const sortOptions = [
   }
 ];
 
-// const applyFilters = (customers, query, filters) => {
-//   return customers.filter((customer) => {
-//     let matches = true;
-//
-//     if (query) {
-//       const properties = ['email', 'firstName', 'lastName'];
-//       let containsQuery = false;
-//
-//       properties.forEach((property) => {
-//         if (customer[property].toLowerCase().includes(query.toLowerCase())) {
-//           containsQuery = true;
-//         }
-//       });
-//
-//       if (!containsQuery) {
-//         matches = false;
-//       }
-//     }
-//
-//     Object.keys(filters).forEach((key) => {
-//       const value = filters[key];
-//
-//       if (value && customer[key] !== value) {
-//         matches = false;
-//       }
-//     });
-//
-//     return matches;
-//   });
-// };
-
-const applyPagination = (customers, page, limit) => {
-  return customers.slice(page * limit, page * limit + limit);
-};
-
-const descendingComparator = (a, b, orderBy) => {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-
-  return 0;
-};
-
-const getComparator = (order, orderBy) => {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-};
-
-const applySort = (customers, sort) => {
-  const [orderBy, order] = sort.split('|');
-  const comparator = getComparator(order, orderBy);
-  const stabilizedThis = customers.map((el, index) => [el, index]);
-
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-
-    if (order !== 0) return order;
-
-    return a[1] - b[1];
-  });
-
-  return stabilizedThis.map((el) => el[0]);
-};
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -185,7 +111,7 @@ const Results = ({
     borrower: true,
   });
   const [params, setParams] = useState({ page, limit, query, filters })
-  const {isLoading, data, error} = useGetUsers(params)
+  const {isLoading, data } = useGetUsers(params)
 
   const handleTabsChange = (event, value) => {
     const updatedFilters = {
@@ -224,13 +150,6 @@ const Results = ({
       : []);
   };
 
-  const handleSelectOneCustomer = (event, customerId) => {
-    if (!selectedCustomers.includes(customerId)) {
-      setSelectedCustomers((prevSelected) => [...prevSelected, customerId]);
-    } else {
-      setSelectedCustomers((prevSelected) => prevSelected.filter((id) => id !== customerId));
-    }
-  };
 
   const handlePageChange = (event) => {
     setPage(page + 1);
@@ -240,17 +159,11 @@ const Results = ({
     setLimit(parseInt(event.target.value));
   };
 
-  // let filteredCustomers = []
-  let sortedCustomers = []
-  let paginatedCustomers = []
   let enableBulkOperations = []
   let selectedSomeCustomers = []
   let selectedAllCustomers = []
 
   if (!isLoading && data.docs) {
-    // filteredCustomers = applyFilters(data.docs, query, filters);
-    sortedCustomers = applySort(data.docs, sort);
-    paginatedCustomers = applyPagination(sortedCustomers, page, limit);
     enableBulkOperations = selectedCustomers.length > 0;
     selectedSomeCustomers = selectedCustomers.length > 0 && selectedCustomers.length < customers.length;
     selectedAllCustomers = selectedCustomers.length === data.docs;

@@ -1,24 +1,14 @@
-import * as React from 'react'
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  useRouteMatch,
-  useParams
-} from 'react-router-dom'
+import * as React from 'react';
 import ScheduleInfo from './ScheduleInfo';
 import PaymentTab from './PaymentTab';
 import Config from './Config';
 import TransactionTab from './TransactionTab';
 import InvestmentTab from './InvestmentTab';
 
-// import Loans from './Loans';
 
 function CustomerView ({
-                         loanId,
-                          loanView,
-                         className,
-                         ...rest
+                          loanId,
+                          loanView
                        }) {
 
   switch (loanView) {

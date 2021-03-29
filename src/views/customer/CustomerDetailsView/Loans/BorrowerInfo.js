@@ -2,31 +2,27 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
-  Box,
-  Button,
   Card,
   CardHeader,
   Divider,
-  Grid,
+  makeStyles,
   Table,
   TableBody,
   TableCell,
   TableRow,
-  Typography,
-  makeStyles
+  Typography
 } from '@material-ui/core';
-import LockOpenIcon from '@material-ui/icons/LockOpenOutlined';
-import PersonIcon from '@material-ui/icons/PersonOutline';
 import Label from 'src/components/Label';
 import { useParams } from 'react-router-dom';
-import { useBorrowerCreditDetails,
-  useBorrowerUnpaidSchedule,
+import {
+  useBorrowerCreditDetails,
   useBorrowerInterestGenerated,
-  useBorrowerOwedStatus
+  useBorrowerOwedStatus,
+  useBorrowerUnpaidSchedule
 } from '../../../../hooks/useLoans';
 import { DateTime } from 'luxon';
 import Skeleton from '@material-ui/lab/Skeleton';
-import { currencyFormat } from '../../../../utils/numbers'
+import { currencyFormat } from '../../../../utils/numbers';
 
 const variants = ['h1', 'h3', 'body1', 'caption'];
 
@@ -105,9 +101,9 @@ const BorrowerInfo = ({
   const {customerId} = useParams()
   const [upcomingPayment, setUpcomingPayments] = useState(0)
   const { isLoading, data, error } = useBorrowerCreditDetails(customerId)
-  const { isLoading: isLoadingUpcomingPayments, data: dataUpcomingPayments, error: errorUpcomingPayments } = useBorrowerUnpaidSchedule(customerId)
-  const { isLoading: isLoadingInterest, data: interestData, error: interestError } = useBorrowerInterestGenerated(customerId)
-  const { isLoading: isLoadingOwed, data: owedData, error: owedError } = useBorrowerOwedStatus(customerId)
+  const { isLoading: isLoadingUpcomingPayments, data: dataUpcomingPayments } = useBorrowerUnpaidSchedule(customerId)
+  const { isLoading: isLoadingInterest, data: interestData } = useBorrowerInterestGenerated(customerId)
+  const { isLoading: isLoadingOwed, data: owedData } = useBorrowerOwedStatus(customerId)
 
 
   React.useEffect( () => {

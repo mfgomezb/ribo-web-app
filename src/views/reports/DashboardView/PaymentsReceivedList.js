@@ -1,8 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useState
-} from 'react';
+import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import clsx from 'clsx';
 import moment from 'moment';
@@ -10,36 +6,23 @@ import numeral from 'numeral';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import PropTypes from 'prop-types';
 import {
-  Avatar,
   Box,
+  Button,
   Card,
   CardHeader,
   Divider,
-  Button,
+  makeStyles,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
   TableSortLabel,
-  Tooltip,
-  makeStyles
+  Tooltip
 } from '@material-ui/core';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import axios from 'src/utils/axios';
-import getInitials from 'src/utils/getInitials';
-import useIsMountedRef from 'src/hooks/useIsMountedRef';
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import { useGetPayments } from '../../../hooks/useDashboard';
-
-const technologyMap = {
-  'html-css': '/static/images/technologies/html.svg',
-  'react-js': '/static/images/technologies/react-js.svg',
-  'vue-js': '/static/images/technologies/vue-js.svg',
-  angular: '/static/images/technologies/angular.svg',
-  figma: '/static/images/technologies/figma.svg',
-  sketch: '/static/images/technologies/sketch.svg'
-};
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -59,9 +42,7 @@ const useStyles = makeStyles((theme) => ({
 
 const PaymentsReceivedList = ({ className, country, timeRange, ...rest }) => {
   const classes = useStyles();
-  const isMountedRef = useIsMountedRef();
   const payments = useGetPayments(country, timeRange)
-
 
   return (
     <Card

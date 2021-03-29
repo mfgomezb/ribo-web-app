@@ -1,24 +1,11 @@
-import React, {
-  useState,
-  useEffect,
-  useCallback
-} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import {
-  Box,
-  Card,
-  CardHeader,
-  Divider,
-  Typography,
-  makeStyles
-} from '@material-ui/core';
+import { Box, Card, CardHeader, Divider, makeStyles, Typography } from '@material-ui/core';
 import GenericMoreButton from 'src/components/GenericMoreButton';
-import useIsMountedRef from 'src/hooks/useIsMountedRef';
 import Chart from './Chart';
-import { useGetHistoricAllocation, useGetPortfolioSummary } from '../../../../hooks/useDashboard';
-import {useOfFunds} from '../../../../utils/constants'
-import { percentageFormat} from '../../../../utils/numbers';
+import { useGetHistoricAllocation } from '../../../../hooks/useDashboard';
+import { percentageFormat } from '../../../../utils/numbers';
 import { useGetCollectionHistogram } from '../../../../hooks/useGetCollection';
 
 
@@ -39,9 +26,8 @@ const useStyles = makeStyles((theme) => ({
 
 const LateCollectionSegmentation = ({ className, country, ...rest }) => {
   const classes = useStyles();
-  const isMountedRef = useIsMountedRef();
-  const { isLoading: collectionIsLoading, data: collection, error: collectionError } = useGetCollectionHistogram(country)
-  const { isLoading: portfolioIsLoading, data: portfolio, error: portfolioError } = useGetHistoricAllocation(country)
+  const { isLoading: collectionIsLoading, data: collection, } = useGetCollectionHistogram(country)
+  const { isLoading: portfolioIsLoading, data: portfolio, } = useGetHistoricAllocation(country)
 
 
   // const topThreeCat = !isLoading && data.portfolioSummary.slice(0, 3)

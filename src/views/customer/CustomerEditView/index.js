@@ -1,12 +1,7 @@
-import React, {
-} from 'react';
-import {
-  Box,
-  Container,
-  makeStyles
-} from '@material-ui/core';
+import React from 'react';
+import { Box, Container, makeStyles } from '@material-ui/core';
 import Page from 'src/components/Page';
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom';
 import CustomerEditForm from './CustomerEditForm';
 import Header from './Header';
 import { useGetUser } from '../../../hooks/useUser';
@@ -23,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 const CustomerEditView = () => {
   const classes = useStyles();
   const {customerId} = useParams()
-  const {isLoading, data, error } = useGetUser(customerId)
+  const {isLoading, data } = useGetUser(customerId)
 
   if (isLoading) {
     return null;

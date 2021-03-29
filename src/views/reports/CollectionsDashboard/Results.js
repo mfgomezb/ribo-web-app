@@ -1,39 +1,36 @@
 import React, { useState } from 'react';
-import { Link as RouterLink, useHistory, useLocation} from 'react-router-dom';
+import { Link as RouterLink, useHistory, useLocation } from 'react-router-dom';
 import clsx from 'clsx';
-import moment from 'moment'
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
   Box,
+  Button,
   Card,
   InputAdornment,
+  Link,
+  makeStyles,
   SvgIcon,
   Table,
+  TableBody,
   TableCell,
   TableHead,
-  TableBody,
   TablePagination,
   TableRow,
-  TextField,
-  makeStyles, Link, Button, Grid
+  TextField
 } from '@material-ui/core';
-import {
-  Download as DownloadIcon,
-  Search as SearchIcon
-} from 'react-feather';
-import {useGetCollection} from '../../../hooks/useGetCollection';
-import {
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
+import { Download as DownloadIcon, Search as SearchIcon } from 'react-feather';
+import { useGetCollection } from '../../../hooks/useGetCollection';
+import { KeyboardDatePicker } from '@material-ui/pickers';
 import qs from 'qs';
 import { DateTime } from 'luxon';
 import { removeLoanInstallment } from '../../../actions/loans';
 import LoanEditModal from '../../loans/LoanDetailsView/LoanPaymentModal';
 import { useDispatch } from 'react-redux';
-import {getCollectionFile} from '../../../utils/API'
+import { getCollectionFile } from '../../../utils/API';
 import useGlobal from '../../../hooks/useGlobal';
-import { currencyFormat } from '../../../utils/numbers'
+import { currencyFormat } from '../../../utils/numbers';
 
 
 const sortOptions = [

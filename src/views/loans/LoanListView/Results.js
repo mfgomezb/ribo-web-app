@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { Link as RouterLink, useHistory, useLocation } from 'react-router-dom';
 import clsx from 'clsx';
-import numeral from 'numeral';
 import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
   Box,
+  Button,
   Card,
   InputAdornment,
   Link,
+  makeStyles,
   SvgIcon,
   Table,
   TableBody,
@@ -16,21 +17,15 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  TextField,
-  makeStyles, Button
+  TextField
 } from '@material-ui/core';
-import {
-  Download as DownloadIcon,
-  Search as SearchIcon
-} from 'react-feather';
-import Label from 'src/components/Label';
-import {useGetLoanList} from '../../../hooks/useLoans';
-import useLocationOptions from '../../../hooks/useUserLocation';
+import { Download as DownloadIcon, Search as SearchIcon } from 'react-feather';
+import { useGetLoanList } from '../../../hooks/useLoans';
 import qs from 'qs';
-import { useOfFunds as useOfFundsOptions } from 'src/views/loans/LoanListView/FormConstants'
+import { useOfFunds as useOfFundsOptions } from 'src/views/loans/LoanListView/FormConstants';
 import { getLoansFile } from '../../../utils/API';
 import useGlobal from '../../../hooks/useGlobal';
-import { currencyFormat } from '../../../utils/numbers'
+import { currencyFormat } from '../../../utils/numbers';
 
 const categoryOptions = [
   {
@@ -93,68 +88,7 @@ const sortOptions = [
   }
 ];
 
-const getInventoryLabel = (inventoryType) => {
-  const map = {
-    in_stock: {
-      text: 'In Stock',
-      color: 'success'
-    },
-    limited: {
-      text: 'Limited',
-      color: 'warning'
-    },
-    out_of_stock: {
-      text: 'Out of Stock',
-      color: 'error'
-    }
-  };
 
-  const { text, color } = map[inventoryType];
-
-  return (
-    <Label color={color}>
-      {text}
-    </Label>
-  );
-};
-
-const applyFilters = (products, query, filters) => {
-  return products.filter((product) => {
-    let matches = true;
-
-    if (query && !product.name.toLowerCase().includes(query.toLowerCase())) {
-      matches = false;
-    }
-
-    if (filters.category && product.category !== filters.category) {
-      matches = false;
-    }
-
-    if (filters.availability) {
-      if (filters.availability === 'available' && !product.isAvailable) {
-        matches = false;
-      }
-
-      if (filters.availability === 'unavailable' && product.isAvailable) {
-        matches = false;
-      }
-    }
-
-    if (filters.inStock && !['in_stock', 'limited'].includes(product.inventoryType)) {
-      matches = false;
-    }
-
-    if (filters.isShippable && !product.isShippable) {
-      matches = false;
-    }
-
-    return matches;
-  });
-};
-
-const applyPagination = (products, page, limit) => {
-    return products.slice(page * limit, page * limit + limit);
-};
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -218,10 +152,9 @@ const Results = ({ className, ...rest }) => {
     country: countries[0].id,
     status: 'OPEN',
     useOfFunds: null,
-    // isRestructured: false,
   });
   const [params, setParams] = useState({ page, limit, query, filters })
-  const {isLoading, data, error} = useGetLoanList(params)
+  const {isLoading, data} = useGetLoanList(params)
 
 
 

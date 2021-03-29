@@ -1,42 +1,9 @@
-import React, {
-  useRef,
-  useState
-} from 'react';
+import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import {
-  Breadcrumbs,
-  Button,
-  Grid,
-  Link,
-  Menu,
-  MenuItem,
-  SvgIcon,
-  Typography,
-  makeStyles, Box
-} from '@material-ui/core';
+import { Breadcrumbs, Grid, Link, makeStyles, Typography } from '@material-ui/core';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import { Calendar as CalendarIcon, Download as DownloadIcon } from 'react-feather';
-
-const timeRanges = [
-  {
-    value: 'today',
-    text: 'Today'
-  },
-  {
-    value: 'yesterday',
-    text: 'Yesterday'
-  },
-  {
-    value: 'last_30_days',
-    text: 'Last 30 days'
-  },
-  {
-    value: 'last_year',
-    text: 'Last year'
-  }
-];
 
 const useStyles = makeStyles(() => ({
   root: {}

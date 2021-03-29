@@ -1,8 +1,7 @@
-import React, {  } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import clsx from 'clsx';
 import { DateTime } from 'luxon';
-import numeral from 'numeral';
 import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
@@ -10,17 +9,17 @@ import {
   Card,
   CardHeader,
   Divider,
+  makeStyles,
   Table,
   TableBody,
   TableCell,
   TableHead,
-  TableRow,
-  makeStyles,
+  TableRow
 } from '@material-ui/core';
 import GenericMoreButton from 'src/components/GenericMoreButton';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { handleLoanTransactionInitialData } from 'src/actions/loans';
-import { currencyFormat } from '../../../utils/numbers'
+import { currencyFormat } from '../../../utils/numbers';
 
 
 const useStyles = makeStyles(() => ({
@@ -75,7 +74,7 @@ const TransactionTab = ({ className, ...rest }) => {
               </TableHead>
               <TableBody>
                 {loanTransactions && loanTransactions.map((schedule, index, arr) => {
-                  let {date, concept, debit, credit, _investor, comment, cashAccount} = schedule
+                  let {date, concept, debit, credit, _investor, cashAccount} = schedule
                   return (
                     <TableRow
                       key={schedule._id}

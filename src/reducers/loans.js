@@ -1,18 +1,17 @@
-
-import  {
-  RECEIVE_LOAN_DETAILS,
-  RECEIVE_LOAN_SCHEDULE,
-  RECEIVE_LOAN_PAYMENT,
-  RECEIVE_LOAN_INVESTORS,
-  RECEIVE_INSTALLMENT_DETAILS,
-  RECEIVE_LOAN_TRANSACTIONS,
-  REMOVE_LOAN_SCHEDULE,
-  REMOVE_INSTALLMENT_DETAILS,
-  REMOVE_LOAN_DETAILS,
-  REMOVE_INSTALLMENT_PAYMENT,
-  START_ASYNC_OPERATION,
+import {
   FINISH_ASYNC_OPERATION,
-} from 'src/actions/loans'
+  RECEIVE_INSTALLMENT_DETAILS,
+  RECEIVE_LOAN_DETAILS,
+  RECEIVE_LOAN_INVESTORS,
+  RECEIVE_LOAN_PAYMENT,
+  RECEIVE_LOAN_SCHEDULE,
+  RECEIVE_LOAN_TRANSACTIONS,
+  REMOVE_INSTALLMENT_DETAILS,
+  REMOVE_INSTALLMENT_PAYMENT,
+  REMOVE_LOAN_DETAILS,
+  REMOVE_LOAN_SCHEDULE,
+  START_ASYNC_OPERATION
+} from 'src/actions/loans';
 
 
 export default function loans(state={}, action) {
@@ -22,31 +21,28 @@ export default function loans(state={}, action) {
 
       return {
         ...state,
-        'loanDetails': {
-          ...loanDetails
-        }
+        loanDetails
     }
     case RECEIVE_LOAN_SCHEDULE:
       const {loanSchedule} = action
 
       return {
         ...state,
-        'loanSchedule': loanSchedule
+        loanSchedule,
       }
     case RECEIVE_LOAN_PAYMENT:
       const {loanPayments} = action
 
       return {
         ...state,
-        'loanPayments': loanPayments
-
+        loanPayments,
       }
     case RECEIVE_LOAN_INVESTORS:
       const {loanInvestors} = action
 
       return {
         ...state,
-        'loanInvestors': loanInvestors
+        loanInvestors
 
       }
     case RECEIVE_INSTALLMENT_DETAILS:
@@ -63,7 +59,7 @@ export default function loans(state={}, action) {
 
       return {
         ...state,
-        'loanTransactions': loanTransactions
+        loanTransactions
       }
     case REMOVE_LOAN_SCHEDULE:
       let {'loanSchedule': scheduleDetails, ...detailsWithoutSchedule} = state
@@ -84,10 +80,9 @@ export default function loans(state={}, action) {
         ...detailsWithoutLoanDetails,
       }
     case REMOVE_INSTALLMENT_PAYMENT:
-      const { installment } = action
       return {
         ...state,
-        loanPayments: state.loanPayments.filter( payment => payment._id !== installment._id)
+        'loanPayments': [...state.loanPayments.filter( (payment, i) => i !== 0)]
       }
     case START_ASYNC_OPERATION:
       return {

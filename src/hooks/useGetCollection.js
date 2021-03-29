@@ -1,7 +1,7 @@
 import axios from '../utils/axios';
-import { usePaginatedQuery, useQuery } from 'react-query';
+import { usePaginatedQuery } from 'react-query';
 import Qs from 'qs';
-import moment from 'moment'
+import moment from 'moment';
 
 export const useGetCollection = (params) => {
   console.log(params)

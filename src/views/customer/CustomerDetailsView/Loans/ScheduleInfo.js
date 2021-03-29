@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 import clsx from 'clsx';
 import { DateTime } from 'luxon';
-import numeral from 'numeral';
 import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
@@ -10,20 +9,20 @@ import {
   Card,
   CardHeader,
   Divider,
+  Link,
+  makeStyles,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TablePagination,
   TableRow,
-  Typography,
-  makeStyles,
-  Link
+  Typography
 } from '@material-ui/core';
 import Label from 'src/components/Label';
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import { useBorrowerUnpaidSchedule } from '../../../../hooks/useLoans';
-import { currencyFormat } from '../../../../utils/numbers'
+import { currencyFormat } from '../../../../utils/numbers';
 
 const scheduleStatus = dayDiff => {
   if (dayDiff >= 0) {
@@ -78,7 +77,7 @@ const useStyles = makeStyles(() => ({
 
 const ScheduleInfo = ({ className, ...rest }) => {
   const {customerId} = useParams()
-  const { isLoading, data, error } = useBorrowerUnpaidSchedule(customerId)
+  const { isLoading, data } = useBorrowerUnpaidSchedule(customerId)
   const [paginatedSchedule, setPaginatedSchedule] = useState([])
   const classes = useStyles();
   const [page, setPage] = useState(0);

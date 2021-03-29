@@ -1,29 +1,26 @@
-import React, { useState } from 'react';
-import { Link as RouterLink, useParams } from 'react-router-dom';
-import clsx from 'clsx';
-import { DateTime } from 'luxon';
-import numeral from 'numeral';
-import PropTypes from 'prop-types';
-import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
   Box,
   Card,
   CardHeader,
   Divider,
-  Table,
+  Link, makeStyles, Table,
   TableBody,
   TableCell,
   TableHead,
   TablePagination,
   TableRow,
-  Typography,
-  makeStyles,
-  Link
+  Typography
 } from '@material-ui/core';
-import Label from 'src/components/Label';
+import clsx from 'clsx';
+import { DateTime } from 'luxon';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import PerfectScrollbar from 'react-perfect-scrollbar';
+import { Link as RouterLink, useParams } from 'react-router-dom';
 import GenericMoreButton from 'src/components/GenericMoreButton';
+import Label from 'src/components/Label';
 import { useBorrowerUnpaidSchedule } from '../../../../hooks/useLoans';
-import { currencyFormat } from '../../../../utils/numbers'
+import { currencyFormat } from '../../../../utils/numbers';
 
 const scheduleStatus = dayDiff => {
   if (dayDiff >= 0) {

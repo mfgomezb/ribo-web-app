@@ -2,7 +2,6 @@ import React, { createContext, useEffect, useReducer } from 'react';
 import jwt from 'jsonwebtoken';
 import SplashScreen from 'src/components/SplashScreen';
 import axios from 'src/utils/axios';
-import useUserLocation from '../hooks/useUserLocation';
 import useGlobal from '../hooks/useGlobal';
 
 const initialAuthState = {

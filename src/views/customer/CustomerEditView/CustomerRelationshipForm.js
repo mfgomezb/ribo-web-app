@@ -26,7 +26,6 @@ function CustomerRelationshipForm(props) {
             name="civilStatus"
             onBlur={props.onBlur}
             onChange={props.onChange}
-            required
             value={props.values.civilStatus}
             variant="outlined"
           />
@@ -42,11 +41,10 @@ function CustomerRelationshipForm(props) {
             helperText={props.touched.spouseFullName && props.errors.spouseFullName}
             label="Nombre completo pareja"
             size="small"
-            required={props.values.civilStatus != 'SINGLE'}
+            required={props.values.civilStatus !== 'SINGLE'}
             name="spouseFullName"
             onBlur={props.onBlur}
             onChange={props.onChange}
-            required
             value={props.values.spouseFullName}
             variant="outlined"
           />
@@ -61,11 +59,10 @@ function CustomerRelationshipForm(props) {
             helperText={props.touched.spousePlaceOfBirth && props.errors.spousePlaceOfBirth}
             label="Lugar de nacimiento"
             size="small"
-            required={props.values.civilStatus != 'SINGLE'}
+            required={props.values.civilStatus !== 'SINGLE'}
             name="spousePlaceOfBirth"
             onBlur={props.onBlur}
             onChange={props.onChange}
-            required
             value={props.values.spousePlaceOfBirth}
             variant="outlined"
           />
@@ -81,11 +78,10 @@ function CustomerRelationshipForm(props) {
             helperText={props.touched.spouseDOB && props.errors.spouseDOB}
             label="Fecha de nacimiento"
             size="small"
-            required={props.values.civilStatus != 'SINGLE'}
+            required={props.values.civilStatus !== 'SINGLE'}
             name="spouseDOB"
             onBlur={props.onBlur}
             onChange={props.onChange}
-            required
             value={props.values.spouseDOB}
             variant="outlined"
             InputLabelProps={{ shrink: true }}
@@ -101,11 +97,10 @@ function CustomerRelationshipForm(props) {
             helperText={props.touched.spouseNationalId && props.errors.spouseNationalId}
             label="Número de identificación"
             size="small"
-            required={props.values.civilStatus != 'SINGLE'}
+            required={props.values.civilStatus !== 'SINGLE'}
             name="spouseNationalId"
             onBlur={props.onBlur}
             onChange={props.onChange}
-            required
             value={props.values.spouseNationalId}
             variant="outlined"
           />

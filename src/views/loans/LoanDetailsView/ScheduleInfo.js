@@ -1,47 +1,30 @@
 import React, { useState } from 'react';
-import { Link as RouterLink, useParams } from 'react-router-dom';
 import clsx from 'clsx';
 import { DateTime } from 'luxon';
-import numeral from 'numeral';
 import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
   Box,
+  Button,
   Card,
   CardHeader,
   Divider,
+  makeStyles,
   Table,
   TableBody,
   TableCell,
   TableHead,
-  TablePagination,
   TableRow,
-  Typography,
-  makeStyles,
-  Link,
-  Button
+  Typography
 } from '@material-ui/core';
-import {
-  Edit as EditIcon,
-  ArrowRight as ArrowRightIcon
-} from 'react-feather';
-import { useSelector, useDispatch } from 'react-redux'
-import {removeLoanInstallment} from 'src/actions/loans';
+import { useDispatch, useSelector } from 'react-redux';
+import { removeLoanInstallment } from 'src/actions/loans';
 import Label from 'src/components/Label';
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import LoanEditModal from 'src/views/loans/LoanDetailsView/LoanPaymentModal';
-import { currencyFormat } from '../../../utils/numbers'
+import { currencyFormat } from '../../../utils/numbers';
 
 
-const scheduleStatus = dayDiff => {
-  if (dayDiff >= 0) {
-    return 'PENDING'
-  } else if (dayDiff < 0 && dayDiff >= -5) {
-    return 'GRACE'
-  } else {
-    return 'OVERDUE'
-  }
-}
 const getStatusLabel = (status) => {
   // let status = scheduleStatus(dayDiff)
 
@@ -114,9 +97,6 @@ const statusSetter = (data) => {
   }
 }
 
-const applyPagination = (data, page, limit) => {
-  return (data) ? data.slice(page * limit, page * limit + limit) : []
-};
 
 const useStyles = makeStyles(() => ({
   root: {}

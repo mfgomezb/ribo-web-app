@@ -89,10 +89,10 @@ exports.amortizationMethod = [
     value: 'flat',
     label: 'Flat'
   },
-  {
-    value: 'bullet',
-    label: 'Bullet'
-  },
+  // {
+  //   value: 'bullet',
+  //   label: 'Bullet'
+  // },
 ]
 
 exports.currencies = [

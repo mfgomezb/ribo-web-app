@@ -1,10 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import * as Yup from 'yup';
-import { Formik } from 'formik';
-
-import { useSnackbar } from 'notistack';
 import {
   Box,
   Button,
@@ -12,17 +8,14 @@ import {
   CardContent,
   CardHeader,
   Divider,
-  FormHelperText,
   Grid,
+  makeStyles,
   Switch,
   TextField,
-  Typography,
-  makeStyles
+  Typography
 } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import wait from 'src/utils/wait';
 import countries from './countries';
-import { formValueSelector } from 'redux-form';
 
 const useStyles = makeStyles(() => ({
   root: {}

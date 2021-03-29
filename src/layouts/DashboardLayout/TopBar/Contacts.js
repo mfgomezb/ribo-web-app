@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
 const Contacts = () => {
   const classes = useStyles();
   const ref = useRef(null);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const { contacts } = useSelector((state) => state.chat);
   const [isOpen, setOpen] = useState(false);
 
@@ -56,9 +56,9 @@ const Contacts = () => {
     setOpen(false);
   };
 
-  useEffect(() => {
-    dispatch(getContacts());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getContacts());
+  // }, [dispatch]);
 
   return (
     <>

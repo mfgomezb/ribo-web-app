@@ -1,9 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-import { useSnackbar } from 'notistack';
 import {
   Box,
   Button,
@@ -11,12 +9,14 @@ import {
   CardContent,
   CardHeader,
   Divider,
+  FormHelperText,
   Grid,
-  TextField,
-  makeStyles, FormHelperText
+  makeStyles,
+  TextField
 } from '@material-ui/core';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import useAuth from '../../../hooks/useAuth';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(() => ({
   root: {}
@@ -37,25 +37,10 @@ export default function Security({
   ...rest
 }) {
   const classes = useStyles();
-  const [values, setValues] = React.useState(initialValues);
+  const { enqueueSnackbar } = useSnackbar();
   const isMountedRef = useIsMountedRef();
   const { changePassword } = useAuth()
-  const [disabledSubmit, setDisabledSubmit] = React.useState(true)
 
-  const setValue = (field, value) =>
-    setValues(old => ({ ...old, [field]: value }));
-
-  const handleSubmit = e => {
-    if (clearOnSubmit) {
-      setValues(defaultPasswordValues);
-    }
-    e.preventDefault();
-    onSubmit(values);
-  };
-
-  React.useEffect(() => {
-    setValues(initialValues);
-  }, [initialValues]);
 
 
   return (
@@ -69,7 +54,7 @@ export default function Security({
           // .string()
           .required('Ingrese su nueva contraseña')
           .matches(
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#/$%^&*])(?=.{8,})/,
             "Mínimo 8 caracteres, 1 mayuscula, 1 minuscula, 1 numero y un caracter especial"
           ),
         confirmPassword: Yup.string().when("newPassword", {
@@ -80,7 +65,7 @@ export default function Security({
           )
         })
       })}
-      onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
+      onSubmit={async (values, { setErrors, setStatus, setSubmitting, resetForm }) => {
         try {
           let {
             newPassword,
@@ -88,10 +73,13 @@ export default function Security({
           } = values
 
           await changePassword({ newPassword, confirmPassword });
-
           if (isMountedRef.current) {
             setStatus({ success: true });
             setSubmitting(false);
+            resetForm({})
+            enqueueSnackbar('Cambio de contraseña exitoso', {
+              variant: 'success'
+            });
           }
         } catch (err) {
           console.error(err);

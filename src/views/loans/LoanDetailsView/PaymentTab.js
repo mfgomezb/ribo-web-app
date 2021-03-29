@@ -1,30 +1,28 @@
-import React, {  } from 'react';
+import React from 'react';
 import { useSnackbar } from 'notistack';
 import clsx from 'clsx';
 import { DateTime } from 'luxon';
-import numeral from 'numeral';
 import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
   Box,
+  Button,
   Card,
   CardHeader,
   Divider,
+  makeStyles,
   Table,
   TableBody,
   TableCell,
   TableHead,
-  TableRow,
-  makeStyles, Button
+  TableRow
 } from '@material-ui/core';
-// import Label from 'src/components/Label';
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import { handlePaymentRemoval } from 'src/actions/loans';
 import DeleteIcon from '@material-ui/icons/DeleteOutlined';
-import { useSelector, useDispatch } from 'react-redux';
-import { useConfirmationModalContext } from '../../../contexts/modalConfirmationContext';
-import ConfirmationModalContextProvider from "../../../contexts/modalConfirmationContext";
-import { currencyFormat } from '../../../utils/numbers'
+import { useDispatch, useSelector } from 'react-redux';
+import ConfirmationModalContextProvider, { useConfirmationModalContext } from '../../../contexts/modalConfirmationContext';
+import { currencyFormat } from '../../../utils/numbers';
 
 
 // const scheduleStatus = dayDiff => {
@@ -108,7 +106,7 @@ const PaymentTab = ({ className, loanId, ...rest }) => {
 
   const handleDelete = async payment => {
     try {
-      await dispatch(handlePaymentRemoval(payment))
+      await dispatch(handlePaymentRemoval(loanId))
       enqueueSnackbar('Pago eliminado correctamente', {
         variant: 'success'
       });
@@ -135,7 +133,7 @@ const PaymentTab = ({ className, loanId, ...rest }) => {
           action={
             <Box >
               <DeletePaymentButton
-                onClick={() => handleDelete(loanPayments[0])}
+                onClick={() => handleDelete(loanId)}
                 loading={loading}
               >
                 Eliminar último pago

@@ -88,10 +88,9 @@ export function removeLoanDetails () {
   }
 }
 
-export function removeInstallmentPayment (installment) {
+export function removeInstallmentPayment () {
   return {
     type: REMOVE_INSTALLMENT_PAYMENT,
-    installment
   }
 }
 
@@ -159,26 +158,26 @@ export function handleLoanInvestorsPosition(loanId) {
 
 
 
-export function handlePaymentRemoval(payment) {
+export function handlePaymentRemoval(loanId) {
   return (dispatch) => {
     dispatch(startAsyncOperation())
-    return deleteInstallmentPayment(payment)
+    return deleteInstallmentPayment(loanId)
+      .then( (res) => {
+        dispatch(removeInstallmentPayment());
+      })
       .then( () => {
-          dispatch(removeInstallmentPayment(payment));
-        }
-      ).then( () => {
-        return Promise.all([
-          fetchLoanDetails(payment._loan),
-          fetchLoanSchedule(payment._loan),
-          fetchLoanPayments(payment._loan),
-        ]);
+          return Promise.all([
+            fetchLoanDetails(loanId),
+            fetchLoanSchedule(loanId),
+            fetchLoanPayments(loanId),
+          ]);
       })
       .then( data => {
         dispatch(receiveLoanDetails(data[0]))
         dispatch(receiveLoanSchedule(data[1]))
         dispatch(receiveLoanPayments(data[2]))
-
-      })
+        }
+      )
       .finally( () => dispatch(finishAsyncOperation()))
   }
 }

@@ -66,7 +66,7 @@ function CustomerFinancialInfo(props) {
           <TextField
             error={Boolean(props.touched.location && props.errors.location)}
             fullWidth
-            helperText={props.touched.location && props.errors.location || 'Pais para identificar la región del inversor'}
+            helperText={(props.touched.location && props.errors.location) || 'Pais para identificar la región del inversor'}
             label="Pais"
             size="small"
             name="location"

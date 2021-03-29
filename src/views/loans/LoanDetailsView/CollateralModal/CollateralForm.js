@@ -3,56 +3,23 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-import {DateTime} from 'luxon'
-import {
-  collateralTypesFormConstants,
-  currentStatusFormConstants,
-  conditionFormConstants,
-} from 'src/utils/constants'
+import { collateralTypesFormConstants, conditionFormConstants, currentStatusFormConstants } from 'src/utils/constants';
 import {
   Box,
   Button,
+  FormControl,
+  FormHelperText,
   Grid,
-  TextField,
   InputAdornment,
-  makeStyles, InputLabel, Select, FormHelperText, FormControl
+  InputLabel,
+  makeStyles,
+  Select,
+  TextField
 } from '@material-ui/core';
-import { useSelector, useDispatch } from 'react-redux';
-import { handleAddNewCollateral } from 'src/actions/collaterals'
+import { useDispatch } from 'react-redux';
+import { handleAddNewCollateral } from 'src/actions/collaterals';
 import { useSnackbar } from 'notistack';
 
-
-const cashAccountsConstants = {
-  'PERU': [
-    { value: "RBPERU", label: "RBPERU" }
-  ],
-  'USA': [
-    { value: "GCUS", label: "GCUS" },
-    { value: "GFUS", label: "GFUS" },
-  ],
-  'VENEZUELA': [
-    { value: "GCUS", label: "GCUS" },
-    { value: "GFUS", label: "GFUS" },
-  ],
-  'DOMINICAN_REPUBLIC': [
-    { value: "GCDR", label: "GCDR" }
-  ]
-}
-
-const methodConstants = [
-  { value: "CASH", label: "Efectivo" },
-  { value: "CHECK", label: "Cheque" },
-  { value: "DEPOSIT", label: "Deposito" },
-  { value: "TRANSFER", label: "Transferencia" },
-  { value: "CARD", label: "Tarjeta" },
-  { value: "ZELLE", label: "Zelle" },
-  { value: "YAPE", label: "Yape" }
-]
-
-const paymentTypeConstants = [
-  { value: "REGULAR", label: 'Regular' },
-  { value: "FULL", label: 'Completo - cierre prestamo' },
-]
 
 const useStyles = makeStyles(() => ({
   root: {},

@@ -8,24 +8,22 @@ import {
   Card,
   CardHeader,
   Divider,
+  makeStyles,
   Table,
   TableBody,
   TableCell,
   TableRow,
-  Typography,
-  makeStyles
+  Typography
 } from '@material-ui/core';
 import BuildIcon from '@material-ui/icons/BuildOutlined';
 import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 import CloudDownload from '@material-ui/icons/CloudDownloadOutlined';
 import Label from 'src/components/Label';
-import numeral from 'numeral';
 import { DateTime } from 'luxon';
-import { deleteLoan } from '../../../utils/API'
+import { deleteLoan } from '../../../utils/API';
 import RestructureModal from './RestructureLoanModal';
 import ConfirmationModalContextProvider, { useConfirmationModalContext } from '../../../contexts/modalConfirmationContext';
-import { handlePaymentRemoval } from '../../../actions/loans';
-import { currencyFormat,percentageFormat } from '../../../utils/numbers'
+import { currencyFormat, percentageFormat } from '../../../utils/numbers';
 
 const DeletePaymentButton = (props) => {
   const modalContext = useConfirmationModalContext();
@@ -59,7 +57,7 @@ const getDaysBehind = (date, startDate = DateTime.local().toString()) => {
 }
 
 const scheduleStatus = dayDiff => {
-  if (dayDiff >= 0 || dayDiff == undefined) {
+  if (dayDiff >= 0 || dayDiff === undefined) {
     return 'UP_TO_DATE'
   } else if (dayDiff < 0 && dayDiff >= -5) {
     return 'GRACE'

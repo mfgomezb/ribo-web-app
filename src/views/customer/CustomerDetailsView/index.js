@@ -1,26 +1,10 @@
-import React, {
-  useCallback,
-  useState,
-  useEffect
-} from 'react';
-import {
-  Box,
-  Container,
-  Divider,
-  Tab,
-  Tabs,
-  makeStyles
-} from '@material-ui/core';
+import React, { useState } from 'react';
+import { Box, Container, Divider, makeStyles, Tab, Tabs } from '@material-ui/core';
 import Page from 'src/components/Page';
-import axios from 'src/utils/axios';
-import { useParams, useRouteMatch, Link, Route } from 'react-router-dom'
-import useIsMountedRef from 'src/hooks/useIsMountedRef';
-import { useGetUser } from 'src/hooks/useUser'
+import { Link, useParams } from 'react-router-dom';
+import { useGetUser } from 'src/hooks/useUser';
 import Header from './Header';
-import Details from './Details';
-import Loans from './Loans';
-import CustomerView from './CustomerView'
-import Logs from './Logs';
+import CustomerView from './CustomerView';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,10 +16,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CustomerDetailsView = () => {
-  const {url, path} = useRouteMatch()
   const classes = useStyles();
   const {customerId, customerView} = useParams()
-  const {isLoading, data, error } = useGetUser(customerId)
+  const {isLoading, data,  } = useGetUser(customerId)
   const [currentTab, setCurrentTab] = useState(customerView || 'details');
   const tabs = [
     { value: 'details', label: 'Detalles', },

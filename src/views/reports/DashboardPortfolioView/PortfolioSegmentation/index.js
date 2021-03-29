@@ -1,24 +1,12 @@
-import React, {
-  useState,
-  useEffect,
-  useCallback
-} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import {
-  Box,
-  Card,
-  CardHeader,
-  Divider,
-  Typography,
-  makeStyles
-} from '@material-ui/core';
+import { Box, Card, CardHeader, Divider, makeStyles, Typography } from '@material-ui/core';
 import GenericMoreButton from 'src/components/GenericMoreButton';
-import useIsMountedRef from 'src/hooks/useIsMountedRef';
 import Chart from './Chart';
 import { useGetPortfolioSummary } from '../../../../hooks/useDashboard';
-import {useOfFunds} from '../../../../utils/constants'
-import { percentageFormat} from '../../../../utils/numbers';
+import { useOfFunds } from '../../../../utils/constants';
+import { percentageFormat } from '../../../../utils/numbers';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -38,8 +26,7 @@ const useStyles = makeStyles((theme) => ({
 
 const EarningsSegmentation = ({ className, country, ...rest }) => {
   const classes = useStyles();
-  const isMountedRef = useIsMountedRef();
-  const { isLoading, data, error } = useGetPortfolioSummary(country)
+  const { isLoading, data } = useGetPortfolioSummary(country)
 
 
   const topThreeCat = !isLoading && data.portfolioSummary.slice(0, 3)
