@@ -2,13 +2,7 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es6",
-//    "baseUrl": ".",
-//    "paths": {
-//      "~/*": ["./*"],
-//      "@/*": ["./src/*"],
-//      "~~/*": ["./*"],
-//      "@@/*": ["./*"]
-//    }
+    "baseUrl": "."
   },
   "include": [
     "src"
