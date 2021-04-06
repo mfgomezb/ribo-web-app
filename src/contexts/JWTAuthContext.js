@@ -158,14 +158,12 @@ export const AuthProvider = ({ children }) => {
   };
 
   const updateUser = async (userDetails) => {
-    const response = await axios.patch(`api/users/${userDetails.id}`, userDetails);
-    console.log(response);
+    return await axios.patch(`api/users/${userDetails.id}`, userDetails);
   };
 
   const changePassword = async (userDetails) => {
     let { _id } = state.user
-    const response = await axios.patch(`api/customers/${_id}/update-password`, userDetails);
-    console.log(response);
+    return await axios.patch(`api/customers/${_id}/update-password`, userDetails);
   };
 
   const verify = async (id) => {
@@ -196,7 +194,6 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const initialise = async () => {
       try {
-        console.log('aca adenrto')
         const accessToken = window.localStorage.getItem('accessToken');
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);

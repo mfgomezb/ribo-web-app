@@ -159,10 +159,11 @@ export function handleLoanInvestorsPosition(loanId) {
 
 
 export function handlePaymentRemoval(loanId) {
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(startAsyncOperation())
-    return deleteInstallmentPayment(loanId)
+    return await deleteInstallmentPayment(loanId)
       .then( (res) => {
+        console.log('payment-delete', res)
         dispatch(removeInstallmentPayment());
       })
       .then( () => {

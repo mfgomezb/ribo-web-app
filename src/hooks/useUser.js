@@ -81,7 +81,7 @@ export const checkEmail = (email) => {
 }
 
 export const createNewUser = (values) => {
-  console.log(values)
+
   return axios.post('api/customers/', { ...values })
     .then( res => {
       return res.data

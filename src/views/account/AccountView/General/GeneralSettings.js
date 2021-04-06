@@ -67,7 +67,6 @@ const GeneralSettings = ({
     if (clearOnSubmit) {
       setValues(defaultUserValues);
     }
-    console.log(values);
     e.preventDefault();
     onSubmit(values);
   };

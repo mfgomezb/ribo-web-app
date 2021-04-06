@@ -4,9 +4,7 @@ import Qs from 'qs';
 import moment from 'moment';
 
 export const useGetCollection = (params) => {
-  console.log(params)
   let queryParams = Qs.stringify({ ...params, fields: 'fullName,email,businessName' }, {encode: false})
-  console.log(queryParams)
   return usePaginatedQuery(['collection', params], () =>
     axios.get(`api/reporting/collector?${queryParams}`)
       .then(res => {

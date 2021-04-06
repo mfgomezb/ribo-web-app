@@ -23,10 +23,9 @@ const useStyles = makeStyles(() => ({
 
 const AllocationOverTime = ({ className, country, ...rest }) => {
   const classes = useStyles();
-  const allocation = useGetHistoricAllocation(country)
-
-  const dataLabels = !allocation.isLoading ? allocation.data.map( e => e.date).slice(allocation.data.length-12,allocation.data.length ) : []
-  const data = !allocation.isLoading ? allocation.data.map(e => e.valueAccumulated).slice(allocation.data.length-12,allocation.data.length ): []
+  const {isLoading, data, error} = useGetHistoricAllocation(country)
+  const dataLabels = !isLoading ? data.map( e => e.date).slice(data.length-12,data.length ) : []
+  const dataMap = !isLoading ? data.map(e => e.valueAccumulated*-1).slice(data.length-12,data.length ): []
 
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
@@ -40,7 +39,7 @@ const AllocationOverTime = ({ className, country, ...rest }) => {
           <Box height={375} minWidth={500}>
             <Chart
               className={classes.chart}
-              data={data}
+              data={dataMap}
               labels={dataLabels}
             />
           </Box>
