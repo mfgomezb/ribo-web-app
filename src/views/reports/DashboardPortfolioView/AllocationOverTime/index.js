@@ -25,7 +25,7 @@ const AllocationOverTime = ({ className, country, ...rest }) => {
   const classes = useStyles();
   const {isLoading, data, error} = useGetHistoricAllocation(country)
   const dataLabels = !isLoading ? data.map( e => e.date).slice(data.length-12,data.length ) : []
-  const dataMap = !isLoading ? data.map(e => e.valueAccumulated*-1).slice(data.length-12,data.length ): []
+  const dataMap = !isLoading ? data.map(e => e.valueAccumulated).slice(data.length-12,data.length ): []
 
   return (
     <Card className={clsx(classes.root, className)} {...rest}>

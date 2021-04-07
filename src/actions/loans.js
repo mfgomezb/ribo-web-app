@@ -163,7 +163,6 @@ export function handlePaymentRemoval(loanId) {
     dispatch(startAsyncOperation())
     return await deleteInstallmentPayment(loanId)
       .then( (res) => {
-        console.log('payment-delete', res)
         dispatch(removeInstallmentPayment());
       })
       .then( () => {
