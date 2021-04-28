@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardContent,
   Divider,
-  makeStyles
+  makeStyles,
 } from '@material-ui/core';
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import Chart from './Chart';
