@@ -263,6 +263,13 @@ const routes = [
       },
       {
         exact: true,
+        path: '/app/quote',
+        component: lazy(() =>
+          import('src/views/quotes/LoanCreateView')
+        )
+      },
+      {
+        exact: true,
         path: '/app/reports',
         component: () => <Redirect to="/app/reports/dashboard" />
       },
