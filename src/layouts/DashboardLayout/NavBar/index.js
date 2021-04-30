@@ -109,10 +109,10 @@ const sections = [
       //   icon: ReceiptIcon,
       //   href: '/app/management/invoices',
       //   items: [
-      //     {
-      //       title: 'List Invoices',
-      //       href: '/app/management/invoices'
-      //     },
+      //     // {
+      //     //   title: 'List Invoices',
+      //     //   href: '/app/management/invoices'
+      //     // },
       //     {
       //       title: 'View Invoice',
       //       href: '/app/management/invoices/1'

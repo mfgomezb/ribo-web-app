@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, makeStyles } from '@material-ui/core';
 import Page from 'src/components/Page';
 import Header from './Header';
-import LoanCreateForm from './LoanCreateForm';
+import LoanQuoteForm from './LoanQuoteForm';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,7 +23,7 @@ const ProductCreateView = () => {
     >
       <Container maxWidth="lg">
         <Header />
-        <LoanCreateForm />
+        <LoanQuoteForm />
       </Container>
     </Page>
   );

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import numeral from 'numeral';
@@ -10,6 +10,8 @@ import {
   Image,
   StyleSheet
 } from '@react-pdf/renderer';
+import { loanScheduleCalculator } from '../../../utils/calculator';
+import { currencyFormat } from '../../../utils/numbers';
 
 const COL1_WIDTH = 10;
 const COLN_WIDTH = (100 - COL1_WIDTH) / 4;
@@ -133,8 +135,11 @@ const quotes = [
   }
 ]
 
-const InvoicePDF = ({ invoice }) => {
-  let quote = {name: 'Miguel Gomez'}
+const InvoicePDF = (props) => {
+  console.log('adentro: ', props)
+
+
+
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -178,7 +183,7 @@ const InvoicePDF = ({ invoice }) => {
               Lima, Peru
             </Text>
             <Text style={[styles.body1]}>
-              Email: prestamos@ribo.pre
+              Email: prestamos@ribo.pe
             </Text>
             <Text style={[styles.body1]}>
               {'Tel: (+51) 992 797770'}
@@ -204,7 +209,7 @@ const InvoicePDF = ({ invoice }) => {
               Tasa de interes
             </Text>
             <Text style={styles.body1}>
-              {'12% mensual'}
+              {`${props.interestRate}% mensual`}
             </Text>
           </View>
           <View>
@@ -212,7 +217,7 @@ const InvoicePDF = ({ invoice }) => {
               Monto
             </Text>
             <Text style={styles.body1}>
-              {'$10,000.00'}
+              {currencyFormat(props.capital, '$')}
             </Text>
           </View>
           <View>
@@ -220,7 +225,7 @@ const InvoicePDF = ({ invoice }) => {
               Número de cuotas
             </Text>
             <Text style={styles.body1}>
-              {'12'}
+              {props.numberOfInstallments}
             </Text>
           </View>
         </View>
@@ -229,7 +234,7 @@ const InvoicePDF = ({ invoice }) => {
             Cliente:
           </Text>
           <Text style={styles.body1}>
-            Miguel Gomez
+            {props.fullName}
           </Text>
           {/*<Text style={styles.body1}>*/}
           {/*  Countdown Grey Lynn*/}
@@ -273,7 +278,7 @@ const InvoicePDF = ({ invoice }) => {
               </View>
             </View>
             <View style={styles.tableBody}>
-              {quotes.map((item, i) => {
+              {props.schedule.map((row, i) => {
                 if (i === 0) return
                 return (
                 <View
@@ -287,22 +292,23 @@ const InvoicePDF = ({ invoice }) => {
                   </View>
                   <View style={styles.tableCellN}>
                     <Text style={styles.body2}>
-                      {item.date}
+                      {row.date}
                     </Text>
                   </View>
                   <View style={styles.tableCellN}>
                     <Text style={[styles.body2, styles.alignRight]}>
-                      {numeral(item.interest).format(`$0,0.00`)}
+                      {currencyFormat(row.interest, '$')}
                     </Text>
                   </View>
                   <View style={styles.tableCellN}>
                     <Text style={[styles.body2, styles.alignRight]}>
-                      {numeral(item.capital).format(`$0,0.00`)}
+                      {currencyFormat(row.principal, '$')}
+
                     </Text>
                   </View>
                   <View style={styles.tableCellN}>
                     <Text style={[styles.body2, styles.alignRight]}>
-                      {numeral(item.installment).format(`$0,0.00`)}
+                      {currencyFormat(row.payment, '$')}
                     </Text>
                   </View>
                 </View>
