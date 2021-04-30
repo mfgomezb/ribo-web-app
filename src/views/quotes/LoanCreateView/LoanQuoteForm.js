@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -6,6 +6,10 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { useSnackbar } from 'notistack';
 import {DateTime} from 'luxon'
+import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
+import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import QuotePDF from './QuotePDF';
 import {
   Box,
   Button,
@@ -19,7 +23,7 @@ import {
   Grid,
   TextField,
   InputAdornment,
-  makeStyles, InputLabel, Select, FormControl
+  makeStyles, InputLabel, Select, FormControl, Hidden, Dialog
 } from '@material-ui/core';
 import ScheduleTable from './ScheduleTable'
 import { postCreateLoan} from '../../../utils/API';
@@ -31,6 +35,8 @@ import { paymentFrequency as paymentFrequencyConstants,
           insuranceRequiredLoans,
           downPaymentAvailable
 } from './FormConstants';
+import InvoicePDF from '../../invoice/InvoiceDetailsView/InvoicePDF';
+import { loanScheduleCalculator } from '../../../utils/calculator';
 
 
 
@@ -45,13 +51,17 @@ const useStyles = makeStyles(() => ({
 }));
 
 
-const LoanCreateForm = ({ className, ...rest }) => {
+const LoanQuoteForm = ({ className, ...rest }) => {
   const classes = useStyles();
   const history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
+
+
+
   return (
     <Formik
       initialValues={{
+        fullName: '',
         location:'',
         capital:'',
         numberOfInstallments:'', //done
@@ -74,6 +84,7 @@ const LoanCreateForm = ({ className, ...rest }) => {
         submit: null
       }}
       validationSchema={Yup.object().shape({
+        fullName: Yup.string(),
         capital: Yup.number().positive('El valor del prestamo debe de ser positivo').required('El valor del prestamo debe de ser positivo'),
         numberOfInstallments: Yup.number().moreThan(0, 'Las cuotas deben de ser igual o mayor que 1').required('Es necesario el número de cuotas'),
         interestOnlyPeriods: Yup.number()
@@ -175,6 +186,20 @@ const LoanCreateForm = ({ className, ...rest }) => {
                         container
                         spacing={3}
                       >
+                        <Grid item xs={12} md={12}>
+                          <TextField
+                            error={Boolean(touched.fullName && errors.fullName)}
+                            fullWidth
+                            helperText={touched.fullName && errors.fullName}
+                            label="Nombre"
+                            name="fullName"
+                            type="string"
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            value={values.fullName}
+                            variant="outlined"
+                          />
+                        </Grid>
                         <Grid item xs={12} md={6}>
                           <TextField
                             fullWidth
@@ -402,151 +427,19 @@ const LoanCreateForm = ({ className, ...rest }) => {
                   </CardContent>
                 </Card>
               </Box>
-
-              {/*<Box mt={2}>*/}
-              {/*  <Grid*/}
-              {/*    item*/}
-              {/*    xs={12}*/}
-              {/*    md={12}*/}
-              {/*  >*/}
-              {/*    <Card>*/}
-              {/*      <CardHeader title="Transacciones asociadas" />*/}
-              {/*      <Divider />*/}
-              {/*      <CardContent>*/}
-              {/*        <Grid*/}
-              {/*          container*/}
-              {/*          spacing={3}*/}
-              {/*        >*/}
-              {/*        <Grid item xs={12} md={6}>*/}
-              {/*          <TextField*/}
-              {/*            error={Boolean(touched.commission && errors.commission)}*/}
-              {/*            fullWidth*/}
-              {/*            helperText={touched.commission && errors.commission ? errors.commission : 'Comisión debe de ser un numero mayor a 0 y menor a 100'}*/}
-              {/*            label="Comisión por desembolso"*/}
-              {/*            name="commission"*/}
-              {/*            type="number"*/}
-              {/*            InputProps={{*/}
-              {/*              startAdornment:(*/}
-              {/*                <InputAdornment position="start">%</InputAdornment>)*/}
-              {/*            }}*/}
-              {/*            onBlur={handleBlur}*/}
-              {/*            onChange={handleChange}*/}
-              {/*            value={values.commission}*/}
-              {/*            variant="outlined"*/}
-              {/*          />*/}
-              {/*        </Grid>*/}
-              {/*        <Grid item xs={12} md={6}>*/}
-              {/*          <TextField*/}
-              {/*            error={Boolean(touched.insurancePremium && errors.insurancePremium)}*/}
-              {/*            fullWidth*/}
-              {/*            required={insuranceRequiredLoans.indexOf(values.useOfFunds) !== -1}*/}
-              {/*            disabled={insuranceRequiredLoans.indexOf(values.useOfFunds) === -1}*/}
-              {/*            helperText={touched.insurancePremium && errors.insurancePremium}*/}
-              {/*            label="Prima de seguro"*/}
-              {/*            name="insurancePremium"*/}
-              {/*            onBlur={handleBlur}*/}
-              {/*            onChange={handleChange}*/}
-              {/*            value={values.insurancePremium}*/}
-              {/*            variant="outlined"*/}
-              {/*          />*/}
-              {/*        </Grid>*/}
-              {/*        </Grid>*/}
-              {/*      </CardContent>*/}
-              {/*    </Card>*/}
-              {/*  </Grid>*/}
-              {/*</Box>*/}
-              {/*<Box mt={2}>*/}
-              {/*    <Card>*/}
-              {/*      <CardHeader title="Estructura de penalizaciones" />*/}
-              {/*      <Divider />*/}
-              {/*      <CardContent>*/}
-              {/*        <Grid*/}
-              {/*          container*/}
-              {/*          spacing={3}*/}
-              {/*        >*/}
-              {/*          <Grid item xs={12} md={6}>*/}
-              {/*            <TextField*/}
-              {/*              fullWidth*/}
-              {/*              required*/}
-              {/*              label="Tipo de mora"*/}
-              {/*              name="lateFeeType"*/}
-              {/*              helperText={touched.lateFeeType && errors.lateFeeType ? errors.lateFeeType*/}
-              {/*                : 'Tipo de intereses de mora a cobrar'}*/}
-              {/*              onChange={handleChange}*/}
-              {/*              select*/}
-              {/*              SelectProps={{ native: true }}*/}
-              {/*              value={values.lateFeeType}*/}
-              {/*              variant="outlined"*/}
-              {/*            >*/}
-              {/*              {lateFeesConstants.map((e) => (*/}
-              {/*                <option*/}
-              {/*                  value={e.value}*/}
-              {/*                >*/}
-              {/*                  {e.label}*/}
-              {/*                </option>*/}
-              {/*              ))}*/}
-
-              {/*            </TextField>*/}
-              {/*          </Grid>*/}
-              {/*          <Grid item xs={12} md={6}>*/}
-              {/*            <TextField*/}
-              {/*              error={Boolean(touched.lateFeeRate && errors.lateFeeRate)}*/}
-              {/*              fullWidth*/}
-              {/*              helperText={touched.lateFeeRate && errors.lateFeeRate ? errors.lateFeeRate :*/}
-              {/*                'Si el tipo de mora es flat debe de ser un monto nominal, si es porcentual, un valor entre 0 y  100. El valor porcentual se cobrará sobre el monto de capital adeudado'}*/}
-              {/*              label="Valor de la mora diaria"*/}
-              {/*              InputProps={{*/}
-              {/*                startAdornment:(*/}
-              {/*                  values.lateFeeType === 'percentage' ?*/}
-              {/*                    <InputAdornment position="start">%</InputAdornment> :*/}
-              {/*                    <InputAdornment position="start">$</InputAdornment>*/}
-              {/*                )*/}
-              {/*              }}*/}
-              {/*              name="lateFeeRate"*/}
-              {/*              type="number"*/}
-              {/*              onBlur={handleBlur}*/}
-              {/*              onChange={handleChange}*/}
-              {/*              value={values.lateFeeRate}*/}
-              {/*              variant="outlined"*/}
-              {/*            />*/}
-              {/*          </Grid>*/}
-              {/*        </Grid>*/}
-              {/*      </CardContent>*/}
-              {/*    </Card>*/}
-              {/*</Box>*/}
-              {/*<Box mt={2}>*/}
-              {/*  <Card>*/}
-              {/*    <CardHeader title="Inversión" />*/}
-              {/*    <Divider />*/}
-              {/*    <CardContent>*/}
-              {/*      <Box mt={2}>*/}
-              {/*        <FormControlLabel*/}
-              {/*          control={(*/}
-              {/*            <Checkbox*/}
-              {/*              checked={values.autoInvest}*/}
-              {/*              // onChange={handleChange}*/}
-              {/*              value={values.autoInvest}*/}
-              {/*              name="autoInvest"*/}
-              {/*            />*/}
-              {/*          )}*/}
-              {/*          label="Auto inversión"*/}
-              {/*        />*/}
-              {/*      </Box>*/}
-              {/*    </CardContent>*/}
-              {/*  </Card>*/}
-              {/*</Box>*/}
             </Grid>
             <Grid
               item
               xs={12}
               lg={5}
             >
-              <Box>
+              <Box mt={2}>
                 <Card>
                   <CardHeader title="Cronograma de pago" />
                   <Divider />
                   <CardContent>
                     <ScheduleTable
+                      fullName={values.fullName}
                       numberOfInstallments={values.numberOfInstallments}
                       interestRate={values.interestRate}
                       interestOnlyPeriods={values.interestOnlyPeriods}
@@ -574,8 +467,8 @@ const LoanCreateForm = ({ className, ...rest }) => {
   );
 };
 
-LoanCreateForm.propTypes = {
+LoanQuoteForm.propTypes = {
   className: PropTypes.string
 };
 
-export default LoanCreateForm;
+export default LoanQuoteForm;

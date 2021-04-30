@@ -249,9 +249,7 @@ const lineal = (schedule, interest, capital, firstPeriodInterest, interestOnlyPe
     const numberOfInstallments = schedule.length - 1 - interestOnlyPeriods
     const installmentPayment = payment(capital, interest, numberOfInstallments)
     let capitalLeft = capital
-
     return schedule.map( (e, i) => {
-
         if (i === 0 ) {
             return {
                 ...e,
@@ -259,16 +257,17 @@ const lineal = (schedule, interest, capital, firstPeriodInterest, interestOnlyPe
             }
         } else {
             if (i === 1 ) {
-
-                capitalLeft -= i > interestOnlyPeriods ? installmentPayment - firstPeriodInterest : 0
                 let firstPeriodPaymentWithK = rounder(installmentPayment - (capitalLeft * interest) + firstPeriodInterest, 4)
+                capitalLeft -= i > interestOnlyPeriods ? installmentPayment - firstPeriodInterest : 0
+
                 return {
                     ...e,
-                    payment: i > interestOnlyPeriods ? firstPeriodPaymentWithK :firstPeriodInterest ,
+                    payment: i > interestOnlyPeriods ? firstPeriodPaymentWithK : firstPeriodInterest,
                     interest: firstPeriodInterest,
                     principal: i > interestOnlyPeriods ? installmentPayment - firstPeriodInterest : 0,
                     balance: capitalLeft
                 }
+
             } else if (i === schedule.length-1) {
                 let installmentInterest = capitalLeft * interest
                 let capitalPayment = capitalLeft
@@ -310,13 +309,12 @@ const balloon = (schedule, interest, capital) => {}
 function firstInstallmentInterest(firstInterestPaymentDetails) {
     let  {startDate, firstPaymentDate, paymentFrequency, interestRate, capital} = firstInterestPaymentDetails
     const interestRatePeriodic =  interestRatesTransformer(interestRate, paymentFrequency)
-
-    if (firstPaymentDate !== '') {
-        const dayDifference = dayDiffBetweenScheduledAndFirstPaymentDate(startDate, firstPaymentDate, paymentFrequency)
-        const InterestDaily = rounder(((interestRate/100) * capital) / 30,4)
-        return InterestDaily * dayDifference.numberOfDays
-    } else {
+    if (!firstPaymentDate) {
         return interestRatePeriodic * capital
+    } else {
+        const dayDifference = dayDiffBetweenScheduledAndFirstPaymentDate(startDate, firstPaymentDate, paymentFrequency)
+        const interestDaily = rounder(((interestRate/100) * capital) / 30,4)
+        return interestDaily * dayDifference.numberOfDays
     }
 }
 

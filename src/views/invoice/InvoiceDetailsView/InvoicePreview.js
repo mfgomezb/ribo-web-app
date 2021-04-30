@@ -58,7 +58,7 @@ const InvoicePreview = ({
                 variant="h1"
                 color="textPrimary"
               >
-                {invoice.status}
+                {1}
               </Typography>
               <Typography
                 align="right"
@@ -66,7 +66,7 @@ const InvoicePreview = ({
                 color="textPrimary"
               >
                 Invoice #
-                {invoice.id}
+                {1}
               </Typography>
             </Grid>
           </Grid>
@@ -133,7 +133,7 @@ const InvoicePreview = ({
                   variant="body1"
                   color="textPrimary"
                 >
-                  {moment(invoice.dueDate).format('DD MMM YYYY')}
+                  {moment().format('DD MMM YYYY')}
                 </Typography>
               </Grid>
               <Grid item>
@@ -148,7 +148,7 @@ const InvoicePreview = ({
                   variant="body1"
                   color="textPrimary"
                 >
-                  {moment(invoice.issueDate).format('DD MMM YYYY')}
+                  {moment().format('DD MMM YYYY')}
                 </Typography>
               </Grid>
               <Grid item>
@@ -163,7 +163,7 @@ const InvoicePreview = ({
                   variant="body1"
                   color="textPrimary"
                 >
-                  {invoice.number}
+                  {12222}
                 </Typography>
               </Grid>
             </Grid>
@@ -177,16 +177,16 @@ const InvoicePreview = ({
               Billed to
             </Typography>
             <Typography>
-              {invoice.customer.name}
+              {'miguel'}
               {' '}
               <br />
-              {invoice.customer.company}
+              {'gomez'}
               {' '}
               <br />
-              {invoice.customer.taxId}
+              {1233}
               {' '}
               <br />
-              {invoice.customer.address}
+              {'adddd'}
               {' '}
               <br />
             </Typography>
@@ -204,24 +204,24 @@ const InvoicePreview = ({
               </TableRow>
             </TableHead>
             <TableBody>
-              {invoice.items.map((items) => (
-                <TableRow key={items.id}>
-                  <TableCell>
-                    {items.description}
-                  </TableCell>
-                  <TableCell />
-                  <TableCell align="right">
-                    {numeral(items.unitAmount).format(`${items.currency}0,0.00`)}
-                  </TableCell>
-                </TableRow>
-              ))}
+              {/*{invoice.items.map((items) => (*/}
+              {/*  <TableRow key={items.id}>*/}
+              {/*    <TableCell>*/}
+              {/*      {items.description}*/}
+              {/*    </TableCell>*/}
+              {/*    <TableCell />*/}
+              {/*    <TableCell align="right">*/}
+              {/*      {numeral(items.unitAmount).format(`${items.currency}0,0.00`)}*/}
+              {/*    </TableCell>*/}
+              {/*  </TableRow>*/}
+              {/*))}*/}
               <TableRow>
                 <TableCell />
                 <TableCell>
                   Subtotal
                 </TableCell>
                 <TableCell align="right">
-                  {numeral(invoice.subtotalAmount).format(`${invoice.currency}0,0.00`)}
+                  {numeral(1000).format(`${'$'}0,0.00`)}
                 </TableCell>
               </TableRow>
               <TableRow>
@@ -230,7 +230,7 @@ const InvoicePreview = ({
                   Taxes
                 </TableCell>
                 <TableCell align="right">
-                  {numeral(invoice.taxAmount).format(`${invoice.currency}0,0.00`)}
+                  {numeral(10000).format(`${'$'}0,0.00`)}
                 </TableCell>
               </TableRow>
               <TableRow>
@@ -239,7 +239,7 @@ const InvoicePreview = ({
                   Total
                 </TableCell>
                 <TableCell align="right">
-                  {numeral(invoice.totalAmount).format(`${invoice.currency}0,0.00`)}
+                  {numeral(10000).format(`${'$'}0,0.00`)}
                 </TableCell>
               </TableRow>
             </TableBody>
