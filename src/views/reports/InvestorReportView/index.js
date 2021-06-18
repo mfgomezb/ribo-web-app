@@ -7,15 +7,15 @@ import {
 } from '@material-ui/core';
 import Page from 'src/components/Page';
 import Header from './Header';
-import PaymentsReceived from './PaymentsReceived';
+import CashOnHand from './CashOnHand';
 import PaymentsReceivedList from './PaymentsReceivedList';
 import PaymentsOverTimeCumulative from './PaymentsOverTimeCumulative';
 import PaymentsOverTime from './PaymentsOverTime';
 import LoanDisbursedList from './LoansDisbursedList/index';
-import LateCollection from './LateCollection';
-import TodayCollection from './TodayCollection';
-import UpcomingCollection from './UpcomingCollection';
-import LoansDisbursed from './LoansDisbursed';
+import Returns from './Returns';
+import TodayCollection from './ReturnYTD';
+import UpcomingCollection from './TotalAssets';
+import Investments from './Investments';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import useGlobal from '../../../hooks/useGlobal';
 
@@ -122,7 +122,7 @@ const DashboardView = () => {
             xs={12}
             >
               <Box>
-                  <LateCollection
+                  <Returns
                     country={country} />
               </Box>
               <Box mt={3}>
@@ -136,12 +136,12 @@ const DashboardView = () => {
                   timeRange={timeRange}/>
               </Box>
               <Box mt={3}>
-                <PaymentsReceived
+                <CashOnHand
                   country={country}
                   timeRange={timeRange}/>
               </Box>
               <Box mt={3}>
-                <LoansDisbursed
+                <Investments
                   country={country}
                   timeRange={timeRange}/>
               </Box>

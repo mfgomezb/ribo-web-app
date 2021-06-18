@@ -108,7 +108,7 @@ export const GlobalProvider = ({ children }) => {
               countries: filteredCountries,
             }
           })
-        } else {
+        }  else {
           dispatch({
             type: 'INITIALISE',
             payload: {

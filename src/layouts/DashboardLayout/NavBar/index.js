@@ -32,45 +32,72 @@ import NavItem from './NavItem';
 
 const sections = [
   {
+    subheader: 'Inversionista',
+    role: ['investor'],
+    items: [
+      {
+        title: 'Resumen',
+        icon: TrendingUpIcon,
+        href: '/app/investor/dashboard',
+        role: ['investor']
+      },
+      {
+        title: 'Cartera',
+        icon: PieChartIcon,
+        href: '/app/investor/portfolio',
+        role: ['investor']
+      },
+    ]
+  },
+  {
     subheader: 'Reportes',
+    role: ['admin', 'collection'],
     items: [
       {
         title: 'Resumen',
         icon: PieChartIcon,
-        href: '/app/reports/dashboard'
+        href: '/app/reports/dashboard',
+        role: ['admin', 'collection']
       },
       {
         title: 'Cobranza',
         icon: ReceiptIcon,
-        href: '/app/reports/collections'
+        href: '/app/reports/collections',
+        role: ['admin', 'collection'],
       },
       {
         title: 'Finanzas',
         icon: BarChartIcon,
-        href: '/app/reports/dashboard-alternative'
+        href: '/app/reports/dashboard-alternative',
+        role: ['admin', 'collection'],
       },
       {
         title: 'Cartera',
         icon: TrendingUpIcon,
-        href: '/app/reports/portfolio'
+        href: '/app/reports/portfolio',
+        role: ['admin', 'collection'],
       }
     ]
   },
   {
     subheader: 'Administración',
+    role: ['admin', 'collection'],
     items: [
       {
         title: 'Clientes',
         icon: UsersIcon,
         href: '/app/management/customers',
+        role: ['admin', 'collection'],
         items: [
           {
             title: 'Listado',
-            href: '/app/management/customers'
+            href: '/app/management/customers',
+            role: ['admin', 'collection'],
           },
           {
             title: 'Nuevo cliente',
-            href: '/app/management/customers/create'
+            href: '/app/management/customers/create',
+            role: ['admin', 'collection'],
           },
         ]
       },
@@ -78,14 +105,17 @@ const sections = [
         title: 'Prestamos',
         icon: ShoppingCartIcon,
         href: '/app/management/products',
+        role: ['admin', 'collection'],
         items: [
           {
             title: 'Listado de préstamos',
-            href: '/app/management/loans'
+            href: '/app/management/loans',
+            role: ['admin', 'collection'],
           },
           {
             title: 'Listado de cuotas',
-            href: '/app/management/schedules'
+            href: '/app/management/schedules',
+            role: ['admin', 'collection'],
           },
         ]
       },
@@ -203,11 +233,13 @@ const sections = [
   // },
   {
     subheader: 'Herramientas',
+    role: ['admin', 'collection'],
     items: [
       {
         title: 'Cotización',
         href: '/app/quote',
-        icon: FileTextIcon
+        icon: FileTextIcon,
+        role: ['admin', 'collection'],
       },
       // {
       //   title: 'Error',
@@ -223,11 +255,13 @@ const sections = [
   },
   {
     subheader: 'Usuario',
+    role: ['admin', 'collection'],
     items: [
       {
         title: 'Cuenta',
         href: '/app/account',
-        icon: UserIcon
+        icon: UserIcon,
+        role: ['admin', 'collection'],
       },
       // {
       //   title: 'Error',
@@ -289,54 +323,59 @@ const sections = [
   // }
 ];
 
-function renderNavItems({ items, pathname, depth = 0 }) {
+function renderNavItems({ items, pathname, role, depth = 0 }) {
   return (
     <List disablePadding>
       {items.reduce(
-        (acc, item) => reduceChildRoutes({ acc, item, pathname, depth }),
+        (acc, item) => reduceChildRoutes({ acc, item, pathname, role, depth }),
         []
       )}
     </List>
   );
 }
 
-function reduceChildRoutes({ acc, pathname, item, depth }) {
+function reduceChildRoutes({ acc, pathname, item, role, depth }) {
   const key = item.title + depth;
 
-  if (item.items) {
-    const open = matchPath(pathname, {
-      path: item.href,
-      exact: false
-    });
+  if (item.role.indexOf(role) >= 0) {
+    if (item.items) {
+      const open = matchPath(pathname, {
+        path: item.href,
+        exact: false
+      });
 
-    acc.push(
-      <NavItem
-        depth={depth}
-        icon={item.icon}
-        info={item.info}
-        key={key}
-        open={Boolean(open)}
-        title={item.title}
-      >
-        {renderNavItems({
-          depth: depth + 1,
-          pathname,
-          items: item.items
-        })}
-      </NavItem>
-    );
-  } else {
-    acc.push(
-      <NavItem
-        depth={depth}
-        href={item.href}
-        icon={item.icon}
-        info={item.info}
-        key={key}
-        title={item.title}
-      />
-    );
+      acc.push(
+        <NavItem
+          depth={depth}
+          icon={item.icon}
+          info={item.info}
+          key={key}
+          open={Boolean(open)}
+          title={item.title}
+        >
+          {renderNavItems({
+            depth: depth + 1,
+            pathname,
+            role,
+            items: item.items
+          })}
+        </NavItem>
+      );
+    } else {
+      acc.push(
+        <NavItem
+          depth={depth}
+          href={item.href}
+          icon={item.icon}
+          info={item.info}
+          key={key}
+          title={item.title}
+        />
+      );
+    }
   }
+
+
 
   return acc;
 }
@@ -393,17 +432,17 @@ const NavBar = ({ onMobileClose, openMobile }) => {
               color="textPrimary"
               underline="none"
             >
-              {user.firstName}
+              {user.firstName + ' ' + user.lastName}
             </Link>
             <Typography variant="body2" color="textSecondary">
-                {user.role === 'admin' ? `${user.location} ADMIN` : ""}
+              {`${user.role}`}
             </Typography>
           </Box>
         </Box>
         <Divider />
         <Box p={2}>
           {sections.map(section => (
-            <List
+            (section.role.indexOf(user.role) >= 0) && <List
               key={section.subheader}
               subheader={
                 <ListSubheader disableGutters disableSticky>
@@ -413,27 +452,28 @@ const NavBar = ({ onMobileClose, openMobile }) => {
             >
               {renderNavItems({
                 items: section.items,
-                pathname: location.pathname
+                pathname: location.pathname,
+                role: user.role
               })}
             </List>
           ))}
         </Box>
-        <Divider />
-        <Box p={2}>
-          <Box p={2} borderRadius="borderRadius" bgcolor="background.dark">
-            <Typography variant="h6" color="textPrimary">
-              Need Help?
-            </Typography>
-            <Link
-              variant="subtitle1"
-              color="secondary"
-              component={RouterLink}
-              to="/docs"
-            >
-              Check our docs
-            </Link>
-          </Box>
-        </Box>
+        {/*<Divider />*/}
+        {/*<Box p={2}>*/}
+        {/*  <Box p={2} borderRadius="borderRadius" bgcolor="background.dark">*/}
+        {/*    <Typography variant="h6" color="textPrimary">*/}
+        {/*      Need Help?*/}
+        {/*    </Typography>*/}
+        {/*    <Link*/}
+        {/*      variant="subtitle1"*/}
+        {/*      color="secondary"*/}
+        {/*      component={RouterLink}*/}
+        {/*      to="/docs"*/}
+        {/*    >*/}
+        {/*      Check our docs*/}
+        {/*    </Link>*/}
+        {/*  </Box>*/}
+        {/*</Box>*/}
       </PerfectScrollbar>
     </Box>
   );
