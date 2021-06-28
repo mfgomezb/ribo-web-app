@@ -22,9 +22,9 @@ const useStyles = makeStyles(() => ({
 }));
 
 const Header = ({ className,
-                  country,
-                  countries,
-                  setCountry,
+                  investmentAccount,
+                  investmentAccounts,
+                  setInvestmentAccount,
                   timeRange,
                   timeRanges,
                   setTimeRange,
@@ -33,7 +33,7 @@ const Header = ({ className,
   const actionRef = useRef(null);
   const actionCountryRef = useRef(null);
   const [isMenuOpen, setMenuOpen] = useState(false);
-  const [isCountryMenuOpen, setCountryMenuOpen] = useState(false);
+  const [isInvestmentAccountMenuOpen, setInvestmentAccountMenuOpen] = useState(false);
 
   return (
     <Grid
@@ -67,7 +67,7 @@ const Header = ({ className,
       <Grid item>
         <Button
           ref={actionCountryRef}
-          onClick={() => setCountryMenuOpen(true)}
+          onClick={() => setInvestmentAccountMenuOpen(true)}
           startIcon={
             <SvgIcon fontSize="small">
               <GlobeIcon />
@@ -75,12 +75,12 @@ const Header = ({ className,
           }
         >
 
-          {countries.find(e => country === e.id)?.name}
+          {investmentAccounts.find(e => investmentAccount === e._id)?.location}
         </Button>
         <Menu
           anchorEl={actionCountryRef.current}
-          onClose={() => setCountryMenuOpen(false)}
-          open={isCountryMenuOpen}
+          onClose={() => setInvestmentAccountMenuOpen(false)}
+          open={isInvestmentAccountMenuOpen}
           getContentAnchorEl={null}
           anchorOrigin={{
             vertical: 'bottom',
@@ -91,12 +91,12 @@ const Header = ({ className,
             horizontal: 'center'
           }}
         >
-          {countries.map(_country => (
+          {investmentAccounts.map(_investmentAccount => (
             <MenuItem
-              key={_country.id}
-              onClick={() => setCountry(_country.id)}
+              key={_investmentAccount._id}
+              onClick={() => setInvestmentAccount(_investmentAccount._id)}
             >
-              {_country.name}
+              {_investmentAccount.location}
             </MenuItem>
           ))}
         </Menu>

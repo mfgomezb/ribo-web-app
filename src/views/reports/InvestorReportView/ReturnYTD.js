@@ -1,12 +1,10 @@
 import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { Avatar, Box, Card, Typography, makeStyles, Link } from '@material-ui/core';
+import { Avatar, Box, Card, Typography, makeStyles } from '@material-ui/core';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
-import { useGetTodayStatus, } from '../../../hooks/useDashboard';
 import numeral from 'numeral';
-import { Link as RouterLink } from 'react-router-dom';
-import moment from 'moment';
+import { useGetInvestorReturnYTD } from '../../../hooks/useInvestor';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -26,16 +24,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const LateCollection = ({ className, country, ...rest }) => {
+const LateCollection = ({ className, investmentAccount, ...rest }) => {
   const classes = useStyles();
-  const queryPayments = useGetTodayStatus(country);
+  const queryPayments = useGetInvestorReturnYTD(investmentAccount);
 
   return (
-    <Link
-      component={RouterLink}
-      to={`/app/reports/collections?page=3&limit=10&query=&minDays=-1&maxDays=1&selectedDate=${moment().add(1,'days').format('YYYY-MM-DD')}&country=${country}`}
-      underline="none"
-    >
     <Card className={clsx(classes.root, className)} {...rest}>
       <Box flexGrow={1}>
         <Typography
@@ -50,7 +43,7 @@ const LateCollection = ({ className, country, ...rest }) => {
           <Typography variant="h3" color="textPrimary">
             {queryPayments.isLoading
               ? '...' : queryPayments.data === undefined ? 0
-              : numeral(queryPayments.data.today.interest + queryPayments.data.today.principal).format(`$0,0.00`)}
+              : numeral(queryPayments.data.value).format(`$0,0.00`)}
           </Typography>
           {/*<Label*/}
           {/*  className={classes.label}*/}
@@ -66,7 +59,6 @@ const LateCollection = ({ className, country, ...rest }) => {
         <AttachMoneyIcon />
       </Avatar>
     </Card>
-    </Link>
   );
 };
 

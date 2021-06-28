@@ -3,14 +3,17 @@ import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import useAuth from '../hooks/useAuth';
 
-const AuthGuard = ({ children }) => {
-  const { isAuthenticated } = useAuth();
+const AdminGuard = ({ children }) => {
+  const { isAuthenticated, user } = useAuth();
 
   if (!isAuthenticated) {
     return <Redirect to="/login" />;
   }
 
-
+  if (isAuthenticated && user.role !== 'admin') {
+    if (user == '')
+    return <Redirect to="/404" />;
+  }
 
   return (
     <>
@@ -19,8 +22,8 @@ const AuthGuard = ({ children }) => {
   );
 };
 
-AuthGuard.propTypes = {
+AdminGuard.propTypes = {
   children: PropTypes.node
 };
 
-export default AuthGuard;
+export default AdminGuard;

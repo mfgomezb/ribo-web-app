@@ -5,6 +5,7 @@ import { Avatar, Box, Card, makeStyles, Typography } from '@material-ui/core';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import { useGetTodayStatus } from '../../../hooks/useDashboard';
 import numeral from 'numeral';
+import { useGetInvestorTotalInvestments } from '../../../hooks/useInvestor';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,11 +24,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Investments = ({ className, country, timeRange, ...rest }) => {
+const Investments = ({ className, investmentAccount, ...rest }) => {
   const classes = useStyles();
-  const queryPayments = useGetTodayStatus(country, timeRange);
+  const queryPayments = useGetInvestorTotalInvestments(investmentAccount);
 
-  const totalAmount = queryPayments.data !== undefined ? queryPayments.data.disbursedDetails.reduce((acc, e) =>  {return acc + e.capital}, 0) : 0;
+  const totalAmount = queryPayments.data !== undefined ? queryPayments.data.value : 0;
 
   return (
     <Card className={clsx(classes.root, className)} {...rest}>

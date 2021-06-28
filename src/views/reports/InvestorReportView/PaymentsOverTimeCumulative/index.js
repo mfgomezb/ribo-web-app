@@ -13,6 +13,7 @@ import {
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import Chart from './Chart';
 import { useGetPayments } from '../../../../hooks/useDashboard';
+import { useGetInvestorCumulativeIncome } from '../../../../hooks/useInvestor';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -21,25 +22,20 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const PaymentsOverTimeCumulative = ({ className, country,timeRange, ...rest }) => {
+const PaymentsOverTimeCumulative = ({ className, investmentAccount, ...rest }) => {
   const classes = useStyles();
-  const periodPayments = useGetPayments(country, timeRange)
+  const periodPayments = useGetInvestorCumulativeIncome(investmentAccount)
 
-  const dataLabels = !periodPayments.isLoading ? Object.keys(periodPayments.data.periodCollections) : []
+  const dataLabels = !periodPayments.isLoading ? Object.keys(periodPayments.data) : []
 
-  const data = !periodPayments.isLoading ? Object.values(periodPayments.data.periodCollections)
-    .map(e => e.monto)
-    .reduce((r, a) => {
-      r.push(((r.length && r[r.length - 1]) || 0) + a);
-      return r;
-    }, []): []
+  const data = !periodPayments.isLoading ? Object.values(periodPayments.data): []
 
 
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
       <CardHeader
         action={<GenericMoreButton />}
-        title="Pagos Recibidos"
+        title="INGRESO ACUMULADO"
       />
       <Divider />
       <CardContent>

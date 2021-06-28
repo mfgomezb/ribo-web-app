@@ -30,19 +30,20 @@ const Chart = ({
     gradient.addColorStop(0, fade(theme.palette.secondary.main, 0.2));
     gradient.addColorStop(0.9, 'rgba(255,255,255,0)');
     gradient.addColorStop(1, 'rgba(255,255,255,0)');
-
-    return {
-      datasets: [
-        {
-          data: dataProp,
+    let datasets = dataProp.map((e, i) => {
+      return {
+          data: e,
           backgroundColor: gradient,
-          borderColor: theme.palette.secondary.main,
+          borderColor: i % 2  === 0 ? theme.palette.secondary.main: theme.palette.secondary.dark,
           pointBorderColor: theme.palette.background.default,
           pointBorderWidth: 3,
           pointRadius: 6,
-          pointBackgroundColor: theme.palette.secondary.main
+          pointBackgroundColor: i % 2  === 0 ? theme.palette.secondary.main: theme.palette.secondary.dark,
         }
-      ],
+      })
+
+    return {
+      datasets: datasets,
       labels
     };
   };
@@ -107,8 +108,17 @@ const Chart = ({
       footerFontColor: theme.palette.text.secondary,
       callbacks: {
         title: () => {},
-        label: (tooltipItem) => {
-          let label = `Pagos: ${Math.round(tooltipItem.yLabel*100) / 100}`;
+        label: (tooltipItem, dataSet) => {
+          let label
+
+          if (tooltipItem.datasetIndex === 0) {
+            label = `Pago: ${Math.round(tooltipItem.yLabel*100) / 100}`;
+          }
+
+          if (tooltipItem.datasetIndex === 1) {
+            label = `Intereses: ${Math.round(tooltipItem.yLabel*100) / 100}`;
+          }
+
 
           if (tooltipItem.yLabel > 1000) {
             label += 'k';

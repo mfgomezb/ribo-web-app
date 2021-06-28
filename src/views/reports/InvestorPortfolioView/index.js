@@ -10,6 +10,7 @@ import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import AllocationOverTime from './AllocationOverTime';
 import PortfolioSummary from './PortfolioSummary';
 import LateCollectionSegmentation from './LateCollectionSegmentation';
+import useAuth from '../../../hooks/useAuth';
 
 const timeRanges = [
   {
@@ -61,26 +62,27 @@ const useStyles = makeStyles((theme) => ({
 
 const DashboardPortfolioView = () => {
   const classes = useStyles();
-  const { countries } = useGlobal()
+  const { user } = useAuth()
+  const { investmentAccounts } = user
   const [timeRange, setTimeRange] = useState(timeRanges[2].id);
   const isMountedRef = useIsMountedRef();
-  const [country, setCountry] = useState(null)
+  const [investmentAccount, setInvestmentAccount] = useState(null)
 
-  const getCountry = useCallback(async () => {
+  const getInvestmentAccount = useCallback(async () => {
     try {
-      if (isMountedRef.current && countries) {
-        setCountry(countries[0].id);
+      if (isMountedRef.current && investmentAccounts) {
+        setInvestmentAccount(investmentAccounts[0]._id);
       }
     } catch (err) {
       console.error(err);
     }
-  }, [isMountedRef, countries]);
+  }, [isMountedRef, investmentAccounts]);
 
   useEffect(() => {
-    getCountry();
-  }, [getCountry]);
+    getInvestmentAccount();
+  }, [getInvestmentAccount]);
 
-  if (!country) {
+  if (!investmentAccount) {
     return null;
   }
 
@@ -90,9 +92,9 @@ const DashboardPortfolioView = () => {
       title="Ribo | Cartera"
     >
       <Container maxWidth={'lg'}>
-        <Header countries={countries}
-                country={country}
-                setCountry={setCountry}
+        <Header investmentAccounts={investmentAccounts}
+                investmentAccount={investmentAccount}
+                setInvestmentAccount={setInvestmentAccount}
                 timeRange={timeRange}
                 setTimeRange={setTimeRange}
                 timeRanges={timeRanges}
@@ -113,7 +115,7 @@ const DashboardPortfolioView = () => {
             xl={9}
             xs={12}
           >
-            <AllocationOverTime country={country}/>
+            <AllocationOverTime investmentAccount={investmentAccount}/>
           </Grid>
           <Grid
             item
@@ -121,7 +123,7 @@ const DashboardPortfolioView = () => {
             xl={3}
             xs={12}
           >
-            <PortfolioSegmentation country={country}/>
+            <PortfolioSegmentation investmentAccount={investmentAccount}/>
           </Grid>
           <Grid
             item
@@ -129,7 +131,7 @@ const DashboardPortfolioView = () => {
             xl={12}
             xs={12}
           >
-            <LateCollectionSegmentation country={country}/>
+            <LateCollectionSegmentation investmentAccount={investmentAccount}/>
           </Grid>
 
           <Grid
@@ -138,14 +140,14 @@ const DashboardPortfolioView = () => {
             xl={9}
             xs={12}
           >
-            <FinancialStats country={country} />
+            <FinancialStats investmentAccount={investmentAccount} />
           </Grid>
           <Grid
             item
             lg={4}
             xs={12}
           >
-            <TopReferrals country={country}/>
+            <TopReferrals investmentAccount={investmentAccount}/>
           </Grid>
           <Grid
             item
@@ -153,29 +155,8 @@ const DashboardPortfolioView = () => {
             xl={12}
             xs={12}
           >
-            <PortfolioSummary country={country} />
+            <PortfolioSummary investmentAccount={investmentAccount} />
           </Grid>
-          {/*<Grid*/}
-          {/*  item*/}
-          {/*  lg={8}*/}
-          {/*  xs={12}*/}
-          {/*>*/}
-          {/*  <LatestOrders />*/}
-          {/*</Grid>*/}
-          {/*<Grid*/}
-          {/*  item*/}
-          {/*  lg={4}*/}
-          {/*  xs={12}*/}
-          {/*>*/}
-          {/*  <CustomerActivity />*/}
-          {/*</Grid>*/}
-          {/*<Grid*/}
-          {/*  item*/}
-          {/*  lg={8}*/}
-          {/*  xs={12}*/}
-          {/*>*/}
-          {/*  <MostProfitableProducts country={country}/>*/}
-          {/*</Grid>*/}
 
         </Grid>
       </Container>

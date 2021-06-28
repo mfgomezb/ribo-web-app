@@ -3,13 +3,12 @@ import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import useAuth from '../hooks/useAuth';
 
-const AuthGuard = ({ children }) => {
-  const { isAuthenticated } = useAuth();
+const InvestorGuard = ({ children }) => {
+  const { isAuthenticated, user } = useAuth();
 
   if (!isAuthenticated) {
     return <Redirect to="/login" />;
   }
-
 
 
   return (
@@ -19,8 +18,8 @@ const AuthGuard = ({ children }) => {
   );
 };
 
-AuthGuard.propTypes = {
+InvestorGuard.propTypes = {
   children: PropTypes.node
 };
 
-export default AuthGuard;
+export default InvestorGuard;

@@ -7,7 +7,7 @@ import useGlobal from '../hooks/useGlobal';
 const initialAuthState = {
   isAuthenticated: false,
   isInitialised: false,
-  user: null
+  user: null,
 };
 
 const isValidToken = (accessToken) => {
@@ -34,7 +34,7 @@ const setSession = (accessToken) => {
 const reducer = (state, action) => {
   switch (action.type) {
     case 'INITIALISE': {
-      const { isAuthenticated, user } = action.payload;
+      const { isAuthenticated, user  } = action.payload;
 
       return {
         ...state,
@@ -44,19 +44,19 @@ const reducer = (state, action) => {
       };
     }
     case 'LOGIN': {
-      const { user } = action.payload;
+      const { user,  } = action.payload;
 
       return {
         ...state,
         isAuthenticated: true,
-        user
+        user,
       };
     }
     case 'LOGOUT': {
       return {
         ...state,
         isAuthenticated: false,
-        user: null
+        user: null,
       };
     }
     case 'REGISTER': {
@@ -118,13 +118,16 @@ export const AuthProvider = ({ children }) => {
       email,
       password
     });
+
     const { token, user } = response.data;
     const { location } = user
+
+
     setSession(token);
     dispatch({
       type: 'LOGIN',
       payload: {
-        user
+        user,
       }
     });
     setGlobals(location)
@@ -202,11 +205,13 @@ export const AuthProvider = ({ children }) => {
           const { data } = response;
           const user = data;
 
+
+
           dispatch({
             type: 'INITIALISE',
             payload: {
               isAuthenticated: true,
-              user
+              user,
             }
           });
         } else {

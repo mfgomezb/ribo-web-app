@@ -4,10 +4,14 @@ import PropTypes from 'prop-types';
 import useAuth from '../hooks/useAuth';
 
 const GuestGuard = ({ children }) => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
-  if (isAuthenticated) {
+  if (isAuthenticated && user.role === 'admin') {
     return <Redirect to="/app/reports/dashboard" />;
+  }
+
+  if (isAuthenticated && user.role === 'investor') {
+    return <Redirect to="/app/investor/dashboard" />;
   }
 
   return (

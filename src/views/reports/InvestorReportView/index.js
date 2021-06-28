@@ -18,6 +18,7 @@ import UpcomingCollection from './TotalAssets';
 import Investments from './Investments';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import useGlobal from '../../../hooks/useGlobal';
+import useAuth from '../../../hooks/useAuth';
 
 const timeRanges = [
   {
@@ -72,26 +73,27 @@ const useStyles = makeStyles((theme) => ({
 
 const DashboardView = () => {
   const classes = useStyles();
-  const { countries } = useGlobal()
+  const { user } = useAuth()
+  const { investmentAccounts } = user
   const [timeRange, setTimeRange] = useState(timeRanges[2].id);
   const isMountedRef = useIsMountedRef();
-  const [country, setCountry] = useState(null)
+  const [investmentAccount, setInvestmentAccount] = useState(null)
 
-  const getCountry = useCallback(async () => {
+  const getInvestmentAccount = useCallback(async () => {
     try {
-      if (isMountedRef.current && countries) {
-        setCountry(countries[0].id);
+      if (isMountedRef.current && investmentAccounts) {
+        setInvestmentAccount(investmentAccounts[0]._id);
       }
     } catch (err) {
       console.error(err);
     }
-  }, [isMountedRef, countries]);
+  }, [isMountedRef, investmentAccounts]);
 
   useEffect(() => {
-    getCountry();
-  }, [getCountry]);
+    getInvestmentAccount();
+  }, [getInvestmentAccount]);
 
-  if (!country) {
+  if (!investmentAccount) {
     return null;
   }
 
@@ -101,9 +103,9 @@ const DashboardView = () => {
       title="Ribo | Dashboard"
     >
       <Container maxWidth="lg">
-        <Header countries={countries}
-                country={country}
-                setCountry={setCountry}
+        <Header investmentAccounts={investmentAccounts}
+                investmentAccount={investmentAccount}
+                setInvestmentAccount={setInvestmentAccount}
                 timeRange={timeRange}
                 setTimeRange={setTimeRange}
                 timeRanges={timeRanges}
@@ -111,65 +113,68 @@ const DashboardView = () => {
         <Box mt={3} className={classes.rootG}>
         <Grid
           container
-          direction="row"
+          direction="column"
           justify="space-between"
           alignItems="flex-start"
           spacing={3}
         >
           <Grid
             item
+            container
+            direction="column"
             lg={3}
             xs={12}
             >
               <Box>
                   <Returns
-                    country={country} />
+                    investmentAccount={investmentAccount} />
               </Box>
               <Box mt={3}>
                   <TodayCollection
-                    country={country}
+                    investmentAccount={investmentAccount}
                     timeRange={timeRange}/>
               </Box>
               <Box mt={3}>
                 <UpcomingCollection
-                  country={country}
+                  investmentAccount={investmentAccount}
                   timeRange={timeRange}/>
               </Box>
               <Box mt={3}>
                 <CashOnHand
-                  country={country}
+                  investmentAccount={investmentAccount}
                   timeRange={timeRange}/>
               </Box>
               <Box mt={3}>
                 <Investments
-                  country={country}
+                  investmentAccount={investmentAccount}
                   timeRange={timeRange}/>
               </Box>
           </Grid>
           <Grid
             item
+            container
             lg={9}
-            sm={6}
+            sm={12}
             xs={12}
             >
               <Box>
                 <PaymentsOverTime
-                  country={country}
+                  investmentAccount={investmentAccount}
                   timeRange={timeRange}/>
               </Box>
             <Box mt={3}>
               <PaymentsOverTimeCumulative
-                country={country}
+                investmentAccount={investmentAccount}
                 timeRange={timeRange}/>
             </Box>
               <Box mt={3}>
                 <PaymentsReceivedList
-                  country={country}
+                  investmentAccount={investmentAccount}
                   timeRange={timeRange}/>
               </Box>
               <Box mt={3}>
                 <LoanDisbursedList
-                  country={country}
+                  investmentAccount={investmentAccount}
                   timeRange={timeRange}/>
               </Box>
           </Grid>

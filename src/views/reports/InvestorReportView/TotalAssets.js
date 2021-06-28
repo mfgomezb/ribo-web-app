@@ -7,6 +7,7 @@ import { useGetTodayStatus, } from '../../../hooks/useDashboard';
 import numeral from 'numeral';
 import { Link as RouterLink } from 'react-router-dom';
 import moment from 'moment';
+import { useGetInvestorTotalAssets } from '../../../hooks/useInvestor';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -25,16 +26,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const LateCollection = ({ className, country, ...rest }) => {
+const LateCollection = ({ className, investmentAccount, ...rest }) => {
   const classes = useStyles();
-  const queryPayments = useGetTodayStatus(country);
+  const queryPayments = useGetInvestorTotalAssets(investmentAccount);
 
   return (
-    <Link
-      component={RouterLink}
-      to={`/app/reports/collections?page=3&limit=10&query=&minDays=-30&maxDays=-1&selectedDate=${moment().add(30, 'days').format('YYYY-MM-DD')}&country=${country}`}
-      underline="none"
-    >
     <Card className={clsx(classes.root, className)} {...rest}>
       <Box flexGrow={1}>
         <Typography
@@ -49,23 +45,14 @@ const LateCollection = ({ className, country, ...rest }) => {
           <Typography color="inherit" variant="h3">
             {queryPayments.isLoading
               ? '...' : queryPayments.data === undefined ? 0
-              : numeral(queryPayments.data.upcoming.interest + queryPayments.data.upcoming.principal).format(`$0,0.00`)}
+              : numeral(queryPayments.data.value).format(`$0,0.00`)}
           </Typography>
-          {/*<Label*/}
-          {/*  className={classes.label}*/}
-          {/*  color={data.difference > 0 ? 'success' : 'error'}*/}
-          {/*>*/}
-          {/*  {data.difference > 0 ? '+' : ''}*/}
-          {/*  {data.difference}%*/}
-          {/*</Label>*/}
         </Box>
-
       </Box>
       <Avatar className={classes.avatar}>
         <AttachMoneyIcon />
       </Avatar>
     </Card>
-    </Link>
   );
 };
 

@@ -6,6 +6,8 @@ import MainLayout from 'src/layouts/MainLayout';
 import LoadingScreen from 'src/components/LoadingScreen';
 import AuthGuard from 'src/components/AuthGuard';
 import GuestGuard from 'src/components/GuestGuard';
+import AdminGuard from 'src/components/AdminGuard';
+import InvestorGuard from './components/InvestorGuard';
 
 export const renderRoutes = (routes = []) => (
   <Suspense fallback={<LoadingScreen />}>
@@ -14,7 +16,6 @@ export const renderRoutes = (routes = []) => (
         const Guard = route.guard || Fragment;
         const Layout = route.layout || Fragment;
         const Component = route.component;
-
         return (
           <Route
             key={i}
@@ -74,7 +75,7 @@ const routes = [
   // },
   {
     path: '/app',
-    guard: AuthGuard,
+    guard: AdminGuard,
     layout: DashboardLayout,
     routes: [
       {
@@ -251,11 +252,13 @@ const routes = [
       },
       {
         exact: true,
+        // guard: InvestorGuard,
         path: '/app/investor/dashboard',
         component: lazy(() => import('src/views/reports/InvestorReportView'))
       },
       {
         exact: true,
+        // guard: InvestorGuard,
         path: '/app/investor/portfolio',
         component: lazy(() => import('src/views/reports/InvestorPortfolioView'))
       },

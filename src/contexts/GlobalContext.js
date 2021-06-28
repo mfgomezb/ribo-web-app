@@ -23,6 +23,7 @@ let initialList = [
 ]
 const initialGlobalState = {
   countries: [],
+  investmentAccounts: [],
   isInitialised: false,
 };
 

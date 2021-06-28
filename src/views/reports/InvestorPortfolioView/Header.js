@@ -22,9 +22,9 @@ const useStyles = makeStyles(() => ({
 }));
 
 const Header = ({ className,
-                  country,
-                  countries,
-                  setCountry,
+                  investmentAccount,
+                  investmentAccounts,
+                  setInvestmentAccount,
                   timeRange,
                   timeRanges,
                   setTimeRange,
@@ -75,7 +75,7 @@ const Header = ({ className,
           }
         >
 
-          {countries.find(e => country === e.id)?.name}
+          {investmentAccounts.find(e => investmentAccount === e._id)?.location}
         </Button>
         <Menu
           anchorEl={actionCountryRef.current}
@@ -91,12 +91,12 @@ const Header = ({ className,
             horizontal: 'center'
           }}
         >
-          {countries.map(_country => (
+          {investmentAccounts.map(_country => (
             <MenuItem
-              key={_country.id}
-              onClick={() => setCountry(_country.id)}
+              key={_country._id}
+              onClick={() => setInvestmentAccount(_country._id)}
             >
-              {_country.name}
+              {_country.location}
             </MenuItem>
           ))}
         </Menu>

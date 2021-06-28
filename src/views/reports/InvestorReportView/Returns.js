@@ -1,12 +1,11 @@
 import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { Avatar, Box, Card, Typography, makeStyles, Link } from '@material-ui/core';
-import { useGetTodayStatus } from '../../../hooks/useDashboard';
+import { Avatar, Box, Card, Typography, makeStyles } from '@material-ui/core';
 import numeral from 'numeral';
-import { Link as RouterLink } from 'react-router-dom';
-import moment from 'moment';
+// import moment from 'moment';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import { useGetInvestorReturn } from '../../../hooks/useInvestor';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -26,16 +25,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Returns = ({ className, country, timeRange, ...rest }) => {
+const Returns = ({ className, investmentAccount, ...rest }) => {
   const classes = useStyles();
-  const queryPayments = useGetTodayStatus(country, timeRange);
+  const investorReturn = useGetInvestorReturn(investmentAccount);
 
   return (
-    <Link
-      component={RouterLink}
-      to={`/app/reports/collections?page=3&limit=10&query=&minDays=1&maxDays=360&selectedDate=${moment().format('YYYY-MM-DD')}&country=${country}`}
-      underline="none"
-    >
     <Card className={clsx(classes.root, className)}
           {...rest}>
       <Box flexGrow={1}>
@@ -49,9 +43,8 @@ const Returns = ({ className, country, timeRange, ...rest }) => {
         </Typography>
         <Box display="flex" alignItems="left" flexDirection="column" flexWrap="wrap">
           <Typography variant="h3" color="textPrimary">
-            {queryPayments.isLoading
-              ? '...' : queryPayments.data === undefined ? 0
-              : numeral(queryPayments.data.overdue.interest + queryPayments.data.overdue.principal).format(`$0,0.00`)}
+            {investorReturn.isLoading
+              ? '...' : investorReturn.data === undefined ? 0 : numeral(investorReturn.data.value).format(`$0,0.00`)}
           </Typography>
           {/*<Label*/}
           {/*  className={classes.label}*/}
@@ -66,7 +59,6 @@ const Returns = ({ className, country, timeRange, ...rest }) => {
         <AttachMoneyIcon />
       </Avatar>
     </Card>
-    </Link>
   );
 };
 
