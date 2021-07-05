@@ -15,11 +15,11 @@ const useStyles = makeStyles(() => ({
 }));
 
 const Chart = ({
-  className,
-  data: dataProp,
-  labels,
-  ...rest
-}) => {
+                 className,
+                 data: dataProp,
+                 labels,
+                 ...rest
+               }) => {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -30,19 +30,21 @@ const Chart = ({
     gradient.addColorStop(0, fade(theme.palette.secondary.main, 0.2));
     gradient.addColorStop(0.9, 'rgba(255,255,255,0)');
     gradient.addColorStop(1, 'rgba(255,255,255,0)');
+    let datasets = dataProp.map((e, i) => {
+      return {
+        dataset: i,
+        data: e,
+        backgroundColor: gradient,
+        borderColor: i % 2  === 0 ? theme.palette.secondary.main: theme.palette.secondary.dark,
+        pointBorderColor: theme.palette.background.default,
+        pointBorderWidth: 3,
+        pointRadius: 6,
+        pointBackgroundColor: i % 2  === 0 ? theme.palette.secondary.main: theme.palette.secondary.dark,
+      }
+    })
 
     return {
-      datasets: [
-        {
-          data: dataProp,
-          backgroundColor: gradient,
-          borderColor: theme.palette.secondary.main,
-          pointBorderColor: theme.palette.background.default,
-          pointBorderWidth: 3,
-          pointRadius: 6,
-          pointBackgroundColor: theme.palette.secondary.main
-        }
-      ],
+      datasets: datasets,
       labels
     };
   };
@@ -107,8 +109,17 @@ const Chart = ({
       footerFontColor: theme.palette.text.secondary,
       callbacks: {
         title: () => {},
-        label: (tooltipItem) => {
-          let label = `Pagos: ${Math.round(tooltipItem.yLabel*100) / 100}`;
+        label: (tooltipItem, dataSet) => {
+          let label
+
+          if (tooltipItem.datasetIndex === 0) {
+            label = `Pago: ${Math.round(tooltipItem.yLabel*100) / 100}`;
+          }
+
+          if (tooltipItem.datasetIndex === 1) {
+            label = `Intereses: ${Math.round(tooltipItem.yLabel*100) / 100}`;
+          }
+
 
           if (tooltipItem.yLabel > 1000) {
             label += 'k';

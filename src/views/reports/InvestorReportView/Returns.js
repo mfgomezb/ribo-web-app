@@ -46,13 +46,6 @@ const Returns = ({ className, investmentAccount, ...rest }) => {
             {investorReturn.isLoading
               ? '...' : investorReturn.data === undefined ? 0 : numeral(investorReturn.data.value).format(`$0,0.00`)}
           </Typography>
-          {/*<Label*/}
-          {/*  className={classes.label}*/}
-          {/*  color={data.difference > 0 ? 'success' : 'error'}*/}
-          {/*>*/}
-          {/*  {data.difference > 0 ? '+' : ''}*/}
-          {/*  {data.difference}%*/}
-          {/*</Label>*/}
         </Box>
       </Box>
       <Avatar className={classes.avatar}>

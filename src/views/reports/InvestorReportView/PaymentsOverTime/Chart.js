@@ -26,12 +26,13 @@ const Chart = ({
   const data = (canvas) => {
     const ctx = canvas.getContext('2d');
     const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-
     gradient.addColorStop(0, fade(theme.palette.secondary.main, 0.2));
     gradient.addColorStop(0.9, 'rgba(255,255,255,0)');
     gradient.addColorStop(1, 'rgba(255,255,255,0)');
+
     let datasets = dataProp.map((e, i) => {
       return {
+          label: i,
           data: e,
           backgroundColor: gradient,
           borderColor: i % 2  === 0 ? theme.palette.secondary.main: theme.palette.secondary.dark,

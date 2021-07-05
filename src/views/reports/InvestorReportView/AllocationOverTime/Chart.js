@@ -27,7 +27,7 @@ const Chart = ({
     const ctx = canvas.getContext('2d');
     const gradient = ctx.createLinearGradient(0, 0, 0, 400);
 
-    gradient.addColorStop(0, fade(theme.palette.secondary.main, 0.2));
+    gradient.addColorStop(0, fade(theme.palette.secondary.main, 0.5));
     gradient.addColorStop(0.9, 'rgba(255,255,255,0)');
     gradient.addColorStop(1, 'rgba(255,255,255,0)');
 
@@ -89,6 +89,25 @@ const Chart = ({
             maxTicksLimit: 7,
             callback: (value) => (value >= 1000 ? `${value/1000}K` : value)
           }
+        },
+        {
+          gridLines: {
+            borderDash: [2],
+            borderDashOffset: [2],
+            color: theme.palette.divider,
+            drawBorder: false,
+            zeroLineBorderDash: [2],
+            zeroLineBorderDashOffset: [2],
+            zeroLineColor: theme.palette.divider
+          },
+          ticks: {
+            padding: 20,
+            fontColor: theme.palette.text.secondary,
+            beginAtZero: true,
+            min: 0,
+            maxTicksLimit: 7,
+            callback: (value) => (value >= 1000 ? `${value/1000}K` : value)
+          }
         }
       ]
     },
@@ -108,7 +127,7 @@ const Chart = ({
       callbacks: {
         title: () => {},
         label: (tooltipItem) => {
-          let label = `Pagos: ${Math.round(tooltipItem.yLabel*100) / 100}`;
+          let label = `colocación: ${Math.round(tooltipItem.yLabel*100) / 100}`;
 
           if (tooltipItem.yLabel > 1000) {
             label += 'k';

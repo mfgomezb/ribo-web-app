@@ -8,13 +8,13 @@ import {
   CardHeader,
   CardContent,
   Divider,
-  makeStyles
+  makeStyles, Typography
 } from '@material-ui/core';
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import Chart from './Chart';
-import { useGetPayments } from '../../../../hooks/useDashboard';
 import { useGetInvestorHistoricIncome, useGetInvestorHistoricInterest } from '../../../../hooks/useInvestor';
 import useIsMountedRef from '../../../../hooks/useIsMountedRef';
+import Skeleton from '@material-ui/lab/Skeleton';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -23,8 +23,20 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
+function Loading() {
+  const variants = ['rect'];
+  return (
+    <div style={{'padding': '10px'}}>
+      {variants.map((variant) => (
+        <Typography component="div" key={variant} variant={variant}>
+          <Skeleton height={375}/>
+        </Typography>
+      ))}
+    </div>
+  );
+}
+
 const dataNormalization = (array,data) => {
-  console.log(array, data)
   return array.reduce( (acc, e) => {
     let newElement = data[e] ? data[e] : {monto: 0}
     acc[e] = {
@@ -60,12 +72,13 @@ const PaymentsOverTime = ({ className, investmentAccount, ...rest }) => {
     try {
       if (isMountedRef.current && !periodPayments.isLoading && !historicIncome.isLoading) {
         let array = [...new Set([...Object.keys(periodPayments.data),...Object.keys(historicIncome.data)])]
-        let result1 = setDataValues(dataNormalization(array, periodPayments.data))
-        let result2 = setDataValues(dataNormalization(array, historicIncome.data))
+        let result1 = setDataValues(dataNormalization(array.sort(), periodPayments.data))
+        let result2 = setDataValues(dataNormalization(array.sort(), historicIncome.data))
 
-        setDataLabels(array)
-        setData([result1,
-          // result2
+        setDataLabels(array.slice(array.length-12,array.length ),)
+        setData([
+          result1.slice(result1.length-12,result1.length ),
+          result2.slice(result2.length-12,result2.length )
         ])
       }
     } catch (err) {
@@ -77,7 +90,7 @@ const PaymentsOverTime = ({ className, investmentAccount, ...rest }) => {
     getData();
   }, [getData]);
 
-  if (periodPayments.isLoading || historicIncome.isLoading) return null
+  // if (periodPayments.isLoading || historicIncome.isLoading) return null
 
   // console.log(data)
   // console.log(dataLabels)
@@ -95,13 +108,16 @@ const PaymentsOverTime = ({ className, investmentAccount, ...rest }) => {
       <Divider />
       <CardContent>
         <PerfectScrollbar>
-          <Box height={375} minWidth={500}>
-            <Chart
-              className={classes.chart}
-              data={data}
-              labels={dataLabels}
-            />
-          </Box>
+              {(periodPayments.isLoading || historicIncome.isLoading) ? <Skeleton height={375} width={800}><Box height={375} minWidth={500}><Chart
+                  className={classes.chart}
+                  data={data}
+                  labels={dataLabels}
+                /></Box></Skeleton> :
+                <Box height={375} minWidth={500}><Chart
+                  className={classes.chart}
+                  data={data}
+                  labels={dataLabels}
+                /></Box>}
         </PerfectScrollbar>
       </CardContent>
     </Card>

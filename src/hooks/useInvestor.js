@@ -139,3 +139,49 @@ export const useGetInvestorCumulativeIncome = (investmentAccount, period) => {
     { staleTime: Infinity }
   )
 }
+
+export const useGetInvestorCumulativeInterest = (investmentAccount, period) => {
+  // let {gtDate, ltDate} = dateRangeSelection(period)
+  return useQuery(['investorCumulativeInterest', investmentAccount], () =>
+      axios.get(`api/investor-profile/cumulative-interest/${investmentAccount}`)
+        .then(res => {
+          return res.data
+        }),
+    { staleTime: Infinity }
+  )
+}
+
+export const useGetInvestorAllocation = (investmentAccount) => {
+  // let {gtDate, ltDate} = dateRangeSelection(period)
+  return useQuery(['investorAllocation', investmentAccount], () =>
+      axios.get(`api/investor-profile/historic-allocation/${investmentAccount}`)
+        .then(res => {
+          return res.data
+        }),
+    { staleTime: Infinity }
+  )
+}
+
+
+export const useGetInvestorPortfolioSegmentation = (investmentAccount) => {
+  // let {gtDate, ltDate} = dateRangeSelection(period)
+  return useQuery(['portfolioSegmentation', investmentAccount], () =>
+      axios.get(`api/investor-profile/portfolio-segmentation/${investmentAccount}`)
+        .then(res => {
+          return res.data
+        }),
+    { staleTime: Infinity }
+  )
+}
+
+export const useGetInvestorPortfolioCollection = (investmentAccount) => {
+  // let {gtDate, ltDate} = dateRangeSelection(period)
+  return useQuery(['portfolioCollection', investmentAccount], () =>
+      axios.get(`api/investor-profile/portfolio-collection/${investmentAccount}`)
+        .then(res => {
+          return res.data
+        }),
+    { staleTime: Infinity }
+  )
+}
+

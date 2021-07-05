@@ -6,6 +6,7 @@ import { Box, Card, CardHeader, Divider, makeStyles } from '@material-ui/core';
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import Chart from './Chart';
 import { useGetHistoricAllocation } from '../../../../hooks/useDashboard';
+import { useGetInvestorAllocation, useGetInvestorHistoricInterest } from '../../../../hooks/useInvestor';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -14,13 +15,13 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const FinancialStats = ({ className, country, ...rest }) => {
+const FinancialStats = ({ className, investmentAccount, ...rest }) => {
   const classes = useStyles();
 
-  const allocation = useGetHistoricAllocation(country)
-
+  const allocation = useGetInvestorAllocation(investmentAccount)
+  const historicIncome = useGetInvestorHistoricInterest(investmentAccount)
   const dataLabels = !allocation.isLoading ? allocation.data.map( e => e.date).slice(allocation.data.length-12,allocation.data.length ) : []
-  const interest = !allocation.isLoading ? allocation.data.map(e => e.interest).slice(allocation.data.length-12,allocation.data.length ): []
+  const interest = !historicIncome.isLoading ? Object.values(historicIncome.data).map(e => e.monto).slice(Object.values(historicIncome.data).length-12,Object.values(historicIncome.data).length ): []
   const capital = !allocation.isLoading ? allocation.data.map(e => e.capital).slice(allocation.data.length-12,allocation.data.length ): []
 
   const stats = {

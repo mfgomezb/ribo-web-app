@@ -19,6 +19,8 @@ import Investments from './Investments';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import useGlobal from '../../../hooks/useGlobal';
 import useAuth from '../../../hooks/useAuth';
+import AllocationOverTime from '../InvestorPortfolioView/AllocationOverTime';
+import Yield from './Yield';
 
 const timeRanges = [
   {
@@ -113,27 +115,30 @@ const DashboardView = () => {
         <Box mt={3} className={classes.rootG}>
         <Grid
           container
-          direction="column"
+          direction="row"
           justify="space-between"
           alignItems="flex-start"
           spacing={3}
         >
           <Grid
             item
-            container
-            direction="column"
             lg={3}
             xs={12}
             >
-              <Box>
-                  <Returns
-                    investmentAccount={investmentAccount} />
+            <Box >
+                <Returns
+                  investmentAccount={investmentAccount} />
               </Box>
               <Box mt={3}>
-                  <TodayCollection
-                    investmentAccount={investmentAccount}
-                    timeRange={timeRange}/>
+                <TodayCollection
+                  investmentAccount={investmentAccount}
+                  timeRange={timeRange}/>
               </Box>
+            <Box mt={3}>
+              <Yield
+                investmentAccount={investmentAccount}
+                timeRange={timeRange}/>
+            </Box>
               <Box mt={3}>
                 <UpcomingCollection
                   investmentAccount={investmentAccount}
@@ -152,12 +157,15 @@ const DashboardView = () => {
           </Grid>
           <Grid
             item
-            container
             lg={9}
-            sm={12}
+            sm={6}
             xs={12}
             >
-              <Box>
+            <Box >
+              <AllocationOverTime
+                investmentAccount={investmentAccount} />
+            </Box>
+              <Box mt={3}>
                 <PaymentsOverTime
                   investmentAccount={investmentAccount}
                   timeRange={timeRange}/>
@@ -167,16 +175,6 @@ const DashboardView = () => {
                 investmentAccount={investmentAccount}
                 timeRange={timeRange}/>
             </Box>
-              <Box mt={3}>
-                <PaymentsReceivedList
-                  investmentAccount={investmentAccount}
-                  timeRange={timeRange}/>
-              </Box>
-              <Box mt={3}>
-                <LoanDisbursedList
-                  investmentAccount={investmentAccount}
-                  timeRange={timeRange}/>
-              </Box>
           </Grid>
           {/*<Grid*/}
           {/*  item*/}

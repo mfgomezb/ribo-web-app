@@ -4,9 +4,9 @@ import clsx from 'clsx';
 import { Box, Card, CardHeader, Divider, makeStyles, Typography } from '@material-ui/core';
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import Chart from './Chart';
-import { useGetPortfolioSummary } from '../../../../hooks/useDashboard';
 import { useOfFunds } from '../../../../utils/constants';
 import { percentageFormat } from '../../../../utils/numbers';
+import { useGetInvestorPortfolioSegmentation, useGetInvestorTotalInvestments } from '../../../../hooks/useInvestor';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -24,39 +24,23 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const EarningsSegmentation = ({ className, country, ...rest }) => {
+const EarningsSegmentation = ({ className, investmentAccount, ...rest }) => {
   const classes = useStyles();
-  const { isLoading, data } = useGetPortfolioSummary(country)
+  const { isLoading, data } = useGetInvestorPortfolioSegmentation(investmentAccount)
+  const queryPayments = useGetInvestorTotalInvestments(investmentAccount);
 
-
-  const topThreeCat = !isLoading && data.portfolioSummary.slice(0, 3)
-  const labels = !isLoading && data.portfolioSummary.map( e =>  e.product)
-  const productsData = !isLoading && data.portfolioSummary.map( e =>  e.capitalRemaining)
-
+  const topThreeCat = !isLoading && data.slice(0, 3)
+  const labels = !isLoading && data.map( e =>  e._id)
+  const productsData = !isLoading && data.map( e =>  e.currentInvestment)
+  const totalAmount = !isLoading && data.reduce( (a, b) =>  a + b.currentInvestment, 0)
+  //
   const products = {
     datasets: [{
-      backgroundColor: ['#3d72eb', '#4b9e86', '#b658f5', '#3d72eb', '#4b9e86', '#b658f5', '#3d72eb', '#4b9e86', '#b658f5'],
+      backgroundColor: ['#3d72eb', '#4b9e86', '#b658f5', '#eb80eb', '#4b9e86', '#b658f5', '#3d72eb', '#4b9e86', '#eb80eb'],
       data: productsData
     }],
     labels
   }
-
-  console.log(products)
-  // const getEarnings = useCallback(async () => {
-  //   try  {
-  //     const response = await axios.get('/api/reports/earnings');
-  //
-  //     if (isMountedRef.current) {
-  //       setEarnings(response.data.earnings);
-  //     }
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // }, [isMountedRef]);
-  //
-  // useEffect(() => {
-  //   getEarnings();
-  // }, [getEarnings]);
 
   if (isLoading) {
     return null;
@@ -90,13 +74,13 @@ const EarningsSegmentation = ({ className, country, ...rest }) => {
               variant="h4"
               color="textPrimary"
             >
-              {percentageFormat(item.capitalRemainingPct)}
+              {percentageFormat(item.currentInvestment / totalAmount)}
             </Typography>
             <Typography
               variant="overline"
               color="textSecondary"
             >
-              {useOfFunds[item.product]}
+              {useOfFunds[item._id]}
             </Typography>
           </div>
         ))}

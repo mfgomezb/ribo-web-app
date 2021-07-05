@@ -12,7 +12,12 @@ import {
 } from '@material-ui/core';
 import GenericMoreButton from 'src/components/GenericMoreButton';
 import Chart from './Chart';
-import { useGetHistoricAllocation } from '../../../../hooks/useDashboard';
+import {
+  useGetInvestorAllocation,
+  useGetInvestorCumulativeInterest,
+  useGetInvestorHistoricInterest
+} from '../../../../hooks/useInvestor';
+import useIsMountedRef from '../../../../hooks/useIsMountedRef';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -21,11 +26,52 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const AllocationOverTime = ({ className, country, ...rest }) => {
+const dataNormalization = (array,data) => {
+  console.log(array, data)
+  return array.reduce( (acc, e) => {
+    let newElement = data[e] ? data[e] : {monto: 0}
+    acc[e] = {
+      ...newElement,
+    }
+    return acc
+  },{})}
+
+const setDataValues = (arrayOfObjects) => {
+  return Object.values(arrayOfObjects).map(e => e.monto)
+}
+
+const AllocationOverTime = ({ className, investmentAccount, ...rest }) => {
   const classes = useStyles();
-  const {isLoading, data, error} = useGetHistoricAllocation(country)
-  const dataLabels = !isLoading ? data.map( e => e.date).slice(data.length-12,data.length ) : []
-  const dataMap = !isLoading ? data.map(e => e.valueAccumulated).slice(data.length-12,data.length ): []
+  const periodPayments = useGetInvestorAllocation(investmentAccount)
+  const historicIncome = useGetInvestorHistoricInterest(investmentAccount)
+  const [dataLabels, setDataLabels] = React.useState([])
+  const [data, setData] = React.useState([])
+  const isMountedRef = useIsMountedRef();
+
+  // const dataLabels = !isLoading ? data.map( e => e.date).slice(data.length-12,data.length ) : []
+  // const dataMap = !isLoading ? data.map(e => e.valueAccumulated).slice(data.length-12,data.length ): []
+
+  const getData = React.useCallback(async () => {
+    try {
+      if (isMountedRef.current && !periodPayments.isLoading && !historicIncome.isLoading) {
+        let array = [...new Set([...Object.keys(periodPayments.data),...Object.keys(historicIncome.data)])]
+        let result1 = setDataValues(dataNormalization(array, periodPayments.data))
+        let result2 = setDataValues(dataNormalization(array, historicIncome.data))
+
+        setDataLabels(array.slice(array.length-12,array.length ),)
+        setData([
+          result1.slice(result1.length-12,result1.length ),
+          result2.slice(result2.length-12,result2.length )
+        ])
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }, [periodPayments, historicIncome]);
+
+  React.useEffect(() => {
+    getData();
+  }, [getData]);
 
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
@@ -39,7 +85,7 @@ const AllocationOverTime = ({ className, country, ...rest }) => {
           <Box height={375} minWidth={500}>
             <Chart
               className={classes.chart}
-              data={dataMap}
+              data={data}
               labels={dataLabels}
             />
           </Box>

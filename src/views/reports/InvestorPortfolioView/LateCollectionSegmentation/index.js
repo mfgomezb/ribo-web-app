@@ -6,7 +6,7 @@ import GenericMoreButton from 'src/components/GenericMoreButton';
 import Chart from './Chart';
 import { useGetHistoricAllocation } from '../../../../hooks/useDashboard';
 import { percentageFormat } from '../../../../utils/numbers';
-import { useGetCollectionHistogram } from '../../../../hooks/useGetCollection';
+import { useGetInvestorPortfolioCollection, useGetInvestorTotalInvestments } from '../../../../hooks/useInvestor';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -24,18 +24,17 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const LateCollectionSegmentation = ({ className, country, ...rest }) => {
+const LateCollectionSegmentation = ({ className, investmentAccount, ...rest }) => {
   const classes = useStyles();
-  const { isLoading: collectionIsLoading, data: collection, } = useGetCollectionHistogram(country)
-  const { isLoading: portfolioIsLoading, data: portfolio, } = useGetHistoricAllocation(country)
+  const { isLoading: collectionIsLoading, data: collection, } = useGetInvestorPortfolioCollection(investmentAccount)
+  const queryPayments = useGetInvestorTotalInvestments(investmentAccount)
 
 
   // const topThreeCat = !isLoading && data.portfolioSummary.slice(0, 3)
   const labels = !collectionIsLoading && Object.keys(collection)
   const productsData = !collectionIsLoading && Object.keys(collection).map( e =>  collection[e].amount)
-  const portfolioTotal = !portfolioIsLoading ? portfolio[portfolio.length-1].valueAccumulated : 0
-  // console.log(portfolio.length)
-  console.log(portfolioTotal)
+  const totalAmount = queryPayments.data !== undefined ? queryPayments.data.value : 0;
+
   const products = {
     datasets: [{
       backgroundColor: ['#3d72eb', '#4b9e86', '#b658f5', '#3d72eb', '#4b9e86', '#b658f5', '#3d72eb', '#4b9e86', '#b658f5'],
@@ -43,26 +42,10 @@ const LateCollectionSegmentation = ({ className, country, ...rest }) => {
     }],
     labels
   }
-  // const getEarnings = useCallback(async () => {
-  //   try  {
-  //     const response = await axios.get('/api/reports/earnings');
-  //
-  //     if (isMountedRef.current) {
-  //       setEarnings(response.data.earnings);
-  //     }
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // }, [isMountedRef]);
-  //
-  // useEffect(() => {
-  //   getEarnings();
-  // }, [getEarnings]);
 
-  console.log(products)
 
   if (collectionIsLoading) {
-    return null;
+    return null
   }
 
   return (
@@ -72,7 +55,7 @@ const LateCollectionSegmentation = ({ className, country, ...rest }) => {
     >
       <CardHeader
         action={<GenericMoreButton />}
-        title="Distribución de cobranza vencida"
+        title="Morosidad"
       />
       <Divider />
       <Box
@@ -93,7 +76,7 @@ const LateCollectionSegmentation = ({ className, country, ...rest }) => {
               variant="h4"
               color="textPrimary"
             >
-              {!portfolioIsLoading && percentageFormat(collection[item].amount/portfolioTotal)}
+              {!collectionIsLoading && percentageFormat(collection[item].amount/totalAmount)}
             </Typography>
             <Typography
               variant="overline"

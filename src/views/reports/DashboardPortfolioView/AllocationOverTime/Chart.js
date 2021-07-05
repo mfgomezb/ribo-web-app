@@ -30,7 +30,7 @@ const Chart = ({
     gradient.addColorStop(0, fade(theme.palette.secondary.main, 0.2));
     gradient.addColorStop(0.9, 'rgba(255,255,255,0)');
     gradient.addColorStop(1, 'rgba(255,255,255,0)');
-
+    console.log('porfolio allocatuion', dataProp)
     return {
       datasets: [
         {

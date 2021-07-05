@@ -142,21 +142,21 @@ const DashboardPortfolioView = () => {
           >
             <FinancialStats investmentAccount={investmentAccount} />
           </Grid>
-          <Grid
-            item
-            lg={4}
-            xs={12}
-          >
-            <TopReferrals investmentAccount={investmentAccount}/>
-          </Grid>
-          <Grid
-            item
-            lg={8}
-            xl={12}
-            xs={12}
-          >
-            <PortfolioSummary investmentAccount={investmentAccount} />
-          </Grid>
+          {/*<Grid*/}
+          {/*  item*/}
+          {/*  lg={4}*/}
+          {/*  xs={12}*/}
+          {/*>*/}
+          {/*  <TopReferrals investmentAccount={investmentAccount}/>*/}
+          {/*</Grid>*/}
+          {/*<Grid*/}
+          {/*  item*/}
+          {/*  lg={8}*/}
+          {/*  xl={12}*/}
+          {/*  xs={12}*/}
+          {/*>*/}
+          {/*  <PortfolioSummary investmentAccount={investmentAccount} />*/}
+          {/*</Grid>*/}
 
         </Grid>
       </Container>

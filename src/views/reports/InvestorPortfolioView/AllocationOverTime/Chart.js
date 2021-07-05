@@ -27,22 +27,26 @@ const Chart = ({
     const ctx = canvas.getContext('2d');
     const gradient = ctx.createLinearGradient(0, 0, 0, 400);
 
-    gradient.addColorStop(0, fade(theme.palette.secondary.main, 0.2));
+    gradient.addColorStop(0, fade(theme.palette.secondary.main, 0.4));
     gradient.addColorStop(0.9, 'rgba(255,255,255,0)');
     gradient.addColorStop(1, 'rgba(255,255,255,0)');
 
+    let datasets = dataProp.map((e, i) => {
+      return {
+        label: i,
+        data: e,
+        backgroundColor: gradient,
+        borderColor: i % 2  === 0 ? theme.palette.secondary.main: theme.palette.secondary.dark,
+        pointBorderColor: theme.palette.background.default,
+        pointBorderWidth: 3,
+        pointRadius: 6,
+        pointBackgroundColor: i % 2  === 0 ? theme.palette.secondary.main: theme.palette.secondary.dark,
+        yAxisID: `y${i}`
+      }
+    })
+
     return {
-      datasets: [
-        {
-          data: dataProp,
-          backgroundColor: gradient,
-          borderColor: theme.palette.secondary.main,
-          pointBorderColor: theme.palette.background.default,
-          pointBorderWidth: 3,
-          pointRadius: 6,
-          pointBackgroundColor: theme.palette.secondary.main
-        }
-      ],
+      datasets: datasets,
       labels
     };
   };
@@ -72,6 +76,7 @@ const Chart = ({
       ],
       yAxes: [
         {
+          id: 'y0',
           gridLines: {
             borderDash: [2],
             borderDashOffset: [2],
@@ -81,6 +86,28 @@ const Chart = ({
             zeroLineBorderDashOffset: [2],
             zeroLineColor: theme.palette.divider
           },
+          position: 'left',
+          ticks: {
+            padding: 20,
+            fontColor: theme.palette.text.secondary,
+            beginAtZero: true,
+            min: 0,
+            maxTicksLimit: 7,
+            callback: (value) => (value >= 1000 ? `${value/1000}K` : value)
+          }
+        },
+        {
+          id: 'y1',
+          gridLines: {
+            borderDash: [2],
+            borderDashOffset: [2],
+            color: theme.palette.divider,
+            drawBorder: false,
+            zeroLineBorderDash: [2],
+            zeroLineBorderDashOffset: [2],
+            zeroLineColor: theme.palette.divider
+          },
+          position: 'right',
           ticks: {
             padding: 20,
             fontColor: theme.palette.text.secondary,
@@ -107,14 +134,33 @@ const Chart = ({
       footerFontColor: theme.palette.text.secondary,
       callbacks: {
         title: () => {},
-        label: (tooltipItem) => {
-          let label = `Pagos: ${Math.round(tooltipItem.yLabel*100) / 100}`;
+        label: (tooltipItem , data) => {
+
+          let label
+
+          if (tooltipItem.datasetIndex === 0) {
+            label = `Colocaciones: ${Math.round(tooltipItem.yLabel*100) / 100}`;
+          }
+
+          if (tooltipItem.datasetIndex === 1) {
+            label = `Intereses: ${Math.round(tooltipItem.yLabel*100) / 100}`;
+          }
+
 
           if (tooltipItem.yLabel > 1000) {
             label += 'k';
           }
 
           return label;
+        },
+        afterBody: (tooltipItem , data) => {
+
+          let allocation = data.datasets[0].data[tooltipItem[0].index]
+          let interest = data.datasets[1].data[tooltipItem[0].index]
+          let afterLabel = ((interest/allocation)*100).toFixed(4)
+          afterLabel += '%'
+
+          return `Rendimiento: ${afterLabel}`
         }
       }
     }
