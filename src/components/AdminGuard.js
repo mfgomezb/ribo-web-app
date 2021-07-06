@@ -13,7 +13,12 @@ const AdminGuard = ({ children }) => {
   if (isAuthenticated && user.role !== 'admin') {
     if (user == '')
     return <Redirect to="/404" />;
+    if (user.role === 'investor') {
+      return <Redirect to='/investor'/>
+    }
   }
+
+
 
   return (
     <>

@@ -74,6 +74,30 @@ const routes = [
   //   component: lazy(() => import('src/views/auth/RegisterView'))
   // },
   {
+    path: '/investor',
+    guard: InvestorGuard,
+    layout: DashboardLayout,
+    routes: [
+      {
+        exact: true,
+        // guard: InvestorGuard,
+        path: '/investor/dashboard',
+        component: lazy(() => import('src/views/reports/InvestorReportView'))
+      },
+      {
+        exact: true,
+        // guard: InvestorGuard,
+        path: '/investor/portfolio',
+        component: lazy(() => import('src/views/reports/InvestorPortfolioView'))
+      },
+      {
+        exact: true,
+        path: '/investor',
+        component: () => <Redirect to="/investor/dashboard" />
+      },
+    ]
+  },
+  {
     path: '/app',
     guard: AdminGuard,
     layout: DashboardLayout,

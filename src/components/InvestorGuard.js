@@ -10,6 +10,14 @@ const InvestorGuard = ({ children }) => {
     return <Redirect to="/login" />;
   }
 
+  if (isAuthenticated && user.role !== 'investor') {
+    if (user === '') return <Redirect to="/404" />;
+  }
+
+  if (isAuthenticated && user.role === 'admin') {
+    return <Redirect to="/app" />;
+  }
+
 
   return (
     <>

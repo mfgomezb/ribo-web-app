@@ -11,7 +11,7 @@ const GuestGuard = ({ children }) => {
   }
 
   if (isAuthenticated && user.role === 'investor') {
-    return <Redirect to="/app/investor/dashboard" />;
+    return <Redirect to="/investor/dashboard" />;
   }
 
   return (

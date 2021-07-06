@@ -38,13 +38,13 @@ const sections = [
       {
         title: 'Resumen',
         icon: TrendingUpIcon,
-        href: '/app/investor/dashboard',
+        href: '/investor/dashboard',
         role: ['investor']
       },
       {
         title: 'Cartera',
         icon: PieChartIcon,
-        href: '/app/investor/portfolio',
+        href: '/investor/portfolio',
         role: ['investor']
       },
     ]

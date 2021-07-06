@@ -27,7 +27,6 @@ const useStyles = makeStyles((theme) => ({
 const EarningsSegmentation = ({ className, investmentAccount, ...rest }) => {
   const classes = useStyles();
   const { isLoading, data } = useGetInvestorPortfolioSegmentation(investmentAccount)
-  const queryPayments = useGetInvestorTotalInvestments(investmentAccount);
 
   const topThreeCat = !isLoading && data.slice(0, 3)
   const labels = !isLoading && data.map( e =>  e._id)
